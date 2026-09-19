@@ -1,0 +1,90 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/webhook-definition-1380483m0
+spec_type: none
+asyncapi_published: false
+probed:
+- url: https://developers.partners.airalo.com/asyncapi.yaml
+  http_status: 404
+- url: https://partners-api.airalo.com/asyncapi.yaml
+  http_status: 404
+transport: https-webhook
+docs:
+- https://developers.partners.airalo.com/webhook-definition-1380483m0
+- https://developers.partners.airalo.com/webhooks-guide-930005m0
+- https://developers.partners.airalo.com/airalo-webhooks-opt-in-and-flow-930064m0
+- https://developers.partners.airalo.com/notifications-2508831f0
+subscription:
+  model: opt-in per event type
+  operation: POST /v2/notifications/opt-in (operationId optInNotification)
+  unsubscribe: POST /v2/notifications/opt-out (operationId optOutNotification)
+  status: GET /v2/notifications/opt-in (operationId getNotificationDetails)
+  validation: >-
+    At opt-in Airalo issues an HTTP HEAD request to the supplied webhook_url; the endpoint must answer
+    200 OK or the opt-in fails. The endpoint must support both HEAD and POST.
+  override: >-
+    POST /v2/orders-async and POST /v2/future-orders accept an optional webhook_url in the request body
+    which overrides the opted-in URL for that order.
+security:
+  signature_header: airalo-signature
+  algorithm: HMAC-SHA512
+  key: the partner's API secret
+  payload: the raw JSON body
+  verification_examples: [php, javascript, python, java]
+  docs: https://developers.partners.airalo.com/webhook-definition-1380483m0
+delivery:
+  retries: 20
+  interval: 15 minutes
+  success_criteria: HTTP 200
+  failure_criteria: 'Any response >= 204 is treated as a failure and triggers the retry schedule.'
+  note: >-
+    Airalo's own sample handlers return 200 even for business-level failures the partner cannot process
+    (unknown order, non-retryable Airalo error), reserving the retry path for genuine processing errors.
+  sandbox: Webhook notification settings do not work in Sandbox mode; use the webhook simulator instead.
+events:
+- name: async_order_notification
+  opt_in_type: async_orders
+  trigger: An asynchronous order (POST /v2/orders-async) completes and an eSIM is generated.
+  payload: >-
+    The same shape as the synchronous POST /v2/orders response, plus a `request_id` field carrying the
+    25-character nanoid returned when the async order was accepted. A failure payload carries `reason` and
+    no `sims`.
+  channels: [webhook]
+  note: Email delivery is explicitly not supported for this event.
+  source: https://developers.partners.airalo.com/opt-in-11883038e0
+- name: low_data_notification
+  opt_in_type: webhook_low_data (or email_low_data)
+  trigger: >-
+    An end-user eSIM reaches 75% or 90% of its data allowance, or has 3 days / 1 day remaining before
+    expiry.
+  channels: [webhook, email]
+  simulator_subtypes: [data_75, data_90, expire_1, expire_3]
+  note: >-
+    Delivered to partner addresses (support/back office), not directly to customers; a single email address
+    should be configured. Optional `language` parameter for email localization.
+  source: https://developers.partners.airalo.com/opt-in-11883039e0
+- name: credit_limit_notification
+  opt_in_type: webhook_credit_limit (or email_credit_limit)
+  trigger: The partner's credit usage crosses a subscribed threshold.
+  levels: [50, 70, 80, 90]
+  channels: [webhook, email]
+  note: '`levels` is an optional subset of [50, 70, 80, 90]; omitted, Airalo applies its default set.'
+  source: https://developers.partners.airalo.com/opt-in-11883042e0
+- name: future_order_completion
+  trigger: A future-dated order (POST /v2/future-orders) reaches its due date and is processed.
+  channels: [webhook]
+  payload: The regular order response plus `request_id`.
+  note: >-
+    Delivered to the async_orders opted-in URL or to the per-request webhook_url. A future order cannot be
+    created unless one of the two is present.
+  source: https://developers.partners.airalo.com/future-orders-14455445e0
+testing:
+  simulator: POST /v2/simulator/webhook (operationId simulateWebhook)
+  docs: https://developers.partners.airalo.com/webhook-simulator-11883044e0
+  note: >-
+    Triggers a mock event of any of the three types without placing a real order or consuming credit;
+    supplying webhook_url bypasses the opt-in check. 5 requests per minute per IP.
+note: >-
+  Airalo documents a real, signed, retrying webhook surface with an opt-in API and a simulator, but publishes
+  no AsyncAPI document. This artifact is the webhook catalog; it wires type: Webhooks, not type: AsyncAPI.
+  Nothing here is derived — every event, header, retry number and threshold is quoted from Airalo's own pages.

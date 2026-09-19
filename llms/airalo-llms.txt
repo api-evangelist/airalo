@@ -1,0 +1,81 @@
+# Airalo Partner API
+
+## Docs
+- OVERVIEW [Introduction](https://developers.partners.airalo.com/introduction-752219m0.md): 
+- OVERVIEW [Attribute descriptions](https://developers.partners.airalo.com/attribute-descriptions-752392m0.md): 
+- OVERVIEW [FAQ](https://developers.partners.airalo.com/faq-752238m0.md): 
+- OVERVIEW [Developer feedback](https://developers.partners.airalo.com/developer-feedback-1606355m0.md): 
+- OVERVIEW [Quick start](https://developers.partners.airalo.com/quick-start-2508979f0.md): 
+- OVERVIEW > Guides [How to set up a brand for eSIMs Cloud link sharing](https://developers.partners.airalo.com/how-to-set-up-a-brand-for-esims-cloud-link-sharing-752805m0.md): 
+- OVERVIEW > Guides [How to get the eSIMs Cloud sharing link through API](https://developers.partners.airalo.com/how-to-get-the-esims-cloud-sharing-link-through-api-752807m0.md): 
+- OVERVIEW > Guides [How to generate the QR code for an eSIM](https://developers.partners.airalo.com/how-to-generate-the-qr-code-for-an-esim-752812m0.md): 
+- OVERVIEW > Guides [eSIM installation methods for API Partners](https://developers.partners.airalo.com/esim-installation-methods-for-api-partners-824105m0.md): 
+- REST API [Introduction](https://developers.partners.airalo.com/introduction-752814m0.md): 
+- REST API [Rate limits](https://developers.partners.airalo.com/rate-limits-752590m0.md): 
+- REST API [Error handling](https://developers.partners.airalo.com/error-handling-780831m0.md): 
+- REST API [Go live checklist](https://developers.partners.airalo.com/go-live-checklist-1531786m0.md): 
+- REST API [Sandbox mode](https://developers.partners.airalo.com/sandbox-mode-2114305m0.md): 
+- REST API [IP allowlist / whitelisting](https://developers.partners.airalo.com/ip-allowlist-whitelisting-2327548m0.md): 
+- REST API [Endpoints](https://developers.partners.airalo.com/endpoints-2663076f0.md): 
+- REST API > Endpoints [Authenticate](https://developers.partners.airalo.com/authenticate-4297242f0.md): 
+- REST API > Endpoints [Browse packages](https://developers.partners.airalo.com/browse-packages-4297251f0.md): 
+- REST API > Endpoints [Request refund](https://developers.partners.airalo.com/request-refund-4297530f0.md): 
+- REST API > Endpoints [Place order](https://developers.partners.airalo.com/place-order-4297252f0.md): 
+- REST API > Endpoints [Install eSIM](https://developers.partners.airalo.com/install-esim-4297255f0.md): 
+- REST API > Endpoints [Monitor usage](https://developers.partners.airalo.com/monitor-usage-4297258f0.md): 
+- REST API > Endpoints [Top up eSIM](https://developers.partners.airalo.com/top-up-esim-4297260f0.md): 
+- REST API > Endpoints [Manage orders](https://developers.partners.airalo.com/manage-orders-4297261f0.md): 
+- REST API > Endpoints [Manage eSIMs](https://developers.partners.airalo.com/manage-esims-5456032f0.md): 
+- REST API > Endpoints [Compatible devices](https://developers.partners.airalo.com/compatible-devices-4516490f0.md): 
+- REST API > Endpoints [Notifications](https://developers.partners.airalo.com/notifications-2508831f0.md): 
+- REST API > Endpoints > Notifications [Airalo webhooks opt-in and flow](https://developers.partners.airalo.com/airalo-webhooks-opt-in-and-flow-930064m0.md): 
+- REST API > Endpoints > Notifications [Webhooks guide](https://developers.partners.airalo.com/webhooks-guide-930005m0.md): 
+- REST API > Endpoints > Notifications [Webhook definition](https://developers.partners.airalo.com/webhook-definition-1380483m0.md): 
+- REST API > Endpoints [Check balance](https://developers.partners.airalo.com/check-balance-2508832f0.md): 
+- SDKs [Introduction](https://developers.partners.airalo.com/introduction-752338m0.md): 
+- SDKs [SDK vs. REST API](https://developers.partners.airalo.com/sdk-vs-rest-api-780793m0.md): 
+- SDKs [Technical notes](https://developers.partners.airalo.com/technical-notes-752585m0.md): 
+- WOOCOMMERCE PLUGIN [Introduction](https://developers.partners.airalo.com/introduction-780800m0.md): 
+- WOOCOMMERCE PLUGIN > Guides [How to install the Airalo Plugin for WooCommerce](https://developers.partners.airalo.com/how-to-install-the-airalo-plugin-for-woocommerce-752290m0.md): 
+- WOOCOMMERCE PLUGIN > Guides [How to customize the "My eSIMs" page colors in WooCommerce](https://developers.partners.airalo.com/how-to-customize-the-my-esims-page-colors-in-woocommerce-837035m0.md): 
+- WOOCOMMERCE PLUGIN > Guides [How to convert prices into your local currency](https://developers.partners.airalo.com/how-to-convert-prices-into-your-local-currency-752526m0.md): 
+- Whitelabel eSIM platform [Whitelabel eSIM platform integration guide](https://developers.partners.airalo.com/whitelabel-esim-platform-integration-guide-2188917m0.md): 
+
+## API Docs
+- OVERVIEW > Quick start [Step 1: Request access token](https://developers.partners.airalo.com/step-1-request-access-token-11883017e0.md): :::highlight blue 💡
+- OVERVIEW > Quick start [Step 2: Get packages](https://developers.partners.airalo.com/step-2-get-packages-11883018e0.md): :::highlight blue 💡
+- OVERVIEW > Quick start [Step 3: Submit order](https://developers.partners.airalo.com/step-3-submit-order-11883019e0.md): This endpoint allows you to submit an order to the Airalo Partners API. Provide the required information, such as quantity and package ID, and include optional description if needed.
+- OVERVIEW > Quick start [Step 4: Get installation instructions](https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0.md): This endpoint allows you to retrieve the language specific installation instructions of a specific eSIM from the Airalo Partners API using the eSIM's ICCID. Pass the `Accept-language` header with the  language code for translated a response. 
+- REST API > Endpoints > Authenticate [Request access token](https://developers.partners.airalo.com/request-access-token-11883021e0.md): :::highlight blue 💡
+- REST API > Endpoints > Browse packages [Get packages](https://developers.partners.airalo.com/get-packages-11883036e0.md): :::highlight blue 💡
+- REST API > Endpoints > Request refund [Request refund](https://developers.partners.airalo.com/request-refund-14583565e0.md): :::highlight blue 💡
+- REST API > Endpoints > Place order [Future orders](https://developers.partners.airalo.com/future-orders-14455445e0.md): This endpoint allows you to submit an order to the Airalo Partner API, which will be created on the specified due date.
+- REST API > Endpoints > Place order [Submit order](https://developers.partners.airalo.com/submit-order-11883024e0.md): This endpoint allows you to submit an order to the Airalo Partner API by providing the required parameters, such as `package_id` and `quantity`. You may also include an optional `description` field to track your internal order ID or add any relevant notes related to the order.
+- REST API > Endpoints > Place order [Submit order async](https://developers.partners.airalo.com/submit-order-async-11883025e0.md): This endpoint allows you to submit an asynchronous order to the Airalo Partners API. This ensures greater performance and reduces the wait time for your desired flow. Each async order will generate unique `nanoid` stored in reponse's `request_id` - Make sure you store this id in your system, as it is a reference for the order which is pending processing. You should check map it for every successfully received order response on your webhook url.  
+- REST API > Endpoints > Place order [eSIM voucher](https://developers.partners.airalo.com/esim-voucher-11883065e0.md): **Overview:**
+- REST API > Endpoints > Install eSIM [Get eSIM](https://developers.partners.airalo.com/get-esim-11883028e0.md): This endpoint allows you to retrieve the details of a specific eSIM from the Airalo Partners API using the eSIM's ICCID. Note that only eSIM orders made via the API are retrievable via this endpoint. You can include related data in the response by specifying optional parameters.
+- REST API > Endpoints > Install eSIM [Get installation instructions](https://developers.partners.airalo.com/get-installation-instructions-11883029e0.md): This endpoint allows you to retrieve the language specific installation instructions of a specific eSIM from the Airalo Partners API using the eSIM's ICCID. Pass the `Accept-language` header with the  language code for translated a response. 
+- REST API > Endpoints > Monitor usage [Get usage (data, text & voice)](https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0.md): :::highlight blue 💡
+- REST API > Endpoints > Top up eSIM [Get  top-up package list](https://developers.partners.airalo.com/get-top-up-package-list-11883031e0.md): **Overview**
+- REST API > Endpoints > Top up eSIM [Submit top-up order](https://developers.partners.airalo.com/submit-top-up-order-11883026e0.md): **To submit a top-up order:**
+- REST API > Endpoints > Manage orders [Get order list](https://developers.partners.airalo.com/get-order-list-11883022e0.md): This endpoint allows you to retrieve a list of your orders from the Airalo Partners API. By using various filters, you can customize the results to match specific criteria. The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+- REST API > Endpoints > Manage orders [Get order](https://developers.partners.airalo.com/get-order-11883023e0.md): This endpoint allows you to retrieve the details of a specific order from the Airalo Partners API using the order ID. You can also include related data in the response by specifying optional parameters. The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+- REST API > Endpoints > Manage orders [Cancel future orders](https://developers.partners.airalo.com/cancel-future-orders-14459873e0.md): This endpoint allows you to submit future order cancellation requests via the Airalo Partner API.
+- REST API > Endpoints > Manage orders [Future Orders](https://developers.partners.airalo.com/future-orders-21307288e0.md): This endpoint allows you to get all your submitted future orders that are in pending, failed or retry status
+- REST API > Endpoints > Manage eSIMs [Update eSIM brand](https://developers.partners.airalo.com/update-esim-brand-11883033e0.md): This endpoint allows you to update assigned brand settings name of a specific eSIM from the Airalo Partners API using the eSIM's ICCID. This brand is used to apply branding on sharing link or share e-mails.If brand is set as null value, eSIM will be shared with unbranded visual.
+- REST API > Endpoints > Manage eSIMs [Get eSIMs list](https://developers.partners.airalo.com/get-esims-list-11883027e0.md): :::highlight blue 💡
+- REST API > Endpoints > Manage eSIMs [Get  eSIM package history](https://developers.partners.airalo.com/get-esim-package-history-11883032e0.md): :::highlight blue 💡
+- REST API > Endpoints > Compatible devices [[Deprecated] Get compatible device list](https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0.md): :::warning
+- REST API > Endpoints > Compatible devices [Get compatible device lite list](https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0.md): This endpoint provides a comprehensive list of devices that are compatible with eSIMs. Use this information to ensure that your customers have devices that support eSIM functionality.  
+- REST API > Endpoints > Notifications > Notification: Low data [Opt in](https://developers.partners.airalo.com/opt-in-11883039e0.md): This feature allows you to subscribe to notifications regarding low data usage. Alerts will be sent when your data usage reaches 75% and 90%. Additionally, notifications will be sent when there are 3 days and 1 day remaining before expiration. Notification is available via webhook or email. However, please note that this feature is designed to deliver notifications exclusively to partner email addresses and not directly to customers. Ensure that only a single email address (such as support or back office) is configured for this purpose
+- REST API > Endpoints > Notifications > Notification: Low data [Get notification details](https://developers.partners.airalo.com/get-notification-details-11883041e0.md): This endpoint allows you to retrieve the details of `Low data notification` from the Airalo partner API. If the below highlighted response is returned, it means you are successfully opted in for the notification.
+- REST API > Endpoints > Notifications > Notification: Low data [Opt out](https://developers.partners.airalo.com/opt-out-11883040e0.md): This endpoint allows you to opt out of notifications regarding low data usage.
+- REST API > Endpoints > Notifications > Notification: Credit limit [Opt in](https://developers.partners.airalo.com/opt-in-11883042e0.md): Receive notifications regarding your credit limit as it reaches specific thresholds. You have  
+- REST API > Endpoints > Notifications > Notification: Credit limit [Get notification details](https://developers.partners.airalo.com/get-notification-details-20383022e0.md): This endpoint allows you to retrieve the details of `Credit limit notification` from the Airalo Partner API. If the below highlighted response is returned, it means you are successfully opted in for the notification.
+- REST API > Endpoints > Notifications > Notification: Credit limit [Opt out](https://developers.partners.airalo.com/opt-out-20383023e0.md): This endpoint allows you to opt out of notifications regarding credit limit usage.
+- REST API > Endpoints > Notifications > Notification: Async orders [Opt in](https://developers.partners.airalo.com/opt-in-11883038e0.md): :::info
+- REST API > Endpoints > Notifications > Notification: Async orders [Get notification details](https://developers.partners.airalo.com/get-notification-details-20384820e0.md): This endpoint allows you to retrieve the details of `Async orders notification` from the Airalo partner API. If the below highlighted response is returned, it means you are successfully opted in for the notification.
+- REST API > Endpoints > Notifications > Notification: Async orders [Opt out](https://developers.partners.airalo.com/opt-out-20384821e0.md): This endpoint allows you to opt out of notifications regarding async orders.
+- REST API > Endpoints > Notifications [Webhook simulator](https://developers.partners.airalo.com/webhook-simulator-11883044e0.md): :::highlight blue 💡
+- REST API > Endpoints > Check balance [Get balance](https://developers.partners.airalo.com/get-balance-11883045e0.md): This feature allow you to know your account balances, so you can have an overview on your financial portfolio. You can monitor my balances and can top-up my Airalo credit to avoid order failing due to Insufficient funds If there is no account, the response should be an empty array for the accounts
+- REST API > Endpoints > Product Information [Get Product Information (PIB)](https://developers.partners.airalo.com/get-product-information-pib-38810259e0.md): 

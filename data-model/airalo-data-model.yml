@@ -1,0 +1,160 @@
+generated: '2026-09-19'
+method: derived
+source: openapi/airalo-partner-api-openapi.yml
+docs: https://developers.partners.airalo.com/attribute-descriptions-752392m0
+note: >-
+  Derived from the response schemas and id-reference fields of the 27 operations in Airalo's published
+  contract, cross-read against Airalo's own "Attribute descriptions" reference page. The contract declares no
+  reusable components.schemas (each provider fragment inlines its shapes), so entities below are named from
+  the resource paths and the repeated inline object shapes rather than from $ref targets.
+entities:
+- name: Country
+  description: A destination a local eSIM package covers.
+  identifier: slug (e.g. united-states), country_code (ISO 3166-1 alpha-2)
+  fields: [slug, country_code, title, 'image{width,height,url}', 'min_price{net_price,recommended_retail_price}']
+  source_operation: getPackages
+- name: Operator
+  description: The carrier/MVNO whose profile backs a package.
+  identifier: id (integer)
+  fields: [id, title, 'type(local|global)', 'plan_type(data|voice-text)', is_roaming, rechargeability, apn_type,
+    apn_value, activation_policy, coverages, countries, other_info]
+  source_operation: getPackages
+- name: Package
+  description: A purchasable eSIM data (or voice and text) plan.
+  identifier: id (slug, e.g. kallur-digital-7days-1gb)
+  fields: [id, type, price, net_price, 'amount(MB)', day, is_unlimited, title, data, voice, text,
+    'prices{net_price,recommended_retail_price}', short_info, qr_installation, manual_installation]
+  source_operation: getPackages
+- name: ProductInformationBlock
+  description: Regulatory/consumer product information (PIB) for a package slug.
+  identifier: package_slug
+  source_operation: getProductInformation
+- name: Order
+  description: A partner purchase of one or more eSIMs of a single package.
+  identifier: id (integer), code (Airalo order code)
+  fields: [id, code, package_id, quantity, type, description, esim_type, validity, package, data, price,
+    pricing_model, currency, created_at, manual_installation, qrcode_installation, installation_guides]
+  source_operation: submitOrder
+- name: AsyncOrder
+  description: An order accepted for background processing; resolved on the webhook.
+  identifier: request_id (25-character nanoid)
+  source_operation: submitOrderAsync
+- name: FutureOrder
+  description: An order scheduled to be created on a due date (2 days to 1 year ahead).
+  identifier: request_id
+  fields: [request_id, due_date, quantity, package_id, 'status(pending|retry|failed|completed)', webhook_url]
+  source_operation: submitFutureOrder
+- name: TopUpOrder
+  description: An additional package applied to an existing eSIM.
+  source_operation: submitTopUpOrder
+- name: Voucher
+  description: An eSIM voucher code redeemable for a package.
+  source_operation: createEsimVoucher
+- name: Refund
+  description: A manually reviewed credit request against up to 5 ICCIDs.
+  fields: ['iccids[]', 'reason(enum)', notes, email]
+  source_operation: requestRefund
+- name: Sim
+  description: >-
+    A provisioned eSIM profile. The GSMA SGP.22 object of this API — it carries the activation material an
+    LPA on the device consumes.
+  identifier: iccid (ICCID, 19-20 digits)
+  fields: [iccid, lpa, matching_id, confirmation_code, qrcode, qrcode_url,
+    direct_apple_installation_url, msisdn, apn_type, apn_value, is_roaming, brand_settings_name, created_at]
+  source_operation: getEsim
+- name: InstallationInstructions
+  description: Language-specific install steps for one eSIM, in QR, manual and iOS-direct variants.
+  fields: [steps, smdp_address_and_activation_code, network_setup, apn_type, apn_value]
+  source_operation: getInstallationInstructions
+- name: Usage
+  description: Remaining and consumed data, text and voice for one eSIM.
+  fields: [remaining, total, expired_at, is_unlimited, status, remaining_voice, remaining_text,
+    total_voice, total_text]
+  source_operation: getEsimUsage
+  note: Cached 20 minutes in Production, 60 minutes in Sandbox.
+- name: Balance
+  description: The partner's Airalo credit accounts.
+  source_operation: getBalance
+- name: NotificationSubscription
+  description: A per-type opt-in binding an event class to a webhook URL or email address.
+  fields: [type, webhook_url, email, language, 'levels[]', contact_point]
+  source_operation: optInNotification
+- name: CompatibleDevice
+  description: A device model known to support eSIM.
+  source_operation: getCompatibleDeviceLiteList
+- name: BrandSettings
+  description: >-
+    A named branding configuration created in the Partner Platform (Company Settings -> Brand settings),
+    referenced by name from the API. Not itself an API resource — there is no CRUD operation for it.
+  identifier: brand_settings_name
+  managed_in: Partner Platform
+relationships:
+- from: Country
+  to: Operator
+  type: has_many
+  via: operators[]
+- from: Operator
+  to: Package
+  type: has_many
+  via: packages[]
+- from: Order
+  to: Package
+  type: belongs_to
+  via: package_id
+- from: Order
+  to: Sim
+  type: has_many
+  via: sims[]
+- from: AsyncOrder
+  to: Order
+  type: has_one
+  via: request_id (resolved on the async_order_notification webhook)
+- from: FutureOrder
+  to: Order
+  type: has_one
+  via: request_id (resolved at due date on the webhook)
+- from: TopUpOrder
+  to: Sim
+  type: belongs_to
+  via: iccid
+- from: TopUpOrder
+  to: Package
+  type: belongs_to
+  via: package_id
+- from: Sim
+  to: InstallationInstructions
+  type: has_one
+  via: sim_iccid
+- from: Sim
+  to: Usage
+  type: has_one
+  via: sim_iccid
+- from: Sim
+  to: Package
+  type: has_many
+  via: iccid (package history — the original package plus every top-up)
+- from: Sim
+  to: BrandSettings
+  type: belongs_to
+  via: brand_settings_name (nullable; null means unbranded)
+- from: Refund
+  to: Sim
+  type: has_many
+  via: iccids[] (max 5)
+- from: Package
+  to: ProductInformationBlock
+  type: has_one
+  via: package_slug
+identifiers:
+  iccid:
+    description: >-
+      Integrated Circuit Card Identifier — the GSMA-defined eSIM profile identifier and the primary key of
+      every eSIM-scoped operation in this API.
+    example_prefix: '894'
+  package_id:
+    description: Human-readable slug combining operator, duration and allowance.
+    example: kallur-digital-7days-1gb
+  request_id:
+    description: 25-character nanoid correlating an async or future order with its webhook payload.
+  order_code:
+    description: airalo_code — the order number shown under (API) Orders in the Partner Platform and on invoices.

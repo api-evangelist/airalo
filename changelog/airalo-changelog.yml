@@ -1,0 +1,22 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/llms.txt
+published: false
+entry_count: 0
+scheme: uri-path
+current_version: v2
+entries: []
+probed:
+- url: https://developers.partners.airalo.com/changelog
+  http_status: 404
+- url: https://developers.partners.airalo.com/release-notes
+  http_status: 404
+- url: https://developers.partners.airalo.com/llms.txt
+  http_status: 200
+  note: The full docs index has no changelog or release-notes entry.
+note: >-
+  Airalo publishes no dated changelog for the Partner API. Changes are announced inside the documentation
+  itself (the v1 deprecation notice in the FAQ, the "[Deprecated]" prefix on the superseded compatible-devices
+  endpoint, and "new" feature notes such as direct_apple_installation_url for iOS 17.4+ universal links and
+  the min_price object on GET /v2/packages) and through account managers. Recording the absence rather than
+  omitting the file: this is a real gap in an otherwise well-documented developer surface.

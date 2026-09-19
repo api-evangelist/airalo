@@ -1,18 +1,107 @@
 aid: airalo
 name: Airalo
-description: 'Airalo is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: Airalo is the world's first and largest eSIM marketplace, founded in 2019 and headquartered in Singapore,
+  selling prepaid travel data plans (local, regional and global eSIMs) for 200+ countries and regions to consumers
+  through its website and iOS/Android apps, and to businesses through Airalo Partners. The Airalo Partner API
+  (v2, partners-api.airalo.com) lets 6,500+ partner companies — airlines, travel businesses, financial institutions,
+  MNOs/MVNOs, resellers and enterprises — browse the eSIM package catalog, place synchronous, asynchronous and
+  future-dated orders, top up and manage eSIMs, retrieve installation instructions and QR codes, monitor data/voice/text
+  usage, request refunds, check balances and subscribe to HMAC-signed webhooks for async orders, low-data and
+  credit-limit events. Airalo also ships official PHP, Node.js and Python SDKs, a WooCommerce plugin, and a white-label
+  eSIM platform, and publishes a real llms.txt and per-endpoint OpenAPI 3.0.1 fragments on its Apidog-hosted developer
+  portal.
 url: https://raw.githubusercontent.com/api-evangelist/airalo/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
+image: https://cdn-revamp.airalo.com/img/logo-homepage-header.png
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
-apis: []
+- eSIM
+- Telecommunications
+- Travel
+- Connectivity
+- Mobile Data
+- Roaming
+- Partner API
+- Webhooks
+- Singapore
+tags_raw:
+- Company
+- eSIM
+- Telecommunications
+- Travel
+- Connectivity
+- Mobile Data
+- Roaming
+- Partner API
+- Webhooks
+- Singapore
+apis:
+- aid: airalo:airalo-partner-api
+  name: Airalo Partner API
+  description: REST API (v2) for Airalo partners to browse eSIM packages and product information, place orders
+    (synchronous, asynchronous with webhook callback, future-dated, top-ups and eSIM vouchers), retrieve eSIMs,
+    installation instructions and package history, monitor data/text/voice usage, update eSIM branding for eSIMs
+    Cloud link sharing, request refunds, list compatible devices, check account balance, and opt in/out of webhook
+    notifications. Authenticated with a 24-hour bearer token issued by POST /v2/token (OAuth2 client_credentials
+    with client_id + client_secret); Sandbox and Production share one base URL and one set of credentials, switched
+    by a Partner Platform setting.
+  humanURL: https://developers.partners.airalo.com/introduction-752814m0
+  baseURL: https://partners-api.airalo.com
+  position: Producing
+  tags:
+  - eSIM
+  - Orders
+  - Packages
+  - Usage
+  - Webhooks
+  - Telecommunications
+  properties:
+  - type: OpenAPI
+    url: openapi/airalo-partner-api-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (verbatim provider fragments, merged)
+    url: openapi/_original/airalo-partner-api-openapi.yml
+  - type: Overlay
+    url: overlays/airalo-partner-api-overlay.yaml
+  - type: Documentation
+    url: https://developers.partners.airalo.com/introduction-752814m0
+  - type: APIReference
+    url: https://developers.partners.airalo.com/endpoints-2663076f0
+  - type: GettingStarted
+    url: https://developers.partners.airalo.com/quick-start-2508979f0
+  - type: Authentication
+    url: authentication/airalo-authentication.yml
+  - type: Conventions
+    url: conventions/airalo-conventions.yml
+  - type: Idempotency
+    name: Idempotency and reversibility contract
+    url: conventions/airalo-conventions.yml
+  - type: ErrorCatalog
+    url: errors/airalo-problem-types.yml
+  - type: DataModel
+    url: data-model/airalo-data-model.yml
+  - type: RateLimits
+    url: rate-limits/airalo-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/airalo-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/airalo-webhooks.yml
+  - type: MCPServer
+    name: MCP candidate (no server published)
+    url: mcp/airalo-mcp.yml
+  - type: Conformance
+    url: conformance/airalo-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/airalo-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/airalo-changelog.yml
+  image: https://cdn-revamp.airalo.com/img/logo-homepage-header.png
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +109,100 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.hiive.com/securities/airalo-stock
+  url: https://www.airalo.com
+- type: DeveloperPortal
+  url: https://developers.partners.airalo.com/introduction-752219m0
+- type: Portal
+  url: https://partners.airalo.com/
+- type: Documentation
+  url: https://developers.partners.airalo.com/introduction-752219m0
+- type: APIReference
+  url: https://developers.partners.airalo.com/endpoints-2663076f0
+- type: GettingStarted
+  url: https://developers.partners.airalo.com/quick-start-2508979f0
+- type: Packages
+  url: packages/airalo-packages.yml
+- type: SDKs
+  url: packages/airalo-packages.yml
+- type: GitHubOrganization
+  url: https://github.com/Airalo
+- type: LLMsTxt
+  url: llms/airalo-llms.txt
+- type: LLMsTxt
+  name: llms.txt (provider-hosted)
+  url: https://developers.partners.airalo.com/llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Authentication
+  url: authentication/airalo-authentication.yml
+- type: Conventions
+  url: conventions/airalo-conventions.yml
+- type: Conformance
+  url: conformance/airalo-conformance.yml
+- type: Lifecycle
+  url: lifecycle/airalo-lifecycle.yml
+- type: StatusPage
+  url: https://status.airalo.com
+- type: Deprecation
+  url: https://developers.partners.airalo.com/faq-752238m0
+- type: ChangeLog
+  url: changelog/airalo-changelog.yml
+- type: Plans
+  url: plans/airalo-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/airalo-rate-limits.yml
+- type: Sandbox
+  url: sandbox/airalo-sandbox.yml
+- type: Webhooks
+  url: asyncapi/airalo-webhooks.yml
+- type: ErrorCatalog
+  url: errors/airalo-problem-types.yml
+- type: DataModel
+  url: data-model/airalo-data-model.yml
+- type: DomainSecurity
+  url: security/airalo-domain-security.yml
+- type: TrustCenter
+  url: https://trust.airalo.com
+- type: TrustCenter
+  name: Trust center probe record
+  url: security/airalo-trust-center.yml
+- type: AccessibilityConformance
+  url: https://www.airalo.com/m/resources/accessibility-statement
+- type: Support
+  url: https://www.airalo.com/help
+- type: Blog
+  url: https://blog.partners.airalo.com/blog
+- type: Login
+  url: https://app.partners.airalo.com/sign-in
+- type: SignUp
+  url: https://app.partners.airalo.com/sign-up
+- type: Pricing
+  name: Consumer eSIM store (Partner API pricing is not published)
+  url: https://www.airalo.com/all-esim
+- type: TermsOfService
+  url: https://www.airalo.com/more-info/terms-conditions
+- type: PrivacyPolicy
+  url: https://www.airalo.com/more-info/privacy-policy
+- type: Legal
+  url: https://www.airalo.com/legal
+- type: Newsroom
+  url: https://www.airalo.com/about-us/newsroom
+- type: About
+  url: https://www.airalo.com/about-us/about-airalo
+- type: Careers
+  url: https://www.airalo.com/airalo-careers/job-vacancies
+- type: LinkedIn
+  url: https://www.linkedin.com/company/airalocom/
+- type: Twitter
+  url: https://x.com/airalocom
+- type: Youtube
+  url: https://www.youtube.com/@Airalo_Partners
+  name: Airalo Partners on YouTube
+- type: Plugin
+  url: https://wordpress.org/plugins/airalo/
+  name: Airalo WooCommerce plugin (wordpress.org)
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v3

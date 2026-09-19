@@ -1,0 +1,59 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/introduction-752338m0
+note: >-
+  Airalo documents three first-party Partner API SDKs (PHP, Node.js, Python) and a WooCommerce plugin on
+  its developer portal, all built in the github.com/Airalo organization. Versions and dates below were read
+  from each registry's own metadata endpoint on 2026-09-19. All three SDKs released the same day
+  (2026-07-17), tracking the Partner API v2 surface.
+packages:
+- language: php
+  registry: packagist
+  name: airalo/sdk
+  url: https://packagist.org/packages/airalo/sdk
+  install: composer require airalo/sdk
+  repository: https://github.com/Airalo/airalo-php-sdk
+  official: true
+  version: 2.0.1
+  published: '2026-07-17'
+- language: javascript
+  registry: npm
+  name: airalo-sdk
+  url: https://www.npmjs.com/package/airalo-sdk
+  install: npm install airalo-sdk
+  repository: https://github.com/Airalo/airalo-nodejs-sdk
+  license: MIT
+  official: true
+  version: 1.2.3
+  published: '2026-07-17'
+- language: python
+  registry: pypi
+  name: airalo-sdk
+  url: https://pypi.org/project/airalo-sdk/
+  install: pip install airalo-sdk
+  repository: https://github.com/Airalo/airalo-python-sdk
+  license: MIT
+  official: true
+  version: 1.0.3
+  published: '2026-07-17'
+- language: php
+  registry: wordpress.org
+  name: airalo
+  url: https://wordpress.org/plugins/airalo/
+  install: Install "Airalo" from the WordPress plugin directory
+  repository: https://github.com/Airalo/airalo-woocommerce
+  official: true
+  version: 1.2.5
+  published: '2026-08-31'
+  note: >-
+    WooCommerce plugin that syncs the Airalo eSIM catalog into a WooCommerce store and submits paid orders
+    to the Partner API. Published by the "airalo" wordpress.org account; requires WordPress 6.5.3+.
+capabilities:
+  documented_features:
+  - Auto authentication and token caching (24h filesystem cache)
+  - Auto caching (1h) and rate-limit handling
+  - Package fetching (local, global, country-specific, combined) with auto-pagination
+  - Single, bulk and top-up ordering
+  - Unified response format
+  - AiraloException error type for all SDK exceptions
+  source: https://developers.partners.airalo.com/sdk-vs-rest-api-780793m0

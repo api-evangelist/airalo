@@ -1,0 +1,74 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/introduction-752814m0
+versioning:
+  scheme: uri-path
+  current: v2
+  base: https://partners-api.airalo.com/v2
+  docs: https://developers.partners.airalo.com/introduction-752814m0
+  extensibility_policy: >-
+    "Airalo reserves the right to extend the Partner API responses and requests with new attributes.
+    Partners must ensure their integration can handle these changes, as they are considered
+    backward-compatible." (REST API Introduction)
+deprecation:
+  policy_url: https://developers.partners.airalo.com/faq-752238m0
+  sunset_header: false
+  deprecation_header: false
+  api_versions:
+  - version: v1
+    state: deprecating
+    statement: >-
+      "We are deprecating the V1 API and recommend all partners transition to V2. This can be achieved by
+      updating the URLs to V2 and conducting end-to-end testing... The core structure remains unchanged in
+      V2, providing backward compatibility for most partners."
+    sunset_date: null
+    note: >-
+      No dated sunset is published for v1, and Airalo emits no RFC 8594 Sunset or Deprecation headers. The
+      migration is a documented recommendation rather than a scheduled retirement.
+    source: https://developers.partners.airalo.com/faq-752238m0
+  note: >-
+    Airalo does publish per-operation deprecation in prose and marks the superseded operation in the
+    contract, which is more than most providers in this category do; what is missing is a dated policy and
+    response-header signalling.
+deprecated_operations:
+- operation_id: getCompatibleDeviceList
+  path: GET /v2/compatible-devices
+  replacement: getCompatibleDeviceLiteList (GET /v2/compatible-devices-lite)
+  statement: 'This endpoint is deprecated and will be eventually removed. Please use /v2/compatible-devices-lite instead.'
+  sunset_date: null
+  source: https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+  spec: openapi/airalo-partner-api-openapi.yml#getCompatibleDeviceList
+status_page:
+  url: https://status.airalo.com
+  platform: Atlassian Statuspage
+  api: https://status.airalo.com/api/v2/summary.json
+  components: 223
+  scope: >-
+    Per-operator and per-destination connectivity components (Local, Regional and Global eSIM groups), not a
+    Partner API endpoint component. Probed 2026-09-19: HTTP 200, indicator "none", "All Systems Operational".
+  probed:
+    url: https://status.airalo.com/api/v2/summary.json
+    http_status: 200
+    fetched: '2026-09-19'
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA or uptime commitment is published on the developer portal or the status page. Partner
+    contracts are negotiated with an account manager and are not anonymously readable.
+onboarding_lifecycle:
+  stages:
+  - Apply through the Partner Platform contact form; a dedicated account manager is assigned
+  - Application review and commercial/legal discussions
+  - Company created as an API partner with Sandbox mode enabled
+  - Integration against REST API, SDKs or eCommerce plugins
+  - Sandbox end-to-end validation (browse, order, install, top-up)
+  - Go Live checklist completed in the Partner Platform (13 items)
+  - Account manager switches the account to Production (one-way)
+  docs: https://developers.partners.airalo.com/go-live-checklist-1531786m0
+changelog:
+  published: false
+  note: >-
+    No dated changelog or release-notes page exists on developers.partners.airalo.com (probed 2026-09-19,
+    /changelog and /release-notes both 404). Change communication is via the docs themselves, the FAQ and
+    account managers. See changelog/airalo-changelog.yml.

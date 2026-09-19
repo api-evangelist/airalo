@@ -1,0 +1,92 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/sandbox-mode-2114305m0
+docs:
+- https://developers.partners.airalo.com/sandbox-mode-2114305m0
+- https://developers.partners.airalo.com/go-live-checklist-1531786m0
+model:
+  style: account-mode-switch
+  description: >-
+    Airalo does NOT run a separate sandbox host or a separate credential set. Sandbox and Production share
+    the same base URL (https://partners-api.airalo.com) and the same client_id/client_secret; the mode is a
+    company-level configuration in the Partner Platform. New API partners are provisioned in Sandbox mode and
+    switch to Production once the Go Live checklist is complete and their account manager approves.
+  separate_host: false
+  separate_credentials: false
+  key_prefixes: none
+  transition: >-
+    One-way. Airalo states switching back to Sandbox after going Production is neither supported nor
+    recommended; a partner who needs an ongoing sandbox must request a second set of credentials from their
+    account manager.
+differences:
+- area: package catalogue
+  sandbox: Identical to Production (same packages, pricing, allowances, validity)
+  production: Real purchasable packages
+- area: orders
+  sandbox: Simulated; no real eSIM provisioned; stored separately from Production order history
+  production: Real; eSIMs provisioned and delivered
+- area: eSIMs (ICCIDs)
+  sandbox: A test ICCID is returned that cannot be installed or activated on a device
+  production: A real ICCID that can be installed and activated
+- area: balance and billing
+  sandbox: No balance deduction, no financial impact
+  production: Real charges against the account balance
+- area: usage data
+  sandbox: Mock/simulated values in the standard usage response shape
+  production: Real carrier usage
+- area: refunds
+  sandbox: Simulated; refund objects returned, no real refund processed
+  production: Real refund processing
+- area: eSIM vouchers
+  sandbox: Mocked voucher code; no real voucher created
+  production: Real voucher codes
+- area: eSIM sharing
+  sandbox: Simulated share links and emails with test URLs
+  production: Real share links and installation instructions
+- area: webhooks / notifications
+  sandbox: Webhook notification settings do not work; opt-in and opt-out endpoints still respond
+  production: Fully functional
+- area: usage caching
+  sandbox: 60 minute cache on GET /v2/sims/{sim_iccid}/usage
+  production: 20 minute cache
+- area: rate limits
+  sandbox: 5 requests per second per client_id, per endpoint
+  production: Standard per-endpoint Partner API limits
+test_values:
+  note: >-
+    Published verbatim by Airalo. These are package IDs submitted to POST /v2/orders (and POST /v2/future-orders)
+    in Sandbox mode to force a specific failure path. No test cards, IBANs or tokens exist — the Partner API
+    bills against a partner credit balance rather than a card.
+  error_simulation:
+  - package_id: test-insufficient-balance-7days-1gb
+    simulates: Insufficient balance error
+  - package_id: test-maintenance-mode-7days-1gb
+    simulates: Maintenance mode error
+  - package_id: test-disabled-top-up-7days-1gb
+    simulates: Top-up disabled error
+  - package_id: test-not-enough-7days-1gb
+    simulates: Not enough inventory error
+  - package_id: test-out-of-stock-7days-1gb
+    simulates: Out of stock / invalid inventory error
+  future_order_status_simulation:
+  - package_id: test-create-pending-future-order-7days-1gb
+    simulates: Order remains in Pending status
+  - package_id: test-create-retry-future-order-7days-1gb
+    simulates: Order enters Retry status
+  - package_id: test-create-failed-future-order-7days-1gb
+    simulates: Order enters Failed status
+fixture_tooling:
+- name: Webhook simulator
+  operation_id: simulateWebhook
+  endpoint: POST /v2/simulator/webhook
+  docs: https://developers.partners.airalo.com/webhook-simulator-11883044e0
+  description: >-
+    Triggers mock webhook events to a configured or ad-hoc endpoint without placing a real order or consuming
+    credit. Events: low_data_notification (sub-types data_75, data_90, expire_1, expire_3),
+    credit_limit_notification (levels 50, 70, 80, 90) and async_order_notification. Passing webhook_url
+    bypasses the opt-in check, so a new endpoint can be tested before opting in. Rate limited to 5 requests
+    per minute per IP.
+test_clocks: none
+go_live:
+  checklist: https://developers.partners.airalo.com/go-live-checklist-1531786m0
+  requires_account_manager: true

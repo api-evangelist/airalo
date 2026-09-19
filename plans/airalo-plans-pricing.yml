@@ -1,0 +1,43 @@
+generated: '2026-09-19'
+method: searched
+source: https://partners.airalo.com/
+plan_count: 0
+published: false
+model: wholesale-per-unit
+probed:
+- url: https://partners.airalo.com/pricing
+  http_status: 404
+- url: https://www.airalo.com/pricing
+  http_status: 404
+- url: https://developers.partners.airalo.com/pricing
+  http_status: 404
+- url: https://partners.airalo.com/
+  http_status: 200
+  note: 'Partner landing page; every path to the API ends at "Get started" or "Contact sales".'
+plans: []
+note: >-
+  Airalo publishes NO pricing tiers for the Partner API. There is no per-seat or per-call subscription: a
+  partner is onboarded by a dedicated account manager under a negotiated contract, and pays per eSIM package
+  ordered against a prepaid Airalo credit balance. The commercial surface that IS machine-readable is the
+  package catalog itself — GET /v2/packages returns, per package, a `net_price` (the partner's wholesale
+  cost) and a `recommended_retail_price`, each in 18 currencies (USD, EUR, GBP, AUD, BRL, CAD, AED, INR, IDR,
+  ILS, JPY, KWD, MYR, MXN, SGD, ZAR, KRW, VND), with conversion rates refreshed daily at 00:00 UTC, plus a
+  `pricing` block carrying the partner's pricing model and discount_percentage. Consumer-facing eSIM prices
+  are published openly at airalo.com, but Airalo warns those differ from Partner API prices: Partner API
+  variants bypass eKYC and can be more expensive than the eKYC-enabled consumer packages. Recording
+  plan_count: 0 with this explanation rather than omitting the file — the absence of tiers is the finding.
+machine_readable_pricing:
+  operation: getPackages
+  endpoint: GET /v2/packages
+  fields: [net_price, recommended_retail_price, prices, pricing.model, pricing.discount_percentage, min_price]
+  currencies: 18
+  refresh: daily at 00:00 UTC
+  auth_required: true
+  docs: https://developers.partners.airalo.com/get-packages-11883036e0
+onboarding:
+  self_serve: false
+  contact: https://app.partners.airalo.com/onboarding/contact-us
+  sign_in: https://app.partners.airalo.com/sign-in
+  note: >-
+    Access requires an application, account-manager review, a signed contract and a company record created by
+    Airalo. Sandbox mode is granted first; Production requires completing the Go Live checklist.

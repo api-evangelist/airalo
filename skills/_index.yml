@@ -1,0 +1,49 @@
+generated: '2026-09-19'
+method: generated
+source: openapi/airalo-partner-api-openapi.yml + developers.partners.airalo.com
+note: "Four packaged Agent Skills covering the Partner API's marquee flows. Every operationId referenced\
+  \ below and in each skill body exists verbatim in openapi/airalo-partner-api-openapi.yml. Each skill\
+  \ carries the conventions that matter for safe automation \u2014 the 24h cached token, the absence of\
+  \ any idempotency key on the write surface, the documented reversal windows, the webhook HMAC-SHA512\
+  \ verification and the published sandbox test package IDs. Airalo publishes no AGENTS.md or first-party\
+  \ skill files (searched 2026-09-19), so these are generated, not harvested."
+skills:
+- file: airalo-order-and-install-an-esim.md
+  name: Order and install an Airalo eSIM
+  api: openapi/airalo-partner-api-openapi.yml
+  operations:
+  - requestAccessToken
+  - getPackages
+  - submitOrder
+  - getEsim
+  - getInstallationInstructions
+- file: airalo-monitor-usage-and-top-up.md
+  name: Monitor eSIM usage and sell a top-up
+  api: openapi/airalo-partner-api-openapi.yml
+  operations:
+  - requestAccessToken
+  - getEsimUsage
+  - optInNotification
+  - getTopUpPackageList
+  - submitTopUpOrder
+  - getEsimPackageHistory
+- file: airalo-handle-async-and-future-orders.md
+  name: Handle async and future-dated Airalo orders
+  api: openapi/airalo-partner-api-openapi.yml
+  operations:
+  - requestAccessToken
+  - optInNotification
+  - submitOrderAsync
+  - submitFutureOrder
+  - getFutureOrders
+  - cancelFutureOrders
+  - getOrder
+- file: airalo-request-a-refund.md
+  name: Request an Airalo refund
+  api: openapi/airalo-partner-api-openapi.yml
+  operations:
+  - requestAccessToken
+  - getEsimsList
+  - getEsimUsage
+  - requestRefund
+  - getBalance

@@ -1,0 +1,26 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.airalo.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  6 02:56:05 2026 GMT
+  hsts: false
+- host: partners.airalo.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  6 02:56:05 2026 GMT
+  hsts: false
+- host: developers.partners.airalo.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 10 00:01:53 2026 GMT
+  hsts: false
+domains:
+- domain: airalo.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

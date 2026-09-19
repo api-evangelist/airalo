@@ -1,0 +1,104 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Airalo Partner API
+  version: 1.0.0
+extends: openapi/_original/airalo-partner-api-openapi.yml
+x-apievangelist:
+  generated: '2026-09-19'
+  method: generated
+  source: >-
+    Records every difference between openapi/_original/airalo-partner-api-openapi.yml (the verbatim merge of
+    Airalo's own per-endpoint OpenAPI 3.0.1 fragments) and openapi/airalo-partner-api-openapi.yml (the refined
+    document this catalog scores). Airalo's fragments carry no operationIds, no info metadata, no security
+    scheme, path-shaped tags, and an Apidog environment-selector header parameter named "url" that is not part
+    of the API. Applying this overlay to the original reproduces the refined spec's enhancements.
+actions:
+- target: $.info
+  description: Airalo's fragments each ship an empty info block; supply real API metadata.
+  update:
+    title: Airalo Partner API
+    version: 2.0.0
+    termsOfService: https://www.airalo.com/more-info/terms-conditions
+    contact:
+      name: Airalo Partner Platform
+      url: https://partners.airalo.com
+- target: $
+  description: Link the published documentation and declare the consolidated tag set.
+  update:
+    externalDocs:
+      description: Airalo Partner API documentation
+      url: https://developers.partners.airalo.com/introduction-752814m0
+    tags:
+    - name: Authentication
+    - name: Packages
+    - name: Orders
+    - name: Refunds
+    - name: eSIMs
+    - name: Usage
+    - name: Top-ups
+    - name: Devices
+    - name: Notifications
+    - name: Balance
+- target: $.components.securitySchemes
+  description: >-
+    Declare the bearer scheme the docs describe in prose. Airalo's fragments ship an empty securitySchemes
+    object and model the Authorization header as a plain required header parameter on every operation.
+  update:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        Access token from POST /v2/token (OAuth2 client_credentials grant with client_id + client_secret).
+        Tokens are valid for 24 hours; the token endpoint is limited to 3 requests per minute.
+- target: $.paths[*][*]
+  description: >-
+    Remove the Apidog environment-selector header parameter "url" (default
+    https://partners-api.airalo.com) and the duplicated Authorization header parameter. Neither is part of
+    the API contract: the first is a docs-tool artifact, the second is expressed as the bearerAuth scheme.
+  remove_parameters:
+  - name: url
+    in: header
+  - name: Authorization
+    in: header
+- target: $.paths[*][*]
+  description: >-
+    Add a stable operationId to every operation. Airalo publishes none, which makes the contract unusable for
+    SDK generation, Arazzo workflows, agent skills and tool crosswalks. Ids follow the summary text
+    (requestAccessToken, getPackages, submitOrder, submitOrderAsync, submitFutureOrder, cancelFutureOrders,
+    getFutureOrders, submitTopUpOrder, createEsimVoucher, requestRefund, getOrder, getOrderList, getEsim,
+    getEsimsList, getInstallationInstructions, getEsimUsage, getTopUpPackageList, getEsimPackageHistory,
+    updateEsimBrand, getCompatibleDeviceList, getCompatibleDeviceLiteList, optInNotification,
+    optOutNotification, getNotificationDetails, simulateWebhook, getBalance, getProductInformation).
+  update:
+    x-apievangelist-operation-id: assigned
+- target: $.paths[*][*].tags
+  description: >-
+    Replace Apidog's path-shaped navigation tags ("REST API/Endpoints/Place order",
+    "REST API/Endpoints/Notifications/Notification: Low data") with ten flat resource tags. The original
+    navigation label is preserved on each operation as x-apidog-tag.
+  update:
+    x-apievangelist-tags: consolidated
+- target: $.paths./v2/compatible-devices.get
+  description: >-
+    Set deprecated:true. Airalo's own page titles this operation "[Deprecated] Get compatible device list"
+    and its description warns it "is deprecated and will be eventually removed. Please use
+    /v2/compatible-devices-lite instead" — but the fragment ships deprecated:false.
+  update:
+    deprecated: true
+    x-replacement-operation: getCompatibleDeviceLiteList
+- target: $.paths./v2/notifications/opt-in.post.requestBody.content.application/json.schema
+  description: >-
+    Airalo documents this one path three times, once per notification type, each fragment declaring a
+    different required set. The merged schema unions the properties, drops `levels` from required (it applies
+    only to webhook_credit_limit) and enumerates the three type values.
+  update:
+    properties:
+      type:
+        enum: [async_orders, webhook_low_data, webhook_credit_limit]
+      levels:
+        description: Required for type webhook_credit_limit only (credit-limit thresholds, e.g. [50,70,80,90]).
+- target: $.paths[*][*]
+  description: Record which provider documentation page each operation was harvested from.
+  update:
+    x-source-page: assigned

@@ -1,0 +1,104 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://www.airalo.com/legal
+signals:
+  accessibility_conformance:
+    url: https://www.airalo.com/m/resources/accessibility-statement
+    standard: [WCAG 2.2 AA, European Accessibility Act (Directive (EU) 2019/882)]
+    last_updated: April 2026
+    scope: >-
+      Airalo website (www.airalo.com), iOS and Android apps, customer account portal and management
+      interfaces, e-commerce purchasing and payment systems, customer support channels, and electronic
+      documentation including user guides and FAQs.
+    feedback_sla: 'We aim to respond to accessibility feedback within 15 business days'
+    entity: AirGSM Pte Ltd, 6 Raffles Blvd, #03-308 Marina Square, Singapore 039594
+    evidence:
+    - source: https://www.airalo.com/m/resources/accessibility-statement
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: >-
+        "We assess our compliance against the European Accessibility Act (Directive (EU) 2019/882) and the
+        Web Content Accessibility Guidelines (WCAG) 2.2 Level AA. We regularly review conformance and
+        accessibility standards and will remediate any identified accessibility gaps."
+    note: >-
+      A dated, substantive accessibility statement naming a specific standard and level, with a scope list, a
+      feedback channel and a response SLA — not a marketing mention. It is a self-assessment statement rather
+      than a published VPAT or third-party conformance report; no VPAT, EN 301 549 or Section 508 document is
+      linked.
+probed_absent:
+- signal: sbom
+  urls:
+  - {url: 'https://www.airalo.com/security/sbom', status: 404}
+  note: No bill of materials published. Never derived — search only.
+- signal: subprocessors
+  urls:
+  - {url: 'https://www.airalo.com/legal/subprocessors', status: 302}
+  note: Redirects to the legal hub; no subprocessor table is published there.
+- signal: data_subject_request
+  urls:
+  - {url: 'https://www.airalo.com/privacy/requests', status: 404}
+  - {url: 'https://www.airalo.com/legal/dsar', status: 302}
+  note: >-
+    The privacy policy (last updated March 2026) describes data-subject rights across GDPR, POPIA, the
+    Philippine Data Privacy Act and other regimes, and directs requests to a contact email, but there is no
+    dedicated request page or intake form at a conventional path.
+- signal: incident_notification
+  urls:
+  - {url: 'https://www.airalo.com/legal/dpa', status: 302}
+  note: No anonymously reachable DPA; no stated breach-notification SLA.
+- signal: global_privacy_control
+  note: >-
+    No published statement that Sec-GPC or a universal opt-out signal is honored. Not tested by sending a
+    header — a header probe tests one request, not a commitment.
+- signal: data_residency
+  urls:
+  - {url: 'https://www.airalo.com/docs/data-residency', status: 404}
+  note: No data-residency or region-selection documentation on the developer portal or the website.
+- signal: ai_transparency
+  urls:
+  - {url: 'https://www.airalo.com/ai', status: 404}
+  - {url: 'https://www.airalo.com/ai/transparency', status: 404}
+- signal: training_data_summary
+  note: Not applicable to the published surface; no model is offered and no statement exists.
+- signal: transparency_report
+  urls:
+  - {url: 'https://www.airalo.com/transparency', status: 404}
+- signal: notice_and_action
+  urls:
+  - {url: 'https://www.airalo.com/legal/report-content', status: 302}
+- signal: age_assurance
+  note: No age-assurance or age-signal documentation found on the site or developer portal.
+- signal: exit_assistance
+  note: >-
+    No export/portability documentation. The Partner API does expose full order and eSIM history
+    (getOrderList, getEsimsList, getEsimPackageHistory) which is a de facto export path, but Airalo publishes
+    no exit-assistance statement, so no pointer is emitted.
+- signal: support_lifetime
+  note: >-
+    No stated support period for API versions. The v1 deprecation is announced without a date; see
+    lifecycle/airalo-lifecycle.yml.
+related_policies:
+- name: Privacy Policy
+  url: https://www.airalo.com/more-info/privacy-policy
+  last_updated: March 2026
+  note: >-
+    Jurisdiction-specific annexes covering (among others) GDPR/EEA, South Africa POPIA and the Philippines
+    Data Privacy Act, with rights, complaint routes and a contact address.
+- name: Terms & Conditions
+  url: https://www.airalo.com/more-info/terms-conditions
+- name: Acceptable Use Policy
+  url: https://www.airalo.com/legal/acceptable-use-policy
+- name: Cookie Policy
+  url: https://www.airalo.com/legal/cookie-policy
+- name: Unlimited data plans fair use policy
+  url: https://www.airalo.com/m/resources/unlimited-data-plans-fair-use-policy
+- name: Trust Center
+  url: https://trust.airalo.com
+  note: Vanta-hosted; content is client-rendered and its data API requires a signed request.
+note: >-
+  HARVEST ONLY — nothing here asserts that a regime applies to Airalo; that is decided by the Kin Score regime
+  map. One signal verified: a dated accessibility conformance statement naming WCAG 2.2 AA and the European
+  Accessibility Act. Everything else was probed and recorded absent. For a company selling connectivity into
+  200+ countries from a Singapore entity, the absent set (subprocessors, DPA, data residency, DSAR intake) is
+  itself a measurement.

@@ -1,0 +1,24 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+url: https://trust.airalo.com
+platform: Vanta
+certifications: []
+evidence:
+- source: https://trust.airalo.com
+  http_status: 200
+  fetched: '2026-09-19'
+  keywords: [trust center, security, compliance]
+  note: >-
+    First-party host serving a Vanta trust center. The page title is "Airalo Trust Center" and its meta
+    description states Airalo has "built a robust foundation of security and transparency". The report body
+    is entirely client-rendered; the underlying data endpoint (trust.airalo.com/graphql) rejects anonymous
+    requests with "Missing `signature` or `signedAt`", and the linked control document
+    (app.eu.vanta.com/doc?s=...) returns an image rather than readable text.
+- source: https://www.airalo.com/.well-known/security.txt
+  http_status: 404
+  note: No RFC 9116 security.txt on any Airalo host.
+note: >-
+  The trust center exists and is first-party, but NO named certification (SOC 2, ISO 27001, PCI DSS, HIPAA,
+  FedRAMP) could be verified from a public surface, so none is claimed here and no Compliance pointer is
+  emitted. A reader should open trust.airalo.com in a browser to see the current control set.

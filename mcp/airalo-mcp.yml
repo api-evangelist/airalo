@@ -1,0 +1,228 @@
+generated: '2026-09-19'
+method: derived
+status: candidate
+source: openapi/airalo-partner-api-openapi.yml
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: searched
+server:
+  name: airalo
+  transport: null
+  url: null
+tools:
+- name: cancelFutureOrders
+  description: Cancel future orders
+  method: POST
+  path: /v2/cancel-future-orders
+  source_operation: openapi/airalo-partner-api-openapi.yml#cancelFutureOrders
+  mutating: true
+  deprecated: false
+- name: getCompatibleDeviceList
+  description: '[Deprecated] Get compatible device list'
+  method: GET
+  path: /v2/compatible-devices
+  source_operation: openapi/airalo-partner-api-openapi.yml#getCompatibleDeviceList
+  mutating: false
+  deprecated: true
+- name: createEsimVoucher
+  description: eSIM voucher
+  method: POST
+  path: /v2/voucher/esim
+  source_operation: openapi/airalo-partner-api-openapi.yml#createEsimVoucher
+  mutating: true
+  deprecated: false
+- name: submitFutureOrder
+  description: Future orders
+  method: POST
+  path: /v2/future-orders
+  source_operation: openapi/airalo-partner-api-openapi.yml#submitFutureOrder
+  mutating: true
+  deprecated: false
+- name: getFutureOrders
+  description: Future Orders
+  method: GET
+  path: /v2/future-orders
+  source_operation: openapi/airalo-partner-api-openapi.yml#getFutureOrders
+  mutating: false
+  deprecated: false
+- name: getBalance
+  description: Get balance
+  method: GET
+  path: /v2/balance
+  source_operation: openapi/airalo-partner-api-openapi.yml#getBalance
+  mutating: false
+  deprecated: false
+- name: getCompatibleDeviceLiteList
+  description: Get compatible device lite list
+  method: GET
+  path: /v2/compatible-devices-lite
+  source_operation: openapi/airalo-partner-api-openapi.yml#getCompatibleDeviceLiteList
+  mutating: false
+  deprecated: false
+- name: getEsim
+  description: Get eSIM
+  method: GET
+  path: /v2/sims/{sim_iccid}
+  source_operation: openapi/airalo-partner-api-openapi.yml#getEsim
+  mutating: false
+  deprecated: false
+- name: getEsimPackageHistory
+  description: Get eSIM package history
+  method: GET
+  path: /v2/sims/{iccid}/packages
+  source_operation: openapi/airalo-partner-api-openapi.yml#getEsimPackageHistory
+  mutating: false
+  deprecated: false
+- name: getEsimsList
+  description: Get eSIMs list
+  method: GET
+  path: /v2/sims
+  source_operation: openapi/airalo-partner-api-openapi.yml#getEsimsList
+  mutating: false
+  deprecated: false
+- name: getInstallationInstructions
+  description: Get installation instructions
+  method: GET
+  path: /v2/sims/{sim_iccid}/instructions
+  source_operation: openapi/airalo-partner-api-openapi.yml#getInstallationInstructions
+  mutating: false
+  deprecated: false
+- name: getNotificationDetails
+  description: Get notification details
+  method: GET
+  path: /v2/notifications/opt-in
+  source_operation: openapi/airalo-partner-api-openapi.yml#getNotificationDetails
+  mutating: false
+  deprecated: false
+- name: optInNotification
+  description: Opt in
+  method: POST
+  path: /v2/notifications/opt-in
+  source_operation: openapi/airalo-partner-api-openapi.yml#optInNotification
+  mutating: true
+  deprecated: false
+- name: getOrder
+  description: Get order
+  method: GET
+  path: /v2/orders/{order_id}
+  source_operation: openapi/airalo-partner-api-openapi.yml#getOrder
+  mutating: false
+  deprecated: false
+- name: getOrderList
+  description: Get order list
+  method: GET
+  path: /v2/orders
+  source_operation: openapi/airalo-partner-api-openapi.yml#getOrderList
+  mutating: false
+  deprecated: false
+- name: submitOrder
+  description: Submit order
+  method: POST
+  path: /v2/orders
+  source_operation: openapi/airalo-partner-api-openapi.yml#submitOrder
+  mutating: true
+  deprecated: false
+- name: getPackages
+  description: Get packages
+  method: GET
+  path: /v2/packages
+  source_operation: openapi/airalo-partner-api-openapi.yml#getPackages
+  mutating: false
+  deprecated: false
+- name: getProductInformation
+  description: Get Product Information (PIB)
+  method: GET
+  path: /v2/packages/{package_slug}/product-information
+  source_operation: openapi/airalo-partner-api-openapi.yml#getProductInformation
+  mutating: false
+  deprecated: false
+- name: getTopUpPackageList
+  description: Get top-up package list
+  method: GET
+  path: /v2/sims/{iccid}/topups
+  source_operation: openapi/airalo-partner-api-openapi.yml#getTopUpPackageList
+  mutating: false
+  deprecated: false
+- name: getEsimUsage
+  description: Get usage (data, text & voice)
+  method: GET
+  path: /v2/sims/{sim_iccid}/usage
+  source_operation: openapi/airalo-partner-api-openapi.yml#getEsimUsage
+  mutating: false
+  deprecated: false
+- name: optOutNotification
+  description: Opt out
+  method: POST
+  path: /v2/notifications/opt-out
+  source_operation: openapi/airalo-partner-api-openapi.yml#optOutNotification
+  mutating: true
+  deprecated: false
+- name: requestAccessToken
+  description: Request access token
+  method: POST
+  path: /v2/token
+  source_operation: openapi/airalo-partner-api-openapi.yml#requestAccessToken
+  mutating: true
+  deprecated: false
+- name: requestRefund
+  description: Request refund
+  method: POST
+  path: /v2/refund
+  source_operation: openapi/airalo-partner-api-openapi.yml#requestRefund
+  mutating: true
+  deprecated: false
+- name: submitOrderAsync
+  description: Submit order async
+  method: POST
+  path: /v2/orders-async
+  source_operation: openapi/airalo-partner-api-openapi.yml#submitOrderAsync
+  mutating: true
+  deprecated: false
+- name: submitTopUpOrder
+  description: Submit top-up order
+  method: POST
+  path: /v2/orders/topups
+  source_operation: openapi/airalo-partner-api-openapi.yml#submitTopUpOrder
+  mutating: true
+  deprecated: false
+- name: updateEsimBrand
+  description: Update eSIM brand
+  method: PUT
+  path: /v2/sims/{sim_iccid}/brand
+  source_operation: openapi/airalo-partner-api-openapi.yml#updateEsimBrand
+  mutating: true
+  deprecated: false
+- name: simulateWebhook
+  description: Webhook simulator
+  method: POST
+  path: /v2/simulator/webhook
+  source_operation: openapi/airalo-partner-api-openapi.yml#simulateWebhook
+  mutating: true
+  deprecated: false
+probe:
+- url: https://mcp.airalo.com
+  result: DNS does not resolve
+- url: https://mcp.partners.airalo.com
+  result: DNS does not resolve
+- url: https://partners-api.airalo.com/mcp
+  http_status: 404
+- url: https://developers.partners.airalo.com/mcp
+  http_status: 404
+- url: https://registry.npmjs.org/airalo-mcp
+  http_status: 404
+- url: https://registry.npmjs.org/@airalo/mcp-server
+  http_status: 404
+note: 'Airalo ships NO MCP server — hosted or stdio. mcp.airalo.com and mcp.partners.airalo.com do not
+  resolve, /mcp 404s on both the API and docs hosts, and no @airalo MCP package exists on npm. The tool
+  list below is a CANDIDATE derived one-for-one from the 27 operations of Airalo''s own published OpenAPI;
+  nobody ships it and no endpoint exists to call. deployment.mode is `none` for exactly that reason. The
+  MCP strings visible in the developer portal''s HTML belong to Apidog, the docs platform (apidog-mcp-server
+  / enableVibeCodingViaMCP), not to Airalo. Each candidate tool inherits its real input schema from the
+  backing operation''s parameters and requestBody in openapi/airalo-partner-api-openapi.yml. Note for
+  anyone building one: 12 of these 27 operations are mutating, Airalo documents NO idempotency key, and
+  submitOrder provisions a billable eSIM — see conventions/airalo-conventions.yml reversibility before
+  wiring an agent to the write surface.'

@@ -1,0 +1,99 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/rate-limits-752590m0
+docs:
+- https://developers.partners.airalo.com/rate-limits-752590m0
+- https://developers.partners.airalo.com/sandbox-mode-2114305m0
+limit_count: 9
+exhaustion:
+  status: 429
+  body: Too Many Attempts
+  guidance: >-
+    Airalo's rate-limit page instructs partners to implement retry logic with exponential backoff and to
+    monitor usage patterns. Endpoint limits reset on their stated window.
+headers:
+  observed:
+  - name: x-ratelimit-limit
+    example: '80'
+  - name: x-ratelimit-remaining
+    example: '79'
+  documented:
+  - name: Retry-After
+    scope: sandbox 429 responses
+  - name: X-RateLimit-Limit
+    scope: sandbox 429 responses
+  - name: X-RateLimit-Remaining
+    scope: sandbox 429 responses
+  evidence:
+  - source: probed
+    url: https://partners-api.airalo.com/v2/packages
+    http_status: 401
+    note: >-
+      An unauthenticated HEAD/GET of GET /v2/packages on 2026-09-19 returned 401 and carried
+      x-ratelimit-limit: 80 and x-ratelimit-remaining: 79 — the runtime signal is present on live responses,
+      matching the 80/minute documented figure for this endpoint.
+  - source: searched
+    url: https://developers.partners.airalo.com/sandbox-mode-2114305m0
+    note: >-
+      "When the limit is exceeded, the API responds with 429 Too Many Requests and a Retry-After header.
+      Throttled responses also include X-RateLimit-Limit and X-RateLimit-Remaining headers."
+limits:
+- endpoint: POST /v2/token
+  operation_id: requestAccessToken
+  limit: 3
+  window: 1 minute
+  scope: per-key
+  note: Access token is valid for 24 hours; the docs tell partners to cache and reuse it.
+- endpoint: GET /v2/packages
+  operation_id: getPackages
+  limit: 80
+  window: 1 minute
+  scope: per-token
+  note: Per unique authentication token. Airalo recommends an hourly full catalog sync (~3,200 packages).
+- endpoint: GET /v2/sims/{sim_iccid}/usage
+  operation_id: getEsimUsage
+  limit: 10
+  window: 1 minute
+  scope: per-resource
+  note: Per the same ICCID.
+- endpoint: GET /v2/sims/{sim_iccid}/usage
+  operation_id: getEsimUsage
+  limit: 5
+  window: 1 second
+  scope: per-key
+  note: Per the same client_id.
+- endpoint: GET /v2/sims/{iccid}/packages
+  operation_id: getEsimPackageHistory
+  limit: 10
+  window: 1 minute
+  scope: per-resource
+  note: Per the same ICCID.
+- endpoint: POST /v2/simulator/webhook
+  operation_id: simulateWebhook
+  limit: 5
+  window: 1 minute
+  scope: per-ip
+- endpoint: POST /v2/refund
+  operation_id: requestRefund
+  limit: 5
+  window: 1 minute
+  scope: per-ip
+- endpoint: GET /v2/packages/{package_slug}/product-information
+  operation_id: getProductInformation
+  limit: 60
+  window: 1 minute
+  scope: per-account
+  note: Per company, per package.
+- endpoint: '*'
+  limit: 5
+  window: 1 second
+  scope: per-key
+  mode: sandbox
+  note: >-
+    Sandbox-only: 5 requests per second per client_id PER ENDPOINT. Calling different endpoints in sequence
+    is never throttled. The limit is lifted automatically when the company switches to Production mode.
+caching:
+  - endpoint: GET /v2/sims/{sim_iccid}/usage
+    production: 20 minutes
+    sandbox: 60 minutes
+    source: https://developers.partners.airalo.com/sandbox-mode-2114305m0

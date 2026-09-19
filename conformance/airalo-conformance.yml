@@ -1,0 +1,130 @@
+generated: '2026-09-19'
+method: searched
+source: openapi/airalo-partner-api-openapi.yml
+docs:
+- https://developers.partners.airalo.com/introduction-752814m0
+- https://developers.partners.airalo.com/webhook-definition-1380483m0
+- https://developers.partners.airalo.com/error-handling-780831m0
+standards:
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: >-
+    POST /v2/token takes grant_type=client_credentials with client_id + client_secret and returns
+    {token_type, expires_in, access_token} — an RFC 6749 section 4.4 client-credentials token response.
+    openapi/airalo-partner-api-openapi.yml#requestAccessToken
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: >-
+    Every non-token operation is secured with Authorization: Bearer <access_token>
+    (components.securitySchemes.bearerAuth, http/bearer).
+- id: oidc
+  conforms: false
+  evidence: >-
+    No /.well-known/openid-configuration on any host (well-known/airalo-well-known.yml), no ID token, no
+    user-delegated flow. Partner-to-Airalo machine authentication only.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: 'Probed 2026-09-19 on six hosts: 404 or SPA shell on every one.'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are returned as application/json with a numeric `code` and a `reason` string, not
+    application/problem+json. See errors/airalo-problem-types.yml.
+- id: openapi-3
+  conforms: true
+  evidence: >-
+    Airalo publishes an OpenAPI 3.0.1 fragment on every endpoint page of developers.partners.airalo.com
+    (Apidog-hosted). Merged verbatim into openapi/_original/airalo-partner-api-openapi.yml.
+- id: llms-txt
+  conforms: true
+  evidence: 'https://developers.partners.airalo.com/llms.txt — HTTP 200, 15,021 bytes, 76 documented pages.'
+- id: webhooks-hmac-signed
+  conforms: true
+  evidence: >-
+    Outbound webhooks carry an `airalo-signature` header, an HMAC-SHA512 of the JSON payload keyed on the
+    partner's API secret; Airalo publishes verification snippets in PHP, JavaScript, Python and Java.
+    https://developers.partners.airalo.com/webhook-definition-1380483m0
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No idempotency key on any of the 11 business-mutating operations (12 POST/PUT operations including the token endpoint). See conventions/airalo-conventions.yml
+    idempotency.coverage = none.
+- id: pagination
+  conforms: true
+  evidence: >-
+    page/limit query params with links{first,last,prev,next} and meta{current_page,last_page,total,...} on
+    getPackages, getOrderList and getEsimsList — a Laravel-style paginator envelope.
+- id: rate-limit-headers
+  conforms: partial
+  evidence: >-
+    Live responses carry x-ratelimit-limit and x-ratelimit-remaining (observed 2026-09-19 on
+    GET /v2/packages); the docs additionally promise Retry-After on 429. These are the legacy X- forms, not
+    the RFC 9331 / draft-ietf-httpapi-ratelimit-headers `RateLimit` field.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    Airalo documents three webhook event types but publishes no AsyncAPI document
+    (/asyncapi.yaml 404 on both the docs and API hosts). See asyncapi/airalo-webhooks.yml.
+- id: scim
+  conforms: false
+- id: odata
+  conforms: false
+- id: json-api
+  conforms: false
+  evidence: Responses use a Laravel-style {data, links, meta} envelope, not the JSON:API media type.
+- id: saml2-sso
+  conforms: true
+  evidence: >-
+    The Partner Platform (not the API) supports SAML 2.0 SSO with Okta, OneLogin, Google Workspace and
+    Microsoft Azure, with attribute/role mapping, domain TXT verification and SAML authn-context classes.
+    This is console authentication, not API authentication.
+    https://developers.partners.airalo.com/faq-752238m0
+domain_standards:
+- id: gsma-sgp22-rsp
+  name: GSMA SGP.22 (RSP Technical Specification — consumer eSIM Remote SIM Provisioning)
+  conforms: true
+  confidence: high
+  evidence: >-
+    The contract itself carries SGP.22 activation data verbatim, not merely eSIM marketing language. Response
+    examples return `qrcode` values in the SGP.22 section 4.1 activation-code format
+    "LPA:1$<SM-DP+ address>$<MatchingID>" — both a test value (LPA:1$lpa.airalo.com$TEST) and a production
+    value (LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH, a Thales/Gemalto On-Demand
+    Connectivity SM-DP+). The eSIM object exposes the SGP.22 field set directly — `iccid`, `lpa`
+    (SM-DP+ address), `matching_id`, `confirmation_code`, `qrcode`, `qrcode_url`, `msisdn`,
+    `apn_type`/`apn_value`, plus `direct_apple_installation_url` (the Apple universal eSIM install link for
+    iOS 17.4+) and manual-install `smdp_address_and_activation_code` in the installation instructions.
+  spec_locations:
+  - openapi/airalo-partner-api-openapi.yml#getEsim
+  - openapi/airalo-partner-api-openapi.yml#getInstallationInstructions
+  - openapi/airalo-partner-api-openapi.yml#submitOrder
+  market: eSIM / mobile connectivity
+  note: >-
+    This is the domain standard that matters for a consumer eSIM marketplace. An integrator who already
+    speaks SGP.22 can render Airalo's activation payload with no bespoke connector: the QR content is a
+    standards-conformant LPA string, not a proprietary token.
+- id: camara
+  conforms: false
+  evidence: >-
+    No CAMARA network API (number verification, SIM swap, device location, quality on demand) is exposed.
+    Airalo resells connectivity rather than operating the network capability CAMARA standardizes.
+- id: gsma-open-gateway
+  conforms: false
+- id: tm-forum-open-api
+  conforms: false
+  evidence: >-
+    No TMF-numbered resource models (TMF620 product catalog, TMF622 product ordering, TMF637 product
+    inventory) in the contract; the package/order/eSIM models are Airalo-proprietary.
+- id: 3gpp
+  conforms: false
+- id: mef
+  conforms: false
+compliance_program:
+  published: partial
+  trust_center: https://trust.airalo.com
+  certifications: []
+  note: >-
+    Airalo runs a Vanta-hosted trust center at trust.airalo.com (HTTP 200, first-party host). Its content is
+    fully client-rendered and its data API requires a signed request, so no named certification could be read
+    anonymously on 2026-09-19. Recorded as a trust-center presence without certification claims; no
+    Compliance pointer is emitted because no certification is verifiable from a public surface.
+  see_also: security/airalo-trust-center.yml

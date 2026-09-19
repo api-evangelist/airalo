@@ -1,0 +1,124 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/error-handling-780831m0
+derived_from: openapi/airalo-partner-api-openapi.yml
+format: custom
+problem_json: false
+envelope:
+  content_type: application/json
+  fields:
+  - code: Numeric Airalo business error code, or the HTTP status for transport-level errors
+  - reason: Human-readable explanation; some messages interpolate an {additional} detail string
+  note: >-
+    Airalo does not use RFC 9457 problem+json. Business failures are returned as HTTP 422 with a numeric
+    `code` and a `reason` string; the IP allowlist rejection is the one business code returned on a 403.
+business_codes:
+- code: 11
+  status: 422
+  title: Insufficient Airalo credit
+  reason: 'Insufficient Airalo Credit: {additional}'
+  remediation: Top up the partner credit balance; check GET /v2/balance before bulk ordering.
+  sandbox_trigger: test-insufficient-balance-7days-1gb
+- code: 13
+  status: 422
+  title: Operator under maintenance
+  reason: The requested operator is currently undergoing maintenance. Please try again later.
+  remediation: Retry later or offer an alternative package from another operator.
+  sandbox_trigger: test-maintenance-mode-7days-1gb
+- code: 14
+  status: 422
+  title: Invalid checksum
+  reason: 'Invalid checksum: {additional}'
+- code: 23
+  status: 422
+  title: Top-up disabled by operator
+  reason: The requested top-up has been disabled by the operator. {additional}
+  sandbox_trigger: test-disabled-top-up-7days-1gb
+- code: 33
+  status: 422
+  title: Insufficient eSIM stock
+  reason: 'Insufficient stock of eSIMs remaining: {additional}. Please try your request again later.'
+  remediation: Reduce quantity or retry; Airalo recommends an hourly catalog sync to track availability.
+  sandbox_trigger: test-not-enough-7days-1gb
+- code: 34
+  status: 422
+  title: Package invalid or out of stock
+  reason: The requested eSIM package is invalid or it is currently out of stock. Please try again later.
+  sandbox_trigger: test-out-of-stock-7days-1gb
+- code: 43
+  status: 422
+  title: Bad request
+  reason: Bad request. {additional} Please check your input and try again.
+- code: 53
+  status: 422
+  title: Unexpected error
+  reason: Something unexpected happened. We're working to resolve the issue. Please try again later.
+- code: 73
+  status: 422
+  title: eSIM recycled
+  reason: The eSIM with iccid {additional} has been recycled. It can no longer be used or topped up.
+  remediation: Order a new eSIM; a recycled ICCID is terminal.
+- code: 89
+  status: 403
+  title: Calling IP not on allow list
+  reason: >-
+    Your IP address is not permitted to access the Partner API. Add it to your API IP allowlist in the
+    Partner Platform, or contact your account manager.
+  remediation: >-
+    Add the calling server's public egress IP (not a browsing IP) to the allowlist in the Partner Platform.
+    The token is still valid; nothing has been revoked. Takes effect immediately on save.
+  docs: https://developers.partners.airalo.com/ip-allowlist-whitelisting-2327548m0
+http_statuses:
+- status: 401
+  title: Authentication failed
+  reason: >-
+    Authentication failed. This could be due to an expired token, please generate a new token. If the issue
+    persists, verify your client_id and client_secret are correct.
+  operations: [getOrder]
+- status: 403
+  title: Forbidden
+  operations: [getProductInformation]
+- status: 404
+  title: Not found
+  operations: [getProductInformation, getEsimUsage]
+- status: 422
+  title: Validation and processing error
+  operations: [requestAccessToken, getPackages, submitOrder, submitOrderAsync, submitTopUpOrder,
+    submitFutureOrder, getFutureOrders, cancelFutureOrders, getOrderList, getEsimsList,
+    getTopUpPackageList, requestRefund, simulateWebhook]
+- status: 429
+  title: Too Many Attempts (rate limit)
+  operations: [getProductInformation, getEsimUsage, getEsimPackageHistory, requestRefund]
+  see_also: rate-limits/airalo-rate-limits.yml
+- status: 400
+  title: Bad request
+  operations: [simulateWebhook]
+  variants: [User not opt-in, Invalid configuration]
+- status: 500
+  title: Internal Server Error
+  operations: [simulateWebhook]
+  note: 5xx errors are documented as rare; check the status page or contact support if persistent.
+- status: 502
+  title: Bad Gateway
+- status: 503
+  title: Service Unavailable
+- status: 504
+  title: Gateway Timeout
+documented_variants:
+  note: >-
+    The provider-published OpenAPI fragments carry named example responses beyond the bare status codes,
+    preserved verbatim in openapi/_original/. Examples include "Submit Order (422) SIM quantity is not
+    available", "Submit Order (422) Brand doesn't exist", "Submit Order Async (422) Not opted in and no
+    webhook_url provided", "Submit Top-up Order: 422 (Invalid package id)", "Submit Top-up Order: 422
+    (Recycled sim)", "Request Access Token (401)", "Already processed request ID" and "Request Id does not
+    exist" on cancel-future-orders.
+refund_reasons:
+  note: >-
+    POST /v2/refund requires a `reason` from a closed vocabulary — an error-adjacent enum worth recording
+    because a wrong value is rejected.
+  values: [INSTALLATION_FAILURE, NO_COVERAGE, APN_FAILURE, TRIP_CANCELLATION, INTERMITTENT_CONNECTION,
+    BLOCKED_NETWORK, CHANGE_OF_PLAN, DELETED_ESIM, EARLY_EXPIRY, HOTSPOT_NOT_WORKING, IMSI_CHANGE,
+    INCOMPATIBLE_DEVICE, LOCKED_DEVICE, NO_VOICE_TEXT_SERVICES, OVERCHARGED, SLOW_SPEED,
+    TOP_UP_PACKAGE_FAILURE, UNKNOWN_CHARGES, WRONG_PURCHASE, UNABLE_TO_ACCESS_APPS, SERVICE_DEGRADATION,
+    QR_ISSUE_PARTNERS, OTHERS]
+  note_others: '`notes` (max 255 chars) is required when reason is OTHERS.'

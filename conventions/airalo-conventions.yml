@@ -1,0 +1,192 @@
+generated: '2026-09-19'
+method: searched
+source: https://developers.partners.airalo.com/introduction-752814m0
+docs:
+- https://developers.partners.airalo.com/introduction-752814m0
+- https://developers.partners.airalo.com/error-handling-780831m0
+- https://developers.partners.airalo.com/rate-limits-752590m0
+- https://developers.partners.airalo.com/attribute-descriptions-752392m0
+authentication:
+  style: oauth2-client-credentials-then-bearer
+  token_endpoint: POST /v2/token
+  grant_type: client_credentials
+  credentials: client_id + client_secret, issued in the Partner Platform
+  token_lifetime: 24 hours
+  header: 'Authorization: Bearer <access_token>'
+  caching_expected: true
+  note: >-
+    Airalo explicitly instructs partners to cache the token and reuse it until expiry — the token endpoint is
+    capped at 3 requests per minute. The official SDKs cache the encrypted token on the filesystem for 24h.
+  ip_allowlist:
+    supported: true
+    default: off
+    scope: one list covers both Sandbox and Production
+    enforcement: immediate on save
+    rejection: HTTP 403 with body code 89
+    formats: [IPv4, IPv6, IPv4 CIDR, IPv6 CIDR]
+    limit: 100 entries per company (abuse guard, not a product limit)
+    docs: https://developers.partners.airalo.com/ip-allowlist-whitelisting-2327548m0
+  see_also: authentication/airalo-authentication.yml
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  scope: []
+  note: >-
+    Airalo documents no idempotency key, no request-deduplication header and no replay-safe retry contract on
+    any of its 11 business-mutating operations (submitOrder, submitOrderAsync, submitFutureOrder, submitTopUpOrder,
+    createEsimVoucher, requestRefund, cancelFutureOrders, updateEsimBrand, optInNotification,
+    optOutNotification, simulateWebhook). The closest thing to a client-side correlation key is the
+    free-text `description` field on orders (Airalo suggests putting the partner's internal order ID there)
+    and the server-generated `request_id` nanoid returned by async and future orders — neither prevents a
+    duplicate order if a request is retried. Retry guidance in the docs is exponential backoff against 429,
+    with no statement about the safety of retrying a write.
+  evidence:
+  - https://developers.partners.airalo.com/submit-order-11883024e0
+  - https://developers.partners.airalo.com/submit-order-async-11883025e0
+  - https://developers.partners.airalo.com/rate-limits-752590m0
+reversibility:
+  grade: verified
+  note: >-
+    Three of Airalo's write surfaces have a documented reversal path and two of them carry a stated window.
+    Order placement itself is NOT reversible by the partner: a submitted order provisions an eSIM, and the
+    only route back is a refund request that Airalo's support team reviews manually against the Refund Policy.
+  surfaces:
+  - write: submitOrder / submitOrderAsync / submitTopUpOrder
+    operation: POST /v2/orders, POST /v2/orders-async, POST /v2/orders/topups
+    reversal: requestRefund
+    reversal_operation: POST /v2/refund
+    window: >-
+      No time window is stated. Airalo states the refund endpoint is enabled by default for all API partners
+      but that "submitting a request does not guarantee a refund" — every request is manually reviewed by
+      Airalo Customer Support against the Refund Policy, and an approved refund is credited as Airalo credit
+      for future transactions rather than returned to the original payment method.
+    batch_limit: 5 ICCIDs per request
+    reason_required: true
+    docs: https://developers.partners.airalo.com/request-refund-14583565e0
+    grade: documented
+  - write: submitFutureOrder
+    operation: POST /v2/future-orders
+    reversal: cancelFutureOrders
+    reversal_operation: POST /v2/cancel-future-orders
+    window: 'Future orders can be canceled up to 24 hours before the due date.'
+    batch_limit: 10 request_ids per request
+    docs: https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+    grade: verified
+  - write: optInNotification
+    operation: POST /v2/notifications/opt-in
+    reversal: optOutNotification
+    reversal_operation: POST /v2/notifications/opt-out
+    window: 'Anytime — opt-out is unconditional and returns 204.'
+    grade: verified
+  - write: updateEsimBrand
+    operation: PUT /v2/sims/{sim_iccid}/brand
+    reversal: same operation with brand_settings_name set to null (unbranded)
+    window: 'Anytime — the field is documented as nullable, null meaning the unbranded visual.'
+    grade: verified
+  irreversible:
+  - write: submitOrder and siblings
+    note: >-
+      A provisioned eSIM cannot be un-provisioned by the API; the refund path above is a credit request, not
+      a reversal. An eSIM whose ICCID has been recycled (error code 73) can no longer be used or topped up.
+  - write: Production mode switch
+    note: Switching a company from Sandbox to Production is stated to be one-way.
+dry_run_mode:
+  supported: true
+  style: account-level sandbox mode
+  note: >-
+    Sandbox mode is the rehearsal surface — same URL, same credentials, same catalog, simulated orders and
+    test ICCIDs. It is a company-level mode rather than a per-request flag, so an agent cannot rehearse one
+    call in a production account. See sandbox/airalo-sandbox.yml.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    in: query
+    description: Current page
+  - name: limit
+    in: query
+    description: Items per page; can be set high (e.g. 1000) to fetch everything in one request
+  response_fields:
+    links: [first, last, prev, next]
+    meta: [message, current_page, from, last_page, path, per_page, to, total]
+  applies_to: [getPackages, getOrderList, getEsimsList]
+  note: >-
+    GET /v2/packages changes response SHAPE at page >= 2 — the response then contains an object representing
+    the country's index rather than the first-page structure. Airalo recommends fetching the full ~3,200
+    package catalog in a single unpaginated request on an hourly sync instead of paginating.
+filtering:
+  style: bracketed filter params
+  examples:
+  - 'filter[type]=local|global'
+  - 'filter[country]=US'
+  - 'filter[created_at]'
+  - 'filter[code]'
+  - 'filter[order_status]'
+  - 'filter[iccid]'
+  - 'filter[description]'
+expansion:
+  style: include
+  param: include
+  examples:
+  - 'include=topup (packages)'
+  - 'include (orders, eSIMs — related data)'
+metadata:
+  style: free-text description field on orders
+  field: description
+  note: Airalo suggests storing the partner's internal order ID or notes here; it is echoed back on the order.
+request_tracing:
+  request_id:
+    style: server-generated
+    field: request_id
+    format: 25-character nanoid
+    applies_to: [submitOrderAsync, submitFutureOrder]
+    note: >-
+      Returned on async and future orders and echoed on the webhook payload, so a partner can map an inbound
+      webhook to the originating request. There is no client-supplied correlation header.
+  client_header: none
+versioning:
+  scheme: uri-path
+  current: v2
+  previous: v1
+  policy: >-
+    Airalo states it reserves the right to extend Partner API responses and requests with new attributes, and
+    that partners must ensure their integration tolerates those additions as backward-compatible changes.
+  see_also: lifecycle/airalo-lifecycle.yml
+error_envelope:
+  shape: non-rfc9457
+  content_type: application/json
+  fields:
+  - name: code
+    description: Numeric Airalo business error code (11, 13, 14, 23, 33, 34, 43, 53, 73, 89) or an HTTP code
+  - name: reason
+    description: Human-readable explanation, sometimes interpolating an {additional} detail string
+  - name: data
+    description: Success payload envelope on 2xx responses
+  - name: meta
+    description: Response metadata, including a message string
+  problem_json: false
+  see_also: errors/airalo-problem-types.yml
+rate_limit_signaling:
+  headers: [x-ratelimit-limit, x-ratelimit-remaining, Retry-After]
+  status: 429
+  see_also: rate-limits/airalo-rate-limits.yml
+localization:
+  header: Accept-Language
+  applies_to: [getPackages, getInstallationInstructions]
+  languages: 30+ codes listed in the FAQ (ar, zh, cs, nl, en, fr, ka, de, el, he, hi, it, ja, ko, pl, ...)
+  docs: https://developers.partners.airalo.com/faq-752238m0
+content_types:
+  requests: [application/x-www-form-urlencoded, multipart/form-data, application/json]
+  responses: [application/json]
+  note: >-
+    Content type varies by operation rather than being uniform: the token endpoint takes form-urlencoded,
+    order and refund endpoints take multipart/form-data, and notification/future-order endpoints take JSON.
+webhook_security:
+  signature_header: airalo-signature
+  algorithm: HMAC-SHA512
+  secret: the partner's API secret
+  verification_docs: https://developers.partners.airalo.com/webhook-definition-1380483m0
+  endpoint_requirements: >-
+    The webhook URL must answer HEAD with 200 OK (checked at opt-in time) and accept POST. A non-2xx response
+    causes Airalo to retry 20 times at 15-minute intervals.
