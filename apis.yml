@@ -108,6 +108,12 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: SecondaryMarket
+  url: https://equityzen.com/company/airsims/
+- type: Crunchbase
+  url: https://www.crunchbase.com/organization/airsims
+- type: Wikipedia
+  url: https://en.wikipedia.org/wiki/Airalo
 - type: Website
   url: https://www.airalo.com
 - type: DeveloperPortal
