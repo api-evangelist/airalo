@@ -1,0 +1,14 @@
+{
+  "repo": "airalo",
+  "feeds": [
+    {
+      "source": "https://www.airalo.com/help",
+      "feed_url": "https://www.airalo.com/help",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-19T20:17:39Z"
+}

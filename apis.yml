@@ -19,6 +19,9 @@ image: https://cdn-revamp.airalo.com/img/logo-homepage-header.png
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
+x-docs-platform: redoc
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-19
 tags:
 - Company
 - eSIM
@@ -28,7 +31,7 @@ tags:
 - Mobile Data
 - Roaming
 - Partner API
-- Webhooks
+- Webhook
 - Singapore
 tags_raw:
 - Company
@@ -55,6 +58,13 @@ apis:
   baseURL: https://partners-api.airalo.com
   position: Producing
   tags:
+  - eSIM
+  - Order
+  - Packages
+  - Usage
+  - Webhook
+  - Telecommunications
+  tags_raw:
   - eSIM
   - Orders
   - Packages
