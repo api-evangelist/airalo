@@ -1,0 +1,902 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Compatible devices API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Compatible devices
+paths:
+  /v2/compatible-devices:
+    get:
+      summary: '[Deprecated] Get compatible device list'
+      deprecated: false
+      description: ':::warning
+
+        This endpoint is deprecated and will be eventually removed.
+
+        Please use `/v2/compatible-devices-lite` instead.
+
+        :::
+
+
+        This endpoint provides a comprehensive list of devices that are compatible with eSIMs. Use this information to ensure that your customers have devices that support eSIM functionality.
+
+
+        #### Important Notes
+
+        - Include the access token, obtained from the **Request Access Token** endpoint, in the request headers to authenticate your API call.
+
+        - The returned list is regularly updated to include the latest compatible devices, ensuring accurate and reliable information for your integration.
+
+        - Use this endpoint to validate device compatibility before processing eSIM orders.'
+      tags:
+      - REST API/Endpoints/Compatible devices
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        model:
+                          type: string
+                        os:
+                          type: string
+                        brand:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - model
+                      - os
+                      - brand
+                      - name
+                      x-apidog-orders:
+                      - model
+                      - os
+                      - brand
+                      - name
+                required:
+                - data
+                x-apidog-orders:
+                - data
+              example:
+                data:
+                - model: zangya_sprout
+                  os: android
+                  brand: bq
+                  name: Aquaris X2
+                - model: zangyapro_sprout
+                  os: android
+                  brand: bq
+                  name: Aquaris X2 PRO
+                - model: StrongPhone_G9
+                  os: android
+                  brand: Evolveo
+                  name: EVOLVEO StrongPhone G9
+                - model: gila
+                  os: android
+                  brand: Fossil
+                  name: Fossil Gen 5 LTE
+                - model: blueline
+                  os: android
+                  brand: Google
+                  name: Pixel 3
+                - model: bonito
+                  os: android
+                  brand: Google
+                  name: Pixel 3a XL
+                - model: bramble
+                  os: android
+                  brand: Google
+                  name: Pixel 4a (5G)
+                - model: coral
+                  os: android
+                  brand: Google
+                  name: Pixel 4 XL
+                - model: crosshatch
+                  os: android
+                  brand: Google
+                  name: Pixel 3 XL
+                - model: flame
+                  os: android
+                  brand: Google
+                  name: Pixel 4
+                - model: redfin
+                  os: android
+                  brand: Google
+                  name: Pixel 5
+                - model: sargo
+                  os: android
+                  brand: Google
+                  name: Pixel 3a
+                - model: sunfish
+                  os: android
+                  brand: Google
+                  name: Pixel 4a
+                - model: taimen
+                  os: android
+                  brand: Google
+                  name: Pixel 2 XL
+                - model: walleye
+                  os: android
+                  brand: Google
+                  name: Pixel 2
+                - model: HZ0010J
+                  os: android
+                  brand: Hoozo
+                  name: HZ0010J
+                - model: d-42A
+                  os: android
+                  brand: Lenovo
+                  name: d-42A
+                - model: hera_pro
+                  os: android
+                  brand: MiTAC
+                  name: N672
+                - model: surfing_pro
+                  os: android
+                  brand: MiTAC
+                  name: N630
+                - model: rover
+                  os: android
+                  brand: Mobvoi
+                  name: TicWatch Pro 3 Cellular/LTE
+                - model: coralia
+                  os: android
+                  brand: Montblanc
+                  name: Summit 2+
+                - model: olson
+                  os: android
+                  brand: Motorola
+                  name: motorola razr
+                - model: smith
+                  os: android
+                  brand: Motorola
+                  name: motorola razr 5G
+                - model: mkz_sdm660_64
+                  os: android
+                  brand: Motorola Solutions
+                  name: MOTOTRBO ION
+                - model: Hammer_Blade_3
+                  os: android
+                  brand: Myphone
+                  name: Hammer Blade 3
+                - model: Hammer_Expl_Pro
+                  os: android
+                  brand: Myphone
+                  name: Hammer Explorer Pro
+                - model: myPhone_Now_eSIM
+                  os: android
+                  brand: Myphone
+                  name: myPhone Now eSIM
+                - model: Hammer_Explorer
+                  os: android
+                  brand: MyPhone (PL)
+                  name: Hammer_Explorer
+                - model: OP4EC1
+                  os: android
+                  brand: Oppo
+                  name: Reno6 Pro+ 5G
+                - model: OP4F57L1
+                  os: android
+                  brand: Oppo
+                  name: Find X3 Pro
+                - model: orca
+                  os: android
+                  brand: Oppo
+                  name: OPPO Watch
+                - model: TAB-7304-16G3GS
+                  os: android
+                  brand: Premier
+                  name: TAB-7304-16G3GS
+                - model: C330
+                  os: android
+                  brand: Rakuten
+                  name: C330
+                - model: gaea
+                  os: android
+                  brand: Rakuten
+                  name: Rakuten BIG s
+                - model: P710
+                  os: android
+                  brand: Rakuten
+                  name: Rakuten Hand
+                - model: b2q
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip3 5G
+                - model: bloomq
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip
+                - model: bloomxq
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip 5G
+                - model: c1q
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Note20 5G
+                - model: c1s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Note20
+                - model: c2q
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Note20 Ultra 5G
+                - model: c2s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Note20 Ultra
+                - model: freshul
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Watch4
+                - model: freshus
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Watch4
+                - model: o1s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S21 5G
+                - model: p3s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S21 Ultra 5G
+                - model: t2s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S21+ 5G
+                - model: wiseul
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Watch4 Classic
+                - model: wiseus
+                  os: android
+                  brand: Samsung
+                  name: Galaxy Watch4 Classic
+                - model: x1s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S20 5G
+                - model: y2s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S20+ 5G
+                - model: z3s
+                  os: android
+                  brand: Samsung
+                  name: Galaxy S20 Ultra 5G
+                - model: JeridL
+                  os: android
+                  brand: Sharp
+                  name: AQUOS sense4 lite SH-RM15
+                - model: duo
+                  os: android
+                  brand: Surface
+                  name: Surface Duo
+                - model: TAG-TAB-III
+                  os: android
+                  brand: TAG-TECH
+                  name: TAG-TAB-III
+                - model: X_EEA
+                  os: android
+                  brand: Teclast
+                  name: X_EEA
+                - model: PQ6001
+                  os: android
+                  brand: Vsmart
+                  name: Active 1
+                - model: EC55
+                  os: android
+                  brand: Zebra
+                  name: EC55
+                - model: ET56L
+                  os: android
+                  brand: Zebra
+                  name: ET56
+                - model: ET56S
+                  os: android
+                  brand: Zebra
+                  name: ET56
+                - model: L10AW
+                  os: android
+                  brand: Zebra
+                  name: Zebra Technologies L10
+                - model: MC2700
+                  os: android
+                  brand: Zebra
+                  name: Zebra Technologies MC2700
+                - model: TC26
+                  os: android
+                  brand: Zebra
+                  name: TC26
+                - model: TC57
+                  os: android
+                  brand: Zebra
+                  name: TC57
+                - model: TC57X
+                  os: android
+                  brand: Zebra
+                  name: Zebra Technologies TC57x
+                - model: TC77
+                  os: android
+                  brand: Zebra
+                  name: TC77
+                - model: Z7750R
+                  os: android
+                  brand: ZTE
+                  name: ZR01
+                - model: iPad11,2
+                  os: ios
+                  brand: Apple
+                  name: iPad mini 5th Gen
+                - model: iPad11,4
+                  os: ios
+                  brand: Apple
+                  name: iPad Air 3rd Gen
+                - model: iPad11,7
+                  os: ios
+                  brand: Apple
+                  name: iPad 8th Gen (WiFi+Cellular)
+                - model: iPad13,10
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - model: iPad13,11
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - model: iPad13,2
+                  os: ios
+                  brand: Apple
+                  name: iPad air 4th Gen (WiFi+Cellular)
+                - model: iPad13,4
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - model: 'iPad13,5 '
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - model: iPad13,6
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - model: iPad13,7
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - model: iPad13,8
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - model: iPad13,9
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - model: iPad8,10
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 4th Gen (WiFi+Cellular)
+                - model: iPad8,12
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 4th Gen (WiFi+Cellular)
+                - model: iPad8,3
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen (WiFi+Cellular)
+                - model: iPad8,4
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen (1TB, WiFi+Cellular)
+                - model: iPad8,7
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 3rd Gen (WiFi+Cellular)
+                - model: iPad8,8
+                  os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 3rd Gen (1TB, WiFi+Cellular)
+                - model: iPhone11,2
+                  os: ios
+                  brand: Apple
+                  name: iPhone XS
+                - model: iPhone11,4
+                  os: ios
+                  brand: Apple
+                  name: iPhone XS Max
+                - model: iPhone11,6
+                  os: ios
+                  brand: Apple
+                  name: iPhone XS Max Global
+                - model: iPhone11,8
+                  os: ios
+                  brand: Apple
+                  name: iPhone XR
+                - model: iPhone12,1
+                  os: ios
+                  brand: Apple
+                  name: iPhone 11
+                - model: iPhone12,3
+                  os: ios
+                  brand: Apple
+                  name: iPhone 11 Pro
+                - model: iPhone12,5
+                  os: ios
+                  brand: Apple
+                  name: iPhone 11 Pro Max
+                - model: iPhone12,8
+                  os: ios
+                  brand: Apple
+                  name: iPhone SE 2nd Gen
+                - model: iPhone13,1
+                  os: ios
+                  brand: Apple
+                  name: iPhone 12 Mini
+                - model: iPhone13,2
+                  os: ios
+                  brand: Apple
+                  name: iPhone 12
+                - model: iPhone13,3
+                  os: ios
+                  brand: Apple
+                  name: iPhone 12 Pro
+                - model: iPhone13,4
+                  os: ios
+                  brand: Apple
+                  name: iPhone 12 Pro Max
+          headers: {}
+          x-apidog-name: Compatible Device List (200)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Compatible devices
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883037-run
+      x-source-page: https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+      operationId: getV2CompatibleDevices
+      x-operation-id-source: derived
+  /v2/compatible-devices-lite:
+    get:
+      summary: Get compatible device lite list
+      deprecated: false
+      description: 'This endpoint provides a comprehensive list of devices that are compatible with eSIMs. Use this information to ensure that your customers have devices that support eSIM functionality.
+
+
+        #### Important Notes
+
+        - Include the access token, obtained from the **Request Access Token** endpoint, in the request headers to authenticate your API call.
+
+        - The returned list is regularly updated to include the latest compatible devices, ensuring accurate and reliable information for your integration.
+
+        - Use this endpoint to validate device compatibility before processing eSIM orders.'
+      tags:
+      - REST API/Endpoints/Compatible devices
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        os:
+                          type: string
+                        brand:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - os
+                      - brand
+                      - name
+                      x-apidog-orders:
+                      - os
+                      - brand
+                      - name
+                required:
+                - data
+                x-apidog-orders:
+                - data
+              example:
+                data:
+                - os: android
+                  brand: bq
+                  name: Aquaris X2
+                - os: android
+                  brand: bq
+                  name: Aquaris X2 PRO
+                - os: android
+                  brand: Evolveo
+                  name: EVOLVEO StrongPhone G9
+                - os: android
+                  brand: Fossil
+                  name: Fossil Gen 5 LTE
+                - os: android
+                  brand: Google
+                  name: Pixel 3
+                - os: android
+                  brand: Google
+                  name: Pixel 3a XL
+                - os: android
+                  brand: Google
+                  name: Pixel 4a (5G)
+                - os: android
+                  brand: Google
+                  name: Pixel 4 XL
+                - os: android
+                  brand: Google
+                  name: Pixel 3 XL
+                - os: android
+                  brand: Google
+                  name: Pixel 4
+                - os: android
+                  brand: Google
+                  name: Pixel 5
+                - os: android
+                  brand: Google
+                  name: Pixel 3a
+                - os: android
+                  brand: Google
+                  name: Pixel 4a
+                - os: android
+                  brand: Google
+                  name: Pixel 2 XL
+                - os: android
+                  brand: Google
+                  name: Pixel 2
+                - os: android
+                  brand: Hoozo
+                  name: HZ0010J
+                - os: android
+                  brand: Lenovo
+                  name: d-42A
+                - os: android
+                  brand: MiTAC
+                  name: N672
+                - os: android
+                  brand: MiTAC
+                  name: N630
+                - os: android
+                  brand: Mobvoi
+                  name: TicWatch Pro 3 Cellular/LTE
+                - os: android
+                  brand: Montblanc
+                  name: Summit 2+
+                - os: android
+                  brand: Motorola
+                  name: motorola razr
+                - os: android
+                  brand: Motorola
+                  name: motorola razr 5G
+                - os: android
+                  brand: Motorola Solutions
+                  name: MOTOTRBO ION
+                - os: android
+                  brand: Myphone
+                  name: Hammer Blade 3
+                - os: android
+                  brand: Myphone
+                  name: Hammer Explorer Pro
+                - os: android
+                  brand: Myphone
+                  name: myPhone Now eSIM
+                - os: android
+                  brand: MyPhone (PL)
+                  name: Hammer_Explorer
+                - os: android
+                  brand: Oppo
+                  name: Reno6 Pro+ 5G
+                - os: android
+                  brand: Oppo
+                  name: Find X3 Pro
+                - os: android
+                  brand: Oppo
+                  name: OPPO Watch
+                - os: android
+                  brand: Premier
+                  name: TAB-7304-16G3GS
+                - os: android
+                  brand: Rakuten
+                  name: C330
+                - os: android
+                  brand: Rakuten
+                  name: Rakuten BIG s
+                - os: android
+                  brand: Rakuten
+                  name: Rakuten Hand
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip3 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Z Flip 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Note20 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Note20
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Note20 Ultra 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Note20 Ultra
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Watch4
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Watch4
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S21 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S21 Ultra 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S21+ 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Watch4 Classic
+                - os: android
+                  brand: Samsung
+                  name: Galaxy Watch4 Classic
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S20 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S20+ 5G
+                - os: android
+                  brand: Samsung
+                  name: Galaxy S20 Ultra 5G
+                - os: android
+                  brand: Sharp
+                  name: AQUOS sense4 lite SH-RM15
+                - os: android
+                  brand: Surface
+                  name: Surface Duo
+                - os: android
+                  brand: TAG-TECH
+                  name: TAG-TAB-III
+                - os: android
+                  brand: Teclast
+                  name: X_EEA
+                - os: android
+                  brand: Vsmart
+                  name: Active 1
+                - os: android
+                  brand: Zebra
+                  name: EC55
+                - os: android
+                  brand: Zebra
+                  name: ET56
+                - os: android
+                  brand: Zebra
+                  name: ET56
+                - os: android
+                  brand: Zebra
+                  name: Zebra Technologies L10
+                - os: android
+                  brand: Zebra
+                  name: Zebra Technologies MC2700
+                - os: android
+                  brand: Zebra
+                  name: TC26
+                - os: android
+                  brand: Zebra
+                  name: TC57
+                - os: android
+                  brand: Zebra
+                  name: Zebra Technologies TC57x
+                - os: android
+                  brand: Zebra
+                  name: TC77
+                - os: android
+                  brand: ZTE
+                  name: ZR01
+                - os: ios
+                  brand: Apple
+                  name: iPad mini 5th Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Air 3rd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad 8th Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad air 4th Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 5th Gen
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 4th Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 4th Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 11 inch 3rd Gen (1TB, WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 3rd Gen (WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPad Pro 12.9 inch 3rd Gen (1TB, WiFi+Cellular)
+                - os: ios
+                  brand: Apple
+                  name: iPhone XS
+                - os: ios
+                  brand: Apple
+                  name: iPhone XS Max
+                - os: ios
+                  brand: Apple
+                  name: iPhone XS Max Global
+                - os: ios
+                  brand: Apple
+                  name: iPhone XR
+                - os: ios
+                  brand: Apple
+                  name: iPhone 11
+                - os: ios
+                  brand: Apple
+                  name: iPhone 11 Pro
+                - os: ios
+                  brand: Apple
+                  name: iPhone 11 Pro Max
+                - os: ios
+                  brand: Apple
+                  name: iPhone SE 2nd Gen
+                - os: ios
+                  brand: Apple
+                  name: iPhone 12 Mini
+                - os: ios
+                  brand: Apple
+                  name: iPhone 12
+                - os: ios
+                  brand: Apple
+                  name: iPhone 12 Pro
+                - os: ios
+                  brand: Apple
+                  name: iPhone 12 Pro Max
+          headers: {}
+          x-apidog-name: Compatible Device List (200)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Compatible devices
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-19504054-run
+      x-source-page: https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+      operationId: getV2CompatibleDevicesLite
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

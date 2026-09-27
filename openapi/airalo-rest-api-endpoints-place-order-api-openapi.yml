@@ -1,0 +1,2092 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Place order API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Place order
+paths:
+  /v2/voucher/esim:
+    post:
+      summary: eSIM voucher
+      deprecated: false
+      description: '**Overview:**
+
+        The eSIM voucher endpoint lets you purchase Airalo eSIM activation codes individually or in bulk. You can store these codes as inventory and distribute them to customers through your own channels (e.g., website, app, email, CRM). Customers redeem the code on the Airalo app or Airalo website to install and activate the eSIM.
+
+
+        **Why choose vouchers:**
+
+        Vouchers offer a fast go‑to‑market path to provide connectivity without implementing a full eSIM purchase and management flow. You can offer connectivity through eSIM vouchers or Airmoney vouchers, while Airalo provides 24/7 customer support in 53 languages, has a 90+ CSAT score, and takes full responsibility and liability for connectivity.
+
+
+        **How to use this endpoint:**
+
+        This endpoint is a good fit if you want to resell eSIMs (buy codes at partner rates and set your own pricing), embed voucher fulfillment into your customer journey (e.g., post‑purchase delivery), or manage inventory by buying in bulk and distributing codes on demand. For order reconciliation, you can pass an optional `booking_reference` to link each purchase to your internal order ID. Requests are sent as an array of voucher items—each specifying a `package_id` and quantity—and the response returns activation codes you can deliver to your customers.
+
+
+        This endpoint allows you to create an esim voucher to the Airalo Partners API. Provide the required information, such as quantity and package ID. The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        For more information and best practices visit our FAQ page.
+
+
+        **Body structure:**
+
+
+        ``` json
+
+        {
+
+        "vouchers": [
+
+        {
+
+        "package_id": "replace with actual package slug",
+
+        "quantity": 3,
+
+        "booking_reference": "123"
+
+        }
+
+        ]
+
+        }
+
+
+        ```
+
+
+        **Request parameters:**
+
+
+        - **vouchers** (array, required):
+
+
+        - An array of voucher objects to be created for eSIMs. Each voucher object contains the following fields:
+
+
+        - **package_id** (string, required):
+
+
+        - The unique identifier (slug) of the eSIM package for which the voucher is being issued.
+
+
+        - Example: "package_id": "eu-europe-5gb-30days"
+
+
+        - **quantity** (integer, required):
+
+
+        - The number of vouchers you wish to purchase for the specified package.
+
+
+        - Example: "quantity": 3
+
+
+        - **booking_reference** (string, optional):
+
+
+        - A field used to store the booking reference for this voucher, which can be used for tracking purposes in your own system.
+
+
+        - Example: "booking_reference": "123"
+
+
+        - If not provided, this field will be ignored.'
+      tags:
+      - REST API/Endpoints/Place order
+      parameters:
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        package_id:
+                          type: string
+                        codes:
+                          type: array
+                          items:
+                            type: string
+                        booking_reference:
+                          type: string
+                      required:
+                      - package_id
+                      - codes
+                      - booking_reference
+                      x-apidog-orders:
+                      - package_id
+                      - codes
+                      - booking_reference
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Esim voucher
+                  value: "{\n    \"data\": [\n        {\n            \"package_id\": \"jaco-mobile-7days-1gb\",\n            \"codes\": [\n                \"BIXLAAAA\",\n                \"BSXLAAAA\"\n            ],\n            \"booking_reference\": \"123\"\n        },\n        {\n            \"package_id\": \"liberation-mobile-30days-3gb\",\n            \"codes\": [\n                \"1HKGDUMP\"\n            ],\n            \"booking_reference\": \"123\"\n        }\n    ],\n    \"meta\": {\n        \"message\": \"success\"\n    }\n}"
+                '2':
+                  summary: Esim voucher error
+                  value: "{\n    \"data\": {\n        \"vouchers.0.package_id\": \"The selected vouchers.0.package_id is invalid\"\n    },\n    \"meta\": {\n        \"message\": \"the parameter is invalid\"\n    }\n}"
+          headers: {}
+          x-apidog-name: Esim voucher
+        x-200:Esim voucher error:
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      vouchers.0.package_id:
+                        type: string
+                    required:
+                    - vouchers.0.package_id
+                    x-apidog-orders:
+                    - vouchers.0.package_id
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Esim voucher error
+      security: []
+      x-apidog-folder: REST API/Endpoints/Place order
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883065-run
+      x-source-page: https://developers.partners.airalo.com/esim-voucher-11883065e0
+      operationId: postV2VoucherEsim
+      x-operation-id-source: derived
+  /v2/future-orders:
+    post:
+      summary: Future orders
+      deprecated: false
+      description: 'This endpoint allows you to submit an order to the Airalo Partner API, which will be created on the specified due date.
+
+
+        To proceed, provide the required information:
+
+        - Due date
+
+        - Quantity
+
+        - Package ID
+
+        - Description (optional)
+
+
+        Please note:
+
+        - On success, the endpoint response will include a unique 25-character request_id.
+
+        - You must store this value in your system to cancel the order later if needed and to know for which order you got a response on your webhook URL.
+
+        - An access token from the "Request Access Token" endpoint is required in the request.
+
+
+        **Delivery modes**
+
+        **What is a webhook URL?**
+
+        Webhook URL is a URL that is configured on your domain and your won webserver.
+
+        That URL should be able to receive HTTP POST requests with your order data that will be sent from our servers .
+
+        NOTE: We check the liveness of your webhook URL with an HTTP HEAD request to which we expect 200 OK response.
+
+
+        **What happens when the due date arrives?**
+
+        When the due date arrives your order is processed and the order details are sent as a POST HTTP request to
+
+        either your opted in "async_orders" notification type url (more info here )
+
+        or on the "webhhok_url" optional parameter of this endpoint which overrides the above opted in URL.
+
+        NOTE that you must have one of the above (either opted in URL or webhhok_url) provided in order to make a future order.
+
+
+        if you provide the optional parameter "sharing_option", which goes together with the "to_email" parameter
+
+        then an email with the eSim details will also be sent to the email provided in the "to_email" parameter as well.
+
+        Depending from the selected sharing option which can be one of link or pdf or both you will get the eSim data
+
+        either in a PDF format attached to the email or as a link.
+
+
+        **What is the format of the message that is sent to the webhook URL?**
+
+        The format of the message that is sent to the webhook URL is the same as the response of the regular order.
+
+        It only has one additional parameter named "request_id" which is the same request_id that you got in the response
+
+        when you made the future order at the time of making the order,
+
+        so that you know for which future order you got details on your webhook URL.
+
+
+        **SANBOX MODE**
+
+
+        NOTE that this endpoint has a slightly different behaviour in sandbox mode.
+
+        Here are the differences.
+
+        1. In sandbox mode the future orders will not be processed on the actual due date but they will be processed immediatelly upon submission.
+
+        2. Because the future orders are not processed on the due date, their status is always processed so in order to simulate future orders with other statuses there are 3 special packages for that. Here are the pacakges with the explanations:
+
+        - `test-create-pending-future-order-7days-1gb` - special package for creating a future order with pending status
+
+        - `test-create-failed-future-order-7days-1gb` - special package for creating a future order with failed status
+
+        - `test-create-retry-future-order-7days-1gb` - special package for creating a future order with retry status
+
+
+        By using the packages above future orders with the above statuses can be created and the `request_id` from those orders can be used to test the cancel future order API to cancel the future order.
+
+
+        By using the above packages you can also test the GET future orders API Endpoint to test the filters as well.'
+      tags:
+      - REST API/Endpoints/Place order
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  description: The quantity of items in the order. Maximum of 50.
+                  x-apidog-mock: '{{$string.numeric}}'
+                  minimum: 1
+                  maximum: 50
+                package_id:
+                  type: string
+                  description: Required. The package ID associated with the order. You can obtain this from the "Packages / Get Packages" endpoint.
+                  examples:
+                  - kallur-digital-7days-1gb
+                due_date:
+                  type: string
+                  examples:
+                  - 2025-03-28 10:00
+                  format: date-time
+                  description: Required. Date and time string field in the format YYYY-MM-DD HH:MM. This date must be minimum two days in the future from current time and maximum 1 year in the future. The order processing starts at the moment the due date arrives.
+                to_email:
+                  type: string
+                  description: 'If specified, email with esim sharing will be sent. sharing_option should be specified as well.
+
+
+                    '
+                  examples:
+                  - valid_email@address.com
+                sharing_option:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - link
+                    - pdf
+                    x-apidog-enum:
+                    - value: link
+                      name: ''
+                      description: ''
+                    - value: pdf
+                      name: ''
+                      description: ''
+                  description: 'Array. Required when to_email is set. Available options: link, pdf'
+                copy_address:
+                  type: string
+                  description: Array. It is used when to_email is set.
+                  examples:
+                  - '["valid_email@address.com"]'
+                webhook_url:
+                  type: string
+                  description: Optional. A custom, valid url to which you will receive the order details data asynchronously. Note that you can optin or provide in request. The webhook_url if provided in payload will overwrite the one which is opted in.
+                description:
+                  type: string
+                  description: Optional. A custom description for the order, which can help you identify it later.
+                brand_settings_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: Nullable. The definition under what brand the eSIM should be shared. Null for unbranded.
+                  examples:
+                  - our perfect brand
+              x-apidog-orders:
+              - quantity
+              - package_id
+              - due_date
+              - to_email
+              - sharing_option
+              - copy_address
+              - webhook_url
+              - description
+              - brand_settings_name
+              required:
+              - package_id
+              - quantity
+              - due_date
+            examples:
+              '1':
+                value:
+                  quantity: 1
+                  package_id: change-7days-1gb
+                  due_date: 2025-04-09 10:00
+                  description: Just a future order ..
+                  webhook_url: http://somePartnerDomain.com/webhook-url-path-to-wait-for-the order-details
+                summary: Request with "webhook_url"
+                description: "Request with \"webhook_url\"\nWith this request a future order will be created that will be processed on date 2025-04-09 10:00 and when the ordfer is complete the order details will be delivered to the URL provided in the \"webhook_url\" parameter. \nNOTE that this URL is a URL that is hosted by your webserver."
+              '2':
+                value:
+                  quantity: 1
+                  package_id: kallur-digital-7days-1gb
+                  due_date: 2025-03-28 10:00
+                  to_email: valid_email@address.com
+                  sharing_option: '["link", "pdf"]'
+                  copy_address: '["valid_email@address.com"]'
+                  webhook_url: string
+                  description: string
+                  brand_settings_name: our perfect brand
+                summary: Request with all parameters
+                description: Example request with all available options
+              '3':
+                value:
+                  quantity: 1
+                  package_id: change-30days-5gb
+                  due_date: 2025-07-19 10:00
+                  to_email: someEmail@example.com
+                  description: Future order with sharing option
+                  sharing_option:
+                  - link
+                  - pdf
+                summary: Request with "sharing_option"
+                description: 'Request with "sharing_option"
+
+                  This request includes the "sharing_option" parameter which goes together with the "to_email" parameter.
+
+                  In the "to_email" parameter an email to which the eSim data will be delivered is provided,
+
+                  NOTE that "webhook_url" parameter here is not provided and its assumed that its alredy opted in via our opt in endpoint. If you dont  already have that done you will need to add a "webhook_url" parameter as well.'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_id:
+                        type: string
+                        description: A unique string from 25 charachers for your submitted order that you can use it later to make other operations on the order. For example to cancel it if needed.
+                      due_date:
+                        type: string
+                        description: The submitted due date with the order
+                      latest_cancellation_date:
+                        type: string
+                        description: Latest cancelation date
+                    required:
+                    - request_id
+                    - due_date
+                    - latest_cancellation_date
+                    x-apidog-orders:
+                    - request_id
+                    - due_date
+                    - latest_cancellation_date
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Submit Future Order (200)
+                  value:
+                    data:
+                      request_id: 9HrK4-KGgz8n71eGgdNS5cV7Y
+                      due_date: 2025-03-28 10:00
+                      latest_cancellation_date: 2025-03-27 10:00
+                    meta:
+                      message: success
+                '2':
+                  summary: Validation error
+                  value:
+                    data:
+                      quantity: The quantity must be at least 1.
+                    meta:
+                      message: the parameter is invalid
+                '3':
+                  summary: Invalid package error
+                  value:
+                    code: 34
+                    reason: The requested eSIM package is invalid or it is currently out of stock. Please try again later.
+                '4':
+                  summary: Invalid due date
+                  value:
+                    data:
+                      due_date: Minimum due date must be at least the day after tomorrow in UTC timezone.
+                    meta:
+                      message: the parameter is invalid
+                '5':
+                  summary: Invalid sharing option
+                  value:
+                    data:
+                      sharing_option(1): 'Sharing option on position 1 is invalid. Available options are: ''link'' and ''pdf''.'
+                    meta:
+                      message: the parameter is invalid
+          headers: {}
+          x-apidog-name: 'Submit Future Order '
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      quantity:
+                        type: string
+                    required:
+                    - quantity
+                    x-apidog-orders:
+                    - quantity
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Quantity validation error
+        x-422:Invalid package validation error:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  reason:
+                    type: string
+                required:
+                - code
+                - reason
+                x-apidog-orders:
+                - code
+                - reason
+          headers: {}
+          x-apidog-name: Invalid package validation error
+        x-422:Invalid due date validation error:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      due_date:
+                        type: string
+                    required:
+                    - due_date
+                    x-apidog-orders:
+                    - due_date
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Invalid due date validation error
+        x-422:Invalid sharing option:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      sharing_option(1):
+                        type: string
+                    required:
+                    - sharing_option(1)
+                    x-apidog-orders:
+                    - sharing_option(1)
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Invalid sharing option
+      security: []
+      x-apidog-folder: REST API/Endpoints/Place order
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-14455445-run
+      x-source-page: https://developers.partners.airalo.com/future-orders-14455445e0
+      operationId: postV2FutureOrders
+      x-operation-id-source: derived
+  /v2/orders:
+    post:
+      summary: Submit order
+      deprecated: false
+      description: 'This endpoint allows you to submit an order to the Airalo Partner API by providing the required parameters, such as `package_id` and `quantity`. You may also include an optional `description` field to track your internal order ID or add any relevant notes related to the order.
+
+
+        For more information and best practices visit our FAQ page
+
+
+        When submitting the order, the response includes the field `direct_apple_installation_url` with installation instructions that now provide Apple’s universal link, enabling direct installation on devices running iOS 17.4 or later for a smoother user experience.
+
+
+        You can also provide your user’s email address using the `to_email` parameter, which will send an email to your user asynchronously. The email uses a white-label template powered by our eSIM cloud feature. It provides your users with a link to access and install the eSIM, includes installation instructions, and supports multiple languages.'
+      tags:
+      - REST API/Endpoints/Place order
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  description: Required. The quantity of items in the order. Maximum of 50.
+                  example: '1'
+                  type: string
+                package_id:
+                  description: Required. The package ID associated with the order. You can obtain this from the "Packages / Get Packages" endpoint.
+                  example: kallur-digital-7days-1gb
+                  type: string
+                type:
+                  description: Optional. The only possible value for this endpoint is "sim". If left empty, default "sim" value will be used.
+                  example: sim
+                  type: string
+                description:
+                  description: Optional. A custom description for the order, which can help you identify it later.
+                  example: 1 sim kallur-digital-7days-1gb
+                  type: string
+                brand_settings_name:
+                  description: Nullable. The definition under what brand the eSIM should be shared. Null for unbranded.
+                  example: our perfect brand
+                  type: string
+                to_email:
+                  description: 'Optional. If specified, email with esim sharing will be sent. sharing_option should be specified as well. '
+                  example: valid_email@address.com
+                  type: string
+                sharing_option[]:
+                  description: 'Optional. Array. Required when to_email is set. Available options: link, pdf'
+                  example: link
+                  type: string
+                copy_address[]:
+                  description: Optional. Array. It uses when to_email is set.
+                  example: valid_email@address.com
+                  type: string
+              required:
+              - quantity
+              - package_id
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                      quantity:
+                        type: string
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      created_at:
+                        type: string
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      currency:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                      brand_settings_name:
+                        type: string
+                      sims:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            iccid:
+                              type: string
+                            lpa:
+                              type: string
+                            imsis:
+                              type: 'null'
+                            matching_id:
+                              type: string
+                            qrcode:
+                              type: string
+                            qrcode_url:
+                              type: string
+                            direct_apple_installation_url:
+                              type: string
+                            airalo_code:
+                              type: 'null'
+                            apn_type:
+                              type: string
+                            apn_value:
+                              type: 'null'
+                            is_roaming:
+                              type: boolean
+                            confirmation_code:
+                              type: 'null'
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - iccid
+                          - lpa
+                          - imsis
+                          - matching_id
+                          - qrcode
+                          - qrcode_url
+                          - direct_apple_installation_url
+                          - airalo_code
+                          - apn_type
+                          - apn_value
+                          - is_roaming
+                          - confirmation_code
+                    required:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                    x-apidog-orders:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Submit Order (200)
+                  value:
+                    data:
+                      package_id: kallur-digital-7days-1gb
+                      quantity: '1'
+                      type: sim
+                      description: Example description to identify the order
+                      esim_type: Prepaid
+                      validity: 7
+                      package: Kallur Digital-1 GB - 7 Days
+                      data: 1 GB
+                      price: 9.5
+                      pricing_model: net_pricing
+                      created_at: '2023-02-27 14:09:55'
+                      id: 9666
+                      code: 20230227-009666
+                      currency: USD
+                      manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                      qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      brand_settings_name: our perfect brand
+                      sims:
+                      - id: 11047
+                        created_at: '2023-02-27 14:09:55'
+                        iccid: '891000000000009125'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763820595&id=13301&signature=1f0d45226a3857bd0645bf77225b7aee7e250f926763ee1d1a6e4be7fefde71e
+                        direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                    meta:
+                      message: success
+                '2':
+                  summary: Success
+                  value:
+                    data:
+                      id: 583747
+                      code: 20250415-583747
+                      currency: USD
+                      package_id: uki-mobile-15days-2gb
+                      quantity: 1
+                      type: sim
+                      description: Example description to identify the order
+                      esim_type: Prepaid
+                      validity: 15
+                      package: Uki Mobile-2 GB - 15 Days
+                      data: 2 GB
+                      price: 7.5
+                      created_at: '2025-04-15 14:02:38'
+                      manual_installation: '<p><br></p><p><b>eSIM name:</b> Uki Mobile<br></p><p><br></p><p><b>Coverage: </b>United Kingdom</p><p><br></p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><br></p><p><b>To access Data:</b></p><p><br></p><ol><li>Enable data roaming.</li></ol><p><br></p>'
+                      qrcode_installation: '<p><br></p><p><b>eSIM name:</b> Uki Mobile<br></p><p><br></p><p><b>Coverage: </b>United Kingdom<br></p><p><br></p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><br></p><p><b>To access Data:</b></p><p><br></p><ol><li>Enable data roaming.</li></ol><p><br></p>'
+                      installation_guides:
+                        en: https://www.airalo.com/help/getting-started-with-airalo
+                      text: null
+                      voice: null
+                      net_price: 1.6
+                      brand_settings_name: Brand Test Production
+                      sims:
+                      - id: 709006
+                        created_at: '2025-04-15 14:02:38'
+                        iccid: '8944465400003573253'
+                        lpa: RSP-3088.IDEMIA.IO
+                        imsis: null
+                        matching_id: YVTGM-5LZC6-PIC56-KFEZJ
+                        qrcode: LPA:1$RSP-3088.IDEMIA.IO$YVTGM-5LZC6-PIC56-KFEZJ
+                        qrcode_url: https://www.airalo.com/qr?expires=1831039358&id=43113221&signature=dedf8d95a5d931e521527cf687aba8bd37da50fe9d63ba913188c31634792fb4
+                        airalo_code: null
+                        apn_type: manual
+                        apn_value: globaldata
+                        is_roaming: true
+                        confirmation_code: null
+                        apn:
+                          ios:
+                            apn_type: automatic
+                            apn_value: globaldata
+                          android:
+                            apn_type: manual
+                            apn_value: globaldata
+                        msisdn: '883190601604295'
+                        direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$RSP-3088.IDEMIA.IO$YVTGM-5LZC6-PIC56-KFEZJ
+                    meta:
+                      message: success
+                '3':
+                  summary: Submit Order (422)
+                  value:
+                    data:
+                      package_id: The selected package is invalid.
+                      quantity: The quantity may not be greater than 50.
+                    meta:
+                      message: the parameter is invalid
+                '4':
+                  summary: Success
+                  value:
+                    data:
+                      id: 583747
+                      code: 20250415-583747
+                      currency: USD
+                      package_id: uki-mobile-15days-2gb
+                      quantity: 1
+                      type: sim
+                      description: Example description to identify the order
+                      esim_type: Prepaid
+                      validity: 15
+                      package: Uki Mobile-2 GB - 15 Days
+                      data: 2 GB
+                      price: 7.5
+                      pricing_model: net_pricing
+                      created_at: '2025-04-15 14:02:38'
+                      manual_installation: '<p><br></p><p><b>eSIM name:</b> Uki Mobile<br></p><p><br></p><p><b>Coverage: </b>United Kingdom</p><p><br></p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><br></p><p><b>To access Data:</b></p><p><br></p><ol><li>Enable data roaming.</li></ol><p><br></p>'
+                      qrcode_installation: '<p><br></p><p><b>eSIM name:</b> Uki Mobile<br></p><p><br></p><p><b>Coverage: </b>United Kingdom<br></p><p><br></p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><br></p><p><b>To access Data:</b></p><p><br></p><ol><li>Enable data roaming.</li></ol><p><br></p>'
+                      installation_guides:
+                        en: https://www.airalo.com/help/getting-started-with-airalo
+                      text: null
+                      voice: null
+                      net_price: 1.6
+                      brand_settings_name: Brand Test Production
+                      sims:
+                      - id: 709006
+                        created_at: '2025-04-15 14:02:38'
+                        iccid: '8944465400003573253'
+                        lpa: RSP-3088.IDEMIA.IO
+                        imsis: null
+                        matching_id: YVTGM-5LZC6-PIC56-KFEZJ
+                        qrcode: LPA:1$RSP-3088.IDEMIA.IO$YVTGM-5LZC6-PIC56-KFEZJ
+                        qrcode_url: https://www.airalo.com/qr?expires=1831039358&id=43113221&signature=dedf8d95a5d931e521527cf687aba8bd37da50fe9d63ba913188c31634792fb4
+                        airalo_code: null
+                        apn_type: manual
+                        apn_value: globaldata
+                        is_roaming: true
+                        confirmation_code: null
+                        apn:
+                          ios:
+                            apn_type: automatic
+                            apn_value: globaldata
+                          android:
+                            apn_type: manual
+                            apn_value: globaldata
+                        msisdn: '883190601604295'
+                        direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$RSP-3088.IDEMIA.IO$YVTGM-5LZC6-PIC56-KFEZJ
+                    meta:
+                      message: success
+                '5':
+                  summary: Submit Order (422) SIM quantity is not available
+                  value:
+                    data:
+                      quantity: 'SIM quantity is not available. Available quantity: 9.'
+                    meta:
+                      message: the parameter is invalid
+                '6':
+                  summary: Submit Order (422) Brand doesn't exist
+                  value:
+                    data:
+                      brand_settings_name: Brand settings name doesn't exist.
+                    meta:
+                      message: the parameter is invalid
+                '7':
+                  summary: Submit Order (200) with email share
+                  value:
+                    data:
+                      package_id: kallur-digital-7days-1gb
+                      quantity: '1'
+                      type: sim
+                      description: Example description to identify the order
+                      esim_type: Prepaid
+                      validity: 7
+                      package: Kallur Digital-1 GB - 7 Days
+                      data: 1 GB
+                      price: 9.5
+                      pricing_model: net_pricing
+                      created_at: '2023-02-27 14:09:55'
+                      id: 9666
+                      code: 20230227-009666
+                      currency: USD
+                      manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                      qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      brand_settings_name: our perfect brand
+                      sims:
+                      - id: 11047
+                        created_at: '2023-02-27 14:09:55'
+                        iccid: '891000000000009125'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763820595&id=13301&signature=1f0d45226a3857bd0645bf77225b7aee7e250f926763ee1d1a6e4be7fefde71e
+                        direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                    meta:
+                      message: success
+                '8':
+                  summary: Success
+                  value:
+                    data:
+                      package_id: kallur-digital-7days-1gb
+                      quantity: '1'
+                      type: sim
+                      description: Example description to identify the order
+                      esim_type: Prepaid
+                      validity: 7
+                      package: Kallur Digital-1 GB - 7 Days
+                      data: 1 GB
+                      price: 9.5
+                      pricing_model: discount_pricing
+                      discount_percentage: 10
+                      discount_amount: 0.95
+                      unit_paid_price: 8.55
+                      total_amount_paid: 8.55
+                      created_at: '2023-02-27 14:09:55'
+                      id: 9667
+                      code: 20230227-009667
+                      currency: USD
+                      manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                      qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      brand_settings_name: our perfect brand
+                      sims:
+                      - id: 11048
+                        created_at: '2023-02-27 14:09:55'
+                        iccid: '891000000000009126'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763820595&id=13301&signature=1f0d45226a3857bd0645bf77225b7aee7e250f926763ee1d1a6e4be7fefde71e
+                        direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                    meta:
+                      message: success
+          headers: {}
+          x-apidog-name: Submit Order (200)
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                      quantity:
+                        type: string
+                    required:
+                    - package_id
+                    - quantity
+                    x-apidog-orders:
+                    - package_id
+                    - quantity
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order (422)
+        x-200:Submit Order with Voice&Data package (200):
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      currency:
+                        type: string
+                      package_id:
+                        type: string
+                      quantity:
+                        type: integer
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      created_at:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                      text:
+                        type: 'null'
+                      voice:
+                        type: 'null'
+                      net_price:
+                        type: number
+                      brand_settings_name:
+                        type: string
+                      sims:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            iccid:
+                              type: string
+                            lpa:
+                              type: string
+                            imsis:
+                              type: 'null'
+                            matching_id:
+                              type: string
+                            qrcode:
+                              type: string
+                            qrcode_url:
+                              type: string
+                            airalo_code:
+                              type: 'null'
+                            apn_type:
+                              type: string
+                            apn_value:
+                              type: string
+                            is_roaming:
+                              type: boolean
+                            confirmation_code:
+                              type: 'null'
+                            apn:
+                              type: object
+                              properties:
+                                ios:
+                                  type: object
+                                  properties:
+                                    apn_type:
+                                      type: string
+                                    apn_value:
+                                      type: string
+                                  required:
+                                  - apn_type
+                                  - apn_value
+                                  x-apidog-orders:
+                                  - apn_type
+                                  - apn_value
+                                android:
+                                  type: object
+                                  properties:
+                                    apn_type:
+                                      type: string
+                                    apn_value:
+                                      type: string
+                                  required:
+                                  - apn_type
+                                  - apn_value
+                                  x-apidog-orders:
+                                  - apn_type
+                                  - apn_value
+                              required:
+                              - ios
+                              - android
+                              x-apidog-orders:
+                              - ios
+                              - android
+                            msisdn:
+                              type: string
+                            direct_apple_installation_url:
+                              type: string
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - iccid
+                          - lpa
+                          - imsis
+                          - matching_id
+                          - qrcode
+                          - qrcode_url
+                          - airalo_code
+                          - apn_type
+                          - apn_value
+                          - is_roaming
+                          - confirmation_code
+                          - apn
+                          - msisdn
+                          - direct_apple_installation_url
+                    required:
+                    - id
+                    - code
+                    - currency
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - text
+                    - voice
+                    - net_price
+                    - brand_settings_name
+                    - sims
+                    x-apidog-orders:
+                    - id
+                    - code
+                    - currency
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - text
+                    - voice
+                    - net_price
+                    - brand_settings_name
+                    - sims
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order with Voice&Data package (200)
+        x-422:Submit Order (422) SIM quantity is not available:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      quantity:
+                        type: string
+                    required:
+                    - quantity
+                    x-apidog-orders:
+                    - quantity
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order (422) SIM quantity is not available
+        x-422:Submit Order (422) Brand doesn't exist:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      brand_settings_name:
+                        type: string
+                    required:
+                    - brand_settings_name
+                    x-apidog-orders:
+                    - brand_settings_name
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order (422) Brand doesn't exist
+        x-200:Submit Order (200) with email share:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                      quantity:
+                        type: string
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      created_at:
+                        type: string
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      currency:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                      brand_settings_name:
+                        type: string
+                      sims:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            iccid:
+                              type: string
+                            lpa:
+                              type: string
+                            imsis:
+                              type: 'null'
+                            matching_id:
+                              type: string
+                            qrcode:
+                              type: string
+                            qrcode_url:
+                              type: string
+                            direct_apple_installation_url:
+                              type: string
+                            airalo_code:
+                              type: 'null'
+                            apn_type:
+                              type: string
+                            apn_value:
+                              type: 'null'
+                            is_roaming:
+                              type: boolean
+                            confirmation_code:
+                              type: 'null'
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - iccid
+                          - lpa
+                          - imsis
+                          - matching_id
+                          - qrcode
+                          - qrcode_url
+                          - direct_apple_installation_url
+                          - airalo_code
+                          - apn_type
+                          - apn_value
+                          - is_roaming
+                          - confirmation_code
+                    required:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                    x-apidog-orders:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order (200) with email share
+        x-200:(Discount pricing) Submit Order:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                      quantity:
+                        type: string
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                      discount_amount:
+                        type: number
+                      unit_paid_price:
+                        type: number
+                      total_amount_paid:
+                        type: number
+                      created_at:
+                        type: string
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      currency:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                      brand_settings_name:
+                        type: string
+                      sims:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            iccid:
+                              type: string
+                            lpa:
+                              type: string
+                            imsis:
+                              type: 'null'
+                            matching_id:
+                              type: string
+                            qrcode:
+                              type: string
+                            qrcode_url:
+                              type: string
+                            direct_apple_installation_url:
+                              type: string
+                            airalo_code:
+                              type: 'null'
+                            apn_type:
+                              type: string
+                            apn_value:
+                              type: 'null'
+                            is_roaming:
+                              type: boolean
+                            confirmation_code:
+                              type: 'null'
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - iccid
+                          - lpa
+                          - imsis
+                          - matching_id
+                          - qrcode
+                          - qrcode_url
+                          - direct_apple_installation_url
+                          - airalo_code
+                          - apn_type
+                          - apn_value
+                          - is_roaming
+                          - confirmation_code
+                    required:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - discount_percentage
+                    - discount_amount
+                    - unit_paid_price
+                    - total_amount_paid
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                    x-apidog-orders:
+                    - package_id
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - discount_percentage
+                    - discount_amount
+                    - unit_paid_price
+                    - total_amount_paid
+                    - created_at
+                    - id
+                    - code
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - brand_settings_name
+                    - sims
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: (Discount pricing) Submit Order
+      security: []
+      x-apidog-folder: REST API/Endpoints/Place order
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883024-run
+      x-source-page: https://developers.partners.airalo.com/submit-order-11883024e0
+      operationId: postV2Orders
+      x-operation-id-source: derived
+  /v2/orders-async:
+    post:
+      summary: Submit order async
+      deprecated: false
+      description: 'This endpoint allows you to submit an asynchronous order to the Airalo Partners API. This ensures greater performance and reduces the wait time for your desired flow. Each async order will generate unique `nanoid` stored in reponse''s `request_id` - Make sure you store this id in your system, as it is a reference for the order which is pending processing. You should check map it for every successfully received order response on your webhook url.
+
+
+        Provide the required information, such as quantity and package ID, and include optional description if needed.
+
+
+        The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        For more information and best practices visit our FAQ page
+
+
+        **direct_apple_installation_url:**
+
+
+        Partner API now supports direct installation on iOS devices. With the introduction of Universal Links by Apple, users with iOS 17.4 or higher can directly install eSIMs using a special URL, which can be provided to your end clients if they are using iOS version 17.4 or above.'
+      tags:
+      - REST API/Endpoints/Place order
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  description: Required. The quantity of items in the order. Maximum of 50.
+                  example: '1'
+                  type: string
+                package_id:
+                  description: Required. The package ID associated with the order. You can obtain this from the "Packages / Get Packages" endpoint.
+                  example: kallur-digital-7days-1gb
+                  type: string
+                type:
+                  description: Optional. The only possible value for this endpoint is "sim". If left empty, default "sim" value will be used.
+                  example: sim
+                  type: string
+                description:
+                  description: Optional. A custom description for the order, which can help you identify it later.
+                  example: 1 sim kallur-digital-7days-1gb
+                  type: string
+                webhook_url:
+                  description: Optional. A custom, valid url to which you will receive the order details data asynchronously. Note that you can optin or provide in request. `The webhook_url if provided in payload will overwrite the one which is opted in.`
+                  example: https://your-webhook.com
+                  type: string
+                brand_settings_name:
+                  description: Nullable. The definition under what brand the eSIM should be shared. Null for unbranded.
+                  example: our perfect brand
+                  type: string
+                to_email:
+                  description: 'Optional. If specified, email with esim sharing will be sent. sharing_option should be specified as well. '
+                  example: valid_email@address.com
+                  type: string
+                sharing_option[]:
+                  description: 'Optional. Array. Required when to_email is set. Available options: link, pdf'
+                  example: link
+                  type: string
+                copy_address[]:
+                  description: Optional. Array. It uses when to_email is set.
+                  example: valid_email@address.com
+                  type: string
+              required:
+              - quantity
+              - package_id
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties: {}
+                x-apidog-orders: []
+          headers: {}
+          x-apidog-name: Webhook push example
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_id:
+                        type: string
+                      accepted_at:
+                        type: string
+                    required:
+                    - request_id
+                    - accepted_at
+                    x-apidog-orders:
+                    - request_id
+                    - accepted_at
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Submit Order Async (202)
+                  value:
+                    data:
+                      request_id: 3NhR3gKmqCWK7IWppurpDX3Cg
+                      accepted_at: '2024-07-11 15:26:02'
+                    meta:
+                      message: success
+                '2':
+                  summary: Submit Order Async (422)
+                  value:
+                    data:
+                      package_id: The selected package is invalid.
+                      quantity: The quantity may not be greater than 50.
+                    meta:
+                      message: the parameter is invalid
+                '3':
+                  summary: Submit Order Async (422) SIM quantity is not available
+                  value:
+                    data:
+                      quantity: 'SIM quantity is not available. Available quantity: 9.'
+                    meta:
+                      message: the parameter is invalid
+                '4':
+                  summary: Submit Order Async (422) Not opted in and no webhook_url provided
+                  value:
+                    reason: User is not opted in and no webhook URL provided.
+          headers: {}
+          x-apidog-name: Submit Order Async (202)
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                      quantity:
+                        type: string
+                    required:
+                    - package_id
+                    - quantity
+                    x-apidog-orders:
+                    - package_id
+                    - quantity
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order Async (422)
+        x-422:Submit Order Async (422) SIM quantity is not available:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      quantity:
+                        type: string
+                    required:
+                    - quantity
+                    x-apidog-orders:
+                    - quantity
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Submit Order Async (422) SIM quantity is not available
+        x-422:Submit Order Async (422) Not opted in and no webhook_url provided:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                required:
+                - reason
+                x-apidog-orders:
+                - reason
+          headers: {}
+          x-apidog-name: Submit Order Async (422) Not opted in and no webhook_url provided
+      security: []
+      x-apidog-folder: REST API/Endpoints/Place order
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883025-run
+      x-source-page: https://developers.partners.airalo.com/submit-order-async-11883025e0
+      operationId: postV2OrdersAsync
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

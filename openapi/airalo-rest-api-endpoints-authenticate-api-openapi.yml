@@ -1,0 +1,251 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Authenticate API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Authenticate
+paths:
+  /v2/token:
+    post:
+      summary: Request access token
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        This endpoint comes with a Rate Limit: You can send up to **3 requests per minute to get your Access token**. Access token is valid for 24 hours.
+
+        :::
+
+        This endpoint provides an access token required for making authenticated requests to the Airalo Partners API.
+
+        Submit your `client_id` and `client_secret` to obtain your 24 hour valid token.
+
+
+        **It''s important to call this endpoint every 24 hours to ensure your token is not expired and avoid disruptions in your integration.**
+
+
+        #### Important Notes
+
+        - The response contains the access token, which must be cached and reused for subsequent API calls until it expires or is refreshed.
+
+        - Store the client ID and client secret securely in an **encrypted format** on your systems.
+
+        - All actions performed using these credentials will be considered valid transactions, and the partner will be responsible for any associated costs.'
+      tags:
+      - REST API/Endpoints/Authenticate
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding:
+              client_id:
+                contentType: string
+            schema:
+              type: object
+              properties:
+                client_id:
+                  description: Required. Unique identifier of your application. Must be kept secure and never exposed publicly.
+                  example: <replace with client id>
+                  type: string
+                client_secret:
+                  description: Required. Confidential key associated with your client ID. Must be kept secure and never exposed publicly.
+                  example: <replace with client secret>
+                  type: string
+                grant_type:
+                  description: "Required. The grant type should be set to \"client_credentials\". \nIt indicates server-to-server authentication, where the client application directly requests an access token without user intervention."
+                  example: client_credentials
+                  type: string
+              required:
+              - client_id
+              - client_secret
+              - grant_type
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      token_type:
+                        type: string
+                      expires_in:
+                        type: integer
+                      access_token:
+                        type: string
+                    required:
+                    - token_type
+                    - expires_in
+                    - access_token
+                    x-apidog-orders:
+                    - token_type
+                    - expires_in
+                    - access_token
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Request Access Token (200)
+                  value:
+                    data:
+                      token_type: Bearer
+                      expires_in: 31622400
+                      access_token: <access token>
+                    meta:
+                      message: success
+                '2':
+                  summary: Request Access Token (422)
+                  value:
+                    data:
+                      client_id: The selected client id is invalid.
+                    meta:
+                      message: the parameter is invalid
+                '3':
+                  summary: Request Access Token (401)
+                  value:
+                    data: []
+                    meta:
+                      message: Client authentication failed
+          headers: {}
+          x-apidog-name: Request Access Token (200)
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      client_id:
+                        type: string
+                    required:
+                    - client_id
+                    x-apidog-orders:
+                    - client_id
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Request Access Token (422)
+        x-422:Request Access Token (401):
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Request Access Token (401)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Authenticate
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883021-run
+      x-source-page: https://developers.partners.airalo.com/request-access-token-11883021e0
+      operationId: postV2Token
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

@@ -1,0 +1,1187 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Top up eSIM API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Top up eSIM
+paths:
+  /v2/sims/{iccid}/topups:
+    get:
+      summary: Get top-up package list
+      deprecated: false
+      description: '**Overview**
+
+        Use this endpoint to retrieve the top-up packages that can be purchased for a specific eSIM. When you call the endpoint with an eSIM’s ICCID, the response returns the eligible top-up packages for that eSIM (based on the ICCID provided). The endpoint supports new type of packages: “Voice and Text”.
+
+        This endpoint is designed for the top-up flow: it helps you present only the top-ups that are actually available for the eSIM’s operator/configuration, along with the package details you need to display and sell them (e.g., package ID, price, data amount, and duration).⁠
+
+
+        **Note for unlimited packages**
+
+        - For unlimited packages the `remaining`, `total` and `amount` fields will default to `0` should be ignored, and not displayed to the end users.
+
+        - When in Sandbox mode, the `is_unlimited` field can be `false` for an unlimited package ordered, due to not having real eSIMs available, thus don''t reflect real usage.
+
+
+        **How to use this endpoint**
+
+
+        - Make a request to this endpoint and provide the `iccid` of the eSIM for which you want to retrieve top-up packages for.
+
+        - The API will respond with a JSON object containing an array of purchased top-up packages for the eSIM, each of which includes an ID, remaining data amount, activation and expiration dates, and other relevant information.
+
+
+        For more information and best practices visit our FAQ page.'
+      tags:
+      - REST API/Endpoints/Top up eSIM
+      parameters:
+      - name: iccid
+        in: path
+        description: 'eSIM ICCID, used to query a list of available top-up packages.
+
+          Required. Can be obtained by execuring GET to the "eSIMs List" endpoint
+
+          '
+        required: true
+        example: '8910300000005271146'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pricing:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                    required:
+                    - model
+                    - discount_percentage
+                    x-apidog-orders:
+                    - model
+                    - discount_percentage
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        price:
+                          type: integer
+                        amount:
+                          type: integer
+                        day:
+                          type: integer
+                        is_unlimited:
+                          type: boolean
+                        title:
+                          type: string
+                        data:
+                          type: string
+                        short_info:
+                          type: string
+                        voice:
+                          type: integer
+                        text:
+                          type: integer
+                        net_price:
+                          type: integer
+                        prices:
+                          type: object
+                          properties:
+                            net_price:
+                              type: object
+                              properties:
+                                USD:
+                                  type: integer
+                                EUR:
+                                  type: number
+                                GBP:
+                                  type: number
+                                AED:
+                                  type: number
+                                JPY:
+                                  type: integer
+                              required:
+                              - USD
+                              - EUR
+                              - GBP
+                              - AED
+                              - JPY
+                              x-apidog-orders:
+                              - USD
+                              - EUR
+                              - GBP
+                              - AED
+                              - JPY
+                            recommended_retail_price:
+                              type: object
+                              properties:
+                                USD:
+                                  type: integer
+                                EUR:
+                                  type: number
+                                GBP:
+                                  type: number
+                                AED:
+                                  type: number
+                                JPY:
+                                  type: integer
+                              required:
+                              - USD
+                              - EUR
+                              - GBP
+                              - AED
+                              - JPY
+                              x-apidog-orders:
+                              - USD
+                              - EUR
+                              - GBP
+                              - AED
+                              - JPY
+                          required:
+                          - net_price
+                          - recommended_retail_price
+                          x-apidog-orders:
+                          - net_price
+                          - recommended_retail_price
+                      required:
+                      - id
+                      - type
+                      - price
+                      - amount
+                      - day
+                      - is_unlimited
+                      - title
+                      - data
+                      - short_info
+                      - voice
+                      - text
+                      - net_price
+                      - prices
+                      x-apidog-orders:
+                      - id
+                      - type
+                      - price
+                      - amount
+                      - day
+                      - is_unlimited
+                      - title
+                      - data
+                      - short_info
+                      - voice
+                      - text
+                      - net_price
+                      - prices
+                required:
+                - pricing
+                - data
+                x-apidog-orders:
+                - pricing
+                - data
+              examples:
+                '1':
+                  summary: 'eSIM: List available top-up packages: 200 OK'
+                  value:
+                    pricing:
+                      model: net_pricing
+                      discount_percentage: 0
+                    data:
+                    - id: bonbon-mobile-30days-3gb-topup
+                      type: topup
+                      price: 10
+                      amount: 3072
+                      day: 30
+                      is_unlimited: false
+                      title: 3 GB - 100 SMS - 100 Mins - 30 Days
+                      data: 3 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: 8
+                      prices:
+                        net_price:
+                          USD: 8
+                          EUR: 7.36
+                          GBP: 6.32
+                          AED: 29.36
+                          JPY: 1248
+                        recommended_retail_price:
+                          USD: 10
+                          EUR: 9.2
+                          GBP: 7.9
+                          AED: 36.7
+                          JPY: 1560
+                    - id: bonbon-mobile-30days-5gb-topup
+                      type: topup
+                      price: 14
+                      amount: 5120
+                      day: 30
+                      is_unlimited: false
+                      title: 5 GB - 30 Days
+                      data: 5 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: 11.2
+                      prices:
+                        net_price:
+                          USD: 11.2
+                          EUR: 10.3
+                          GBP: 8.85
+                          AED: 41.1
+                          JPY: 1747
+                        recommended_retail_price:
+                          USD: 14
+                          EUR: 12.88
+                          GBP: 11.06
+                          AED: 51.38
+                          JPY: 2184
+                    - id: bonbon-mobile-30days-10gb-topup
+                      type: topup
+                      price: 23
+                      amount: 10240
+                      day: 30
+                      is_unlimited: false
+                      title: 10 GB - 30 Days
+                      data: 10 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: 18.4
+                      prices:
+                        net_price:
+                          USD: 18.4
+                          EUR: 16.93
+                          GBP: 14.54
+                          AED: 67.53
+                          JPY: 2870
+                        recommended_retail_price:
+                          USD: 23
+                          EUR: 21.16
+                          GBP: 18.17
+                          AED: 84.41
+                          JPY: 3588
+                '2':
+                  summary: 'eSIM: List available top-up packages: 200 (No top-up packages available)'
+                  value:
+                    data: []
+                '3':
+                  summary: 'eSIM: List available top-up packages: 404 (Invalid ICCID)'
+                  value:
+                    data: []
+                    meta:
+                      message: messages.resource_not_found
+                '4':
+                  summary: Recycled Sim Response
+                  value:
+                    code: 73
+                    reason: The eSIM with iccid 8910300000005271146 has been recycled. It can no longer be used or topped up.
+                '5':
+                  summary: Success
+                  value:
+                    pricing:
+                      model: discount_pricing
+                      discount_percentage: 20
+                    data:
+                    - id: bonbon-mobile-30days-3gb-topup
+                      type: topup
+                      price: 10
+                      amount: 3072
+                      day: 30
+                      is_unlimited: false
+                      title: 3 GB - 100 SMS - 100 Mins - 30 Days
+                      data: 3 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: null
+                      prices:
+                        recommended_retail_price:
+                          USD: 10
+                          EUR: 9.2
+                          GBP: 7.9
+                          AED: 36.7
+                          JPY: 1560
+                    - id: bonbon-mobile-30days-5gb-topup
+                      type: topup
+                      price: 14
+                      amount: 5120
+                      day: 30
+                      is_unlimited: false
+                      title: 5 GB - 30 Days
+                      data: 5 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: null
+                      prices:
+                        recommended_retail_price:
+                          USD: 14
+                          EUR: 12.88
+                          GBP: 11.06
+                          AED: 51.38
+                          JPY: 2184
+                    - id: bonbon-mobile-30days-10gb-topup
+                      type: topup
+                      price: 23
+                      amount: 10240
+                      day: 30
+                      is_unlimited: false
+                      title: 10 GB - 30 Days
+                      data: 10 GB
+                      short_info: This eSIM doesn't come with a phone number.
+                      voice: 100
+                      text: 100
+                      net_price: null
+                      prices:
+                        recommended_retail_price:
+                          USD: 23
+                          EUR: 21.16
+                          GBP: 18.17
+                          AED: 84.41
+                          JPY: 3588
+          headers: {}
+          x-apidog-name: 'eSIM: List available top-up packages: 200 OK'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  reason:
+                    type: string
+                required:
+                - code
+                - reason
+                x-apidog-orders:
+                - code
+                - reason
+          headers: {}
+          x-apidog-name: 'eSIM: List available top-up packages:  (Recycled Sim Response 422)'
+        'x-200:(Discount pricing) eSIM: List available top-up packages':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pricing:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                    required:
+                    - model
+                    - discount_percentage
+                    x-apidog-orders:
+                    - model
+                    - discount_percentage
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        price:
+                          type: integer
+                        amount:
+                          type: integer
+                        day:
+                          type: integer
+                        is_unlimited:
+                          type: boolean
+                        title:
+                          type: string
+                        data:
+                          type: string
+                        short_info:
+                          type: string
+                        voice:
+                          type: integer
+                        text:
+                          type: integer
+                        net_price:
+                          type: 'null'
+                      required:
+                      - id
+                      - type
+                      - price
+                      - amount
+                      - day
+                      - is_unlimited
+                      - title
+                      - data
+                      - short_info
+                      - voice
+                      - text
+                      - net_price
+                      x-apidog-orders:
+                      - id
+                      - type
+                      - price
+                      - amount
+                      - day
+                      - is_unlimited
+                      - title
+                      - data
+                      - short_info
+                      - voice
+                      - text
+                      - net_price
+                required:
+                - pricing
+                - data
+                x-apidog-orders:
+                - pricing
+                - data
+              example:
+                pricing:
+                  model: discount_pricing
+                  discount_percentage: 20
+                data:
+                - id: bonbon-mobile-30days-3gb-topup
+                  type: topup
+                  price: 10
+                  amount: 3072
+                  day: 30
+                  is_unlimited: false
+                  title: 3 GB - 100 SMS - 100 Mins - 30 Days
+                  data: 3 GB
+                  short_info: This eSIM doesn't come with a phone number.
+                  voice: 100
+                  text: 100
+                  net_price: null
+                  prices:
+                    recommended_retail_price:
+                      USD: 10
+                      EUR: 9.2
+                      GBP: 7.9
+                      AED: 36.7
+                      JPY: 1560
+                - id: bonbon-mobile-30days-5gb-topup
+                  type: topup
+                  price: 14
+                  amount: 5120
+                  day: 30
+                  is_unlimited: false
+                  title: 5 GB - 30 Days
+                  data: 5 GB
+                  short_info: This eSIM doesn't come with a phone number.
+                  voice: 100
+                  text: 100
+                  net_price: null
+                  prices:
+                    recommended_retail_price:
+                      USD: 14
+                      EUR: 12.88
+                      GBP: 11.06
+                      AED: 51.38
+                      JPY: 2184
+                - id: bonbon-mobile-30days-10gb-topup
+                  type: topup
+                  price: 23
+                  amount: 10240
+                  day: 30
+                  is_unlimited: false
+                  title: 10 GB - 30 Days
+                  data: 10 GB
+                  short_info: This eSIM doesn't come with a phone number.
+                  voice: 100
+                  text: 100
+                  net_price: null
+                  prices:
+                    recommended_retail_price:
+                      USD: 23
+                      EUR: 21.16
+                      GBP: 18.17
+                      AED: 84.41
+                      JPY: 3588
+          headers: {}
+          x-apidog-name: '(Discount pricing) eSIM: List available top-up packages'
+        'x-200:eSIM: List available top-up packages: 200 (No top-up packages available)':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - data
+                x-apidog-orders:
+                - data
+          headers: {}
+          x-apidog-name: 'eSIM: List available top-up packages: 200 (No top-up packages available)'
+        'x-200:eSIM: List available top-up packages: 404 (Invalid ICCID)':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'eSIM: List available top-up packages: 404 (Invalid ICCID)'
+      security: []
+      x-apidog-folder: REST API/Endpoints/Top up eSIM
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883031-run
+      x-source-page: https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+      operationId: getV2SimsByIccidTopups
+      x-operation-id-source: derived
+  /v2/orders/topups:
+    post:
+      summary: Submit top-up order
+      deprecated: false
+      description: '**To submit a top-up order:**
+
+
+        This endpoint allows you purchase a top-up package for a specific eSIM providing the below parameters to your request:
+
+
+        1) `package_id`: The ID of the top-up package you want to purchase.
+
+
+        2) `iccid`: The ICCID of the eSIM for which you want to purchase the top-up package.
+
+
+        You can also include an optional `description` field to provide additional information about the order.
+
+
+        The API will respond with a JSON object containing the details of the order, including the package ID, quantity, price, and other relevant information.
+
+
+        **The complete workflow for buying a top-up package:**
+
+
+        1) Call the GET eSIMS list to see the list of previously purchased eSIMs
+
+        2) Call the Get top-up package list to see the list of available top-ups for the eSIM providing its `iccid` you retrieved from point 1.
+
+        3) Submit an order on Submit top-up order endpoint
+
+        with the `iccid` you wish to buy the top-up package for, and provide also `package_id`of the top-up package to purchase.
+
+        4) Call the Get eSIM package history endpoint
+
+        to see the list of all packages bought for that eSIM.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Top up eSIM
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                package_id:
+                  description: 'Required. A Topup Package ID, can be obtainer by executing a GET request to the "eSIM: List available top-up packages" endpoint'
+                  example: change-7days-1gb-topup
+                  type: string
+                iccid:
+                  description: 'Required. eSIM ICCID, that identifies the eSIM for the top-up package.
+
+                    Can be obtained by execuring GET to the "eSIMs List" endpoint
+
+                    '
+                  example: '873000000000042542'
+                  type: string
+                description:
+                  description: Optional. Order description to identify the order.
+                  example: Example description to identify the order
+                  type: string
+              required:
+              - package_id
+              - iccid
+              - description
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      package_id:
+                        type: string
+                      currency:
+                        type: string
+                      quantity:
+                        type: integer
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      text:
+                        type: 'null'
+                      voice:
+                        type: 'null'
+                      net_price:
+                        type: number
+                      created_at:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                    required:
+                    - id
+                    - code
+                    - package_id
+                    - currency
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - text
+                    - voice
+                    - net_price
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    x-apidog-orders:
+                    - id
+                    - code
+                    - package_id
+                    - currency
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - text
+                    - voice
+                    - net_price
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: 'Submit Top-up Order: 200 OK'
+                  value:
+                    data:
+                      id: 111
+                      code: 20251118-000111
+                      package_id: change-7days-1gb-topup
+                      currency: USD
+                      quantity: 1
+                      type: topup
+                      description: Topup (873000000000042542)
+                      esim_type: local
+                      validity: 7
+                      package: Change-1 GB - 7 Days
+                      data: 1 GB
+                      price: 4.5
+                      pricing_model: net_pricing
+                      text: null
+                      voice: null
+                      net_price: 3.6
+                      created_at: '2025-11-18 13:37:07'
+                      manual_installation: <p><b>eSIM name:</b> Change</p><p><b>Coverage: </b>United States</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                      qrcode_installation: <p><b>eSIM name:</b> Change</p><p><b>Coverage: </b>United States</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                      installation_guides:
+                        en: https://www.airalo.com/help/getting-started-with-airalo
+                    meta:
+                      message: success
+                '2':
+                  summary: 'Submit Top-up Order: 422 (Purchase limit exceeded)'
+                  value:
+                    data:
+                      package_id: validation.order_exceed_limit
+                    meta:
+                      message: the parameter is invalid
+                '3':
+                  summary: 'Submit Top-up Order: 422 (Required fields are missing)'
+                  value:
+                    data:
+                      iccid: The iccid field is required.
+                      package_id: The package id field is required.
+                    meta:
+                      message: the parameter is invalid
+                '4':
+                  summary: 'Submit Top-up Order: 422 (Invalid package id)'
+                  value:
+                    data:
+                      package_id: invalid topup package
+                    meta:
+                      message: the parameter is invalid
+                '5':
+                  summary: Example 1
+                  value:
+                    code: 73
+                    reason: The eSIM with iccid 89340000000000872 has been recycled. It can no longer be used or topped up.
+          headers: {}
+          x-apidog-name: 'Submit Top-up Order: 200 OK'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                    required:
+                    - package_id
+                    x-apidog-orders:
+                    - package_id
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Submit Top-up Order: 422 (Purchase limit exceeded)'
+        'x-422:Submit Top-up Order: 422 (Required fields are missing)':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      iccid:
+                        type: string
+                      package_id:
+                        type: string
+                    required:
+                    - iccid
+                    - package_id
+                    x-apidog-orders:
+                    - iccid
+                    - package_id
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Submit Top-up Order: 422 (Required fields are missing)'
+        'x-422:Submit Top-up Order: 422 (Invalid package id)':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                    required:
+                    - package_id
+                    x-apidog-orders:
+                    - package_id
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Submit Top-up Order: 422 (Invalid package id)'
+        'x-422:Submit Top-up Order: 422 (Recycled sim)':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  reason:
+                    type: string
+                required:
+                - code
+                - reason
+                x-apidog-orders:
+                - code
+                - reason
+          headers: {}
+          x-apidog-name: 'Submit Top-up Order: 422 (Recycled sim)'
+        x-200:(Discount pricing) Submit Top-up Order:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      code:
+                        type: string
+                      package_id:
+                        type: string
+                      currency:
+                        type: string
+                      quantity:
+                        type: integer
+                      type:
+                        type: string
+                      description:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: integer
+                      package:
+                        type: string
+                      data:
+                        type: string
+                      price:
+                        type: number
+                      pricing_model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                      discount_amount:
+                        type: number
+                      unit_paid_price:
+                        type: number
+                      total_amount_paid:
+                        type: number
+                      text:
+                        type: 'null'
+                      voice:
+                        type: 'null'
+                      net_price:
+                        type: 'null'
+                      created_at:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                    required:
+                    - id
+                    - code
+                    - package_id
+                    - currency
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - discount_percentage
+                    - discount_amount
+                    - unit_paid_price
+                    - total_amount_paid
+                    - text
+                    - voice
+                    - net_price
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    x-apidog-orders:
+                    - id
+                    - code
+                    - package_id
+                    - currency
+                    - quantity
+                    - type
+                    - description
+                    - esim_type
+                    - validity
+                    - package
+                    - data
+                    - price
+                    - pricing_model
+                    - discount_percentage
+                    - discount_amount
+                    - unit_paid_price
+                    - total_amount_paid
+                    - text
+                    - voice
+                    - net_price
+                    - created_at
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              example:
+                data:
+                  id: 619
+                  code: 20251118-000619
+                  package_id: change-7days-1gb-topup
+                  currency: USD
+                  quantity: 1
+                  type: topup
+                  description: Topup (873000000000042534)
+                  esim_type: Prepaid
+                  validity: 7
+                  package: Change-1 GB - 7 Days
+                  data: 1 GB
+                  price: 4.5
+                  pricing_model: discount_pricing
+                  discount_percentage: 10
+                  discount_amount: 0.45
+                  unit_paid_price: 4.05
+                  total_amount_paid: 4.05
+                  text: null
+                  voice: null
+                  net_price: null
+                  created_at: '2025-11-18 13:40:21'
+                  manual_installation: <p><b>eSIM name:</b> Change</p><p><b>Coverage: </b>United States</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                  qrcode_installation: <p><b>eSIM name:</b> Change</p><p><b>Coverage: </b>United States</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                  installation_guides:
+                    en: https://www.airalo.com/help/getting-started-with-airalo
+                meta:
+                  message: success
+          headers: {}
+          x-apidog-name: (Discount pricing) Submit Top-up Order
+      security: []
+      x-apidog-folder: REST API/Endpoints/Top up eSIM
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883026-run
+      x-source-page: https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+      operationId: postV2OrdersTopups
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

@@ -1,0 +1,1510 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Manage orders API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Manage orders
+paths:
+  /v2/cancel-future-orders:
+    post:
+      summary: Cancel future orders
+      deprecated: false
+      description: 'This endpoint allows you to submit future order cancellation requests via the Airalo Partner API.
+
+
+        To proceed, provide an array of request_id strings from the "Create Future Order" endpoint response.
+
+
+        Please note:
+
+        - Future orders can be canceled up to 24 hours before the due date.
+
+        - You can include up to 10 future orders in a single request.
+
+        - An access token from the "Request Access Token" endpoint is required.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Manage orders
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                request_ids:
+                  type: array
+                  items:
+                    type: string
+                  uniqueItems: true
+              x-apidog-orders:
+              - request_ids
+              required:
+              - request_ids
+            example:
+              request_ids:
+              - wPnaOiEcdyP11pEPeJ-jLhT_I
+              - Q2FMVdpbIAFh0RVvtjKkya8a1
+              - OKjfHGS5qzRWzt74iKfm9YeVe
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Success
+                  value:
+                    data: []
+                    meta:
+                      message: Future orders cancelled successfully
+                '2':
+                  summary: Validation errors
+                  value:
+                    data:
+                      request_ids.1: Each request ID must be exactly 25 characters long.
+                    meta:
+                      message: the parameter is invalid
+                '3':
+                  summary: Already processed request ID
+                  value:
+                    data:
+                      request_ids.0: 'Request ID: hjxVV6glJ9oTwieF4xeTgRuU6 is already processed and can not be cancelled.'
+                    meta:
+                      message: the parameter is invalid
+                '4':
+                  summary: Request Id does not exist
+                  value:
+                    data:
+                      request_ids.0: 'Request ID: hjxVV6glJ9oTwieF4xeTgRuU7 does not exist.'
+                    meta:
+                      message: the parameter is invalid
+          headers: {}
+          x-apidog-name: Success
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_ids.1:
+                        type: string
+                    required:
+                    - request_ids.1
+                    x-apidog-orders:
+                    - request_ids.1
+                    description: The data object provides specific error messags for each of the provided request_ids, starting from index 0 which represents the first of the provided request_ids in the array.. In this case "request_ids.1" represents the sercond request ID in the array.
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Not valid request ID
+        x-422:Already processed request ID:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_ids.0:
+                        type: string
+                    required:
+                    - request_ids.0
+                    x-apidog-orders:
+                    - request_ids.0
+                    description: The data object provides specific error messags for each of the provided request_ids, starting from index 0 which represents the first of the provided request_ids in the array.
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Already processed request ID
+        x-422:Request Id does not exist:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      request_ids.0:
+                        type: string
+                    required:
+                    - request_ids.0
+                    x-apidog-orders:
+                    - request_ids.0
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Request Id does not exist
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage orders
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-14459873-run
+      x-source-page: https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+      operationId: postV2CancelFutureOrders
+      x-operation-id-source: derived
+  /v2/future-orders:
+    get:
+      summary: Future Orders
+      deprecated: false
+      description: 'This endpoint allows you to get all your submitted future orders that are in pending, failed or retry status
+
+        The following filter parameters are available:
+
+
+        - `status` (optional) - Defaults to pending. Other possible statuses are: failed and retry
+
+        - `limit` (optional) - Defaults to 25. Limit the returned results
+
+        - `from_due_date` - Datetime field in the format: Y-m-d H:i. Filters data starting from this date forward. Example: 2025-02-27 10:00
+
+        - `to_due_date` - Datetime field in the format: Y-m-d H:i. Filters data starting from this date backward. Example: 2025-02-27 10:00
+
+
+        Note that all already processed orders will not be displayed here.'
+      tags:
+      - REST API/Endpoints/Manage orders
+      parameters:
+      - name: status
+        in: query
+        description: 'Defaults to pending. Other possible status options: failed, retry'
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit the returned results
+        required: false
+        schema:
+          type: string
+      - name: from_due_date
+        in: query
+        description: 'Date in format: 2025-02-27 10:00'
+        required: false
+        schema:
+          type: string
+      - name: to_due_date
+        in: query
+        description: 'Date in format: 2025-02-27 10:00'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: false
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        request_id:
+                          type: string
+                        quantity:
+                          type: integer
+                        description:
+                          type: string
+                        status:
+                          type: string
+                        package_id:
+                          type: string
+                        due_date:
+                          type: string
+                        latest_cancellation_date:
+                          type: string
+                      required:
+                      - request_id
+                      - quantity
+                      - description
+                      - status
+                      - package_id
+                      - due_date
+                      - latest_cancellation_date
+                      x-apidog-orders:
+                      - request_id
+                      - quantity
+                      - description
+                      - status
+                      - package_id
+                      - due_date
+                      - latest_cancellation_date
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        type: 'null'
+                      next:
+                        type: string
+                    required:
+                    - first
+                    - last
+                    - prev
+                    - next
+                    x-apidog-orders:
+                    - first
+                    - last
+                    - prev
+                    - next
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      current_page:
+                        type: integer
+                      from:
+                        type: integer
+                      last_page:
+                        type: integer
+                      path:
+                        type: string
+                      per_page:
+                        type: string
+                      to:
+                        type: integer
+                      total:
+                        type: integer
+                    required:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                    x-apidog-orders:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                required:
+                - data
+                - links
+                - meta
+                x-apidog-orders:
+                - data
+                - links
+                - meta
+              examples:
+                '1':
+                  summary: Success
+                  value:
+                    data:
+                    - request_id: ehFeHAa_R1GyIgHxNrP6Iz0Hy
+                      quantity: 1
+                      description: ''
+                      status: pending
+                      package_id: change-7days-1gb
+                      due_date: 2025-03-24 10:00
+                      latest_cancellation_date: 2025-03-23 10:00
+                    - request_id: UPMpgaC9rWr799augw9KbI_ia
+                      quantity: 1
+                      description: ''
+                      status: pending
+                      package_id: change-7days-1gb
+                      due_date: 2025-02-27 10:00
+                      latest_cancellation_date: 2025-02-26 10:00
+                    - request_id: -s5Cx8jTjvx2UH_euzhaHbwiu
+                      quantity: 1
+                      description: ''
+                      status: pending
+                      package_id: change-7days-1gb
+                      due_date: 2025-02-27 10:00
+                      latest_cancellation_date: 2025-02-26 10:00
+                    links:
+                      first: https://partners-api.airalo.com/v2/future-orders?filter%5B%27status%27%5D=%27failed%27&status=pending&page=1
+                      last: https://partners-api.airalo.com/v2/future-orders?filter%5B%27status%27%5D=%27failed%27&status=pending&page=3
+                      prev: null
+                      next: https://partners-api.airalo.com/v2/future-orders?filter%5B%27status%27%5D=%27failed%27&status=pending&page=2
+                    meta:
+                      message: success
+                      current_page: 1
+                      from: 1
+                      last_page: 1
+                      path: https://partners-api.airalo.com/v2/future-orders
+                      per_page: '25'
+                      to: 3
+                      total: 3
+                '2':
+                  summary: Success
+                  value:
+                    data:
+                      from_due_date: The from due date is not a valid date.
+                    meta:
+                      message: the parameter is invalid
+          headers: {}
+          x-apidog-name: Success
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      from_due_date:
+                        type: string
+                    required:
+                    - from_due_date
+                    x-apidog-orders:
+                    - from_due_date
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Invalid from due date '
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage orders
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-21307288-run
+      x-source-page: https://developers.partners.airalo.com/future-orders-21307288e0
+      operationId: getV2FutureOrders
+      x-operation-id-source: derived
+  /v2/orders/{order_id}:
+    get:
+      summary: Get order
+      deprecated: false
+      description: 'This endpoint allows you to retrieve the details of a specific order from the Airalo Partners API using the order ID. You can also include related data in the response by specifying optional parameters. The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Manage orders
+      parameters:
+      - name: order_id
+        in: path
+        description: The order ID for which you want to retrieve the details.
+        required: true
+        example: ''
+        schema:
+          type: string
+      - name: include
+        in: query
+        description: Optional. A comma-separated string to include related data in the response. Possible values are "sims", "user", and "status".
+        required: false
+        example: sims,user,status
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      created_at:
+                        type: string
+                      code:
+                        type: string
+                      description:
+                        type: 'null'
+                      type:
+                        type: string
+                      package_id:
+                        type: string
+                      quantity:
+                        type: integer
+                      package:
+                        type: string
+                      esim_type:
+                        type: string
+                      validity:
+                        type: string
+                      price:
+                        type: string
+                      data:
+                        type: string
+                      currency:
+                        type: string
+                      manual_installation:
+                        type: string
+                      qrcode_installation:
+                        type: string
+                      installation_guides:
+                        type: object
+                        properties:
+                          en:
+                            type: string
+                        required:
+                        - en
+                        x-apidog-orders:
+                        - en
+                      sims:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            iccid:
+                              type: string
+                            lpa:
+                              type: string
+                            imsis:
+                              type: 'null'
+                            matching_id:
+                              type: string
+                            qrcode:
+                              type: string
+                            qrcode_url:
+                              type: string
+                            voucher_code:
+                              type: 'null'
+                            airalo_code:
+                              type: 'null'
+                            apn_type:
+                              type: string
+                            apn_value:
+                              type: string
+                            is_roaming:
+                              type: boolean
+                            confirmation_code:
+                              type: 'null'
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - iccid
+                          - lpa
+                          - imsis
+                          - matching_id
+                          - qrcode
+                          - qrcode_url
+                          - voucher_code
+                          - airalo_code
+                          - apn_type
+                          - apn_value
+                          - is_roaming
+                          - confirmation_code
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          created_at:
+                            type: string
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          mobile:
+                            type: 'null'
+                          address:
+                            type: 'null'
+                          state:
+                            type: 'null'
+                          city:
+                            type: 'null'
+                          postal_code:
+                            type: 'null'
+                          country_id:
+                            type: 'null'
+                          company:
+                            type: string
+                        required:
+                        - id
+                        - created_at
+                        - name
+                        - email
+                        - mobile
+                        - address
+                        - state
+                        - city
+                        - postal_code
+                        - country_id
+                        - company
+                        x-apidog-orders:
+                        - id
+                        - created_at
+                        - name
+                        - email
+                        - mobile
+                        - address
+                        - state
+                        - city
+                        - postal_code
+                        - country_id
+                        - company
+                      status:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          slug:
+                            type: string
+                        required:
+                        - name
+                        - slug
+                        x-apidog-orders:
+                        - name
+                        - slug
+                    required:
+                    - id
+                    - created_at
+                    - code
+                    - description
+                    - type
+                    - package_id
+                    - quantity
+                    - package
+                    - esim_type
+                    - validity
+                    - price
+                    - data
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - sims
+                    - user
+                    - status
+                    x-apidog-orders:
+                    - id
+                    - created_at
+                    - code
+                    - description
+                    - type
+                    - package_id
+                    - quantity
+                    - package
+                    - esim_type
+                    - validity
+                    - price
+                    - data
+                    - currency
+                    - manual_installation
+                    - qrcode_installation
+                    - installation_guides
+                    - sims
+                    - user
+                    - status
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Get Order (200)
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Get Order (401)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage orders
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883023-run
+      x-source-page: https://developers.partners.airalo.com/get-order-11883023e0
+      operationId: getV2OrdersByOrderId
+      x-operation-id-source: derived
+  /v2/orders:
+    get:
+      summary: Get order list
+      deprecated: false
+      description: 'This endpoint allows you to retrieve a list of your orders from the Airalo Partners API. By using various filters, you can customize the results to match specific criteria. The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Manage orders
+      parameters:
+      - name: include
+        in: query
+        description: Optional. A comma-separated string to include related data in the response. Possible values are "sims", "user", and "status".
+        required: false
+        example: sims,user,status
+        schema:
+          type: string
+      - name: filter[created_at]
+        in: query
+        description: Optional. A string to filter orders by their creation date. Specify the date range using a dash (-) as a delimiter for correct parsing.
+        required: false
+        example: Y-m-d - Y-m-d
+        schema:
+          type: string
+      - name: filter[code]
+        in: query
+        description: Optional. Filter orders by their order code. This performs a like search using the format '%ORDER_CODE%'.
+        required: false
+        example: 20221021-003188
+        schema:
+          type: string
+      - name: filter[order_status]
+        in: query
+        description: 'Optional. A string to filter orders by their status. Possible values: "completed", "failed", "partially_refunded", and "refunded".'
+        required: false
+        example: completed
+        schema:
+          type: string
+      - name: filter[iccid]
+        in: query
+        description: Optional. Filter orders by the sim's ICCID. This performs a like search using the format '%SIM_ICCID%'.
+        required: false
+        example: '891000000000001868'
+        schema:
+          type: string
+      - name: filter[description]
+        in: query
+        description: Optional. A string to filter orders by their description. This performs a like search using the format '%DESCRIPTION%'.
+        required: false
+        example: Your order description
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Optional. An integer specifying how many orders will be returned on each page.
+        required: false
+        example: '50'
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Optional. An integer specifying the pagination's current page.
+        required: false
+        example: '1'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        created_at:
+                          type: string
+                        code:
+                          type: string
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                        type:
+                          type: string
+                        package_id:
+                          type: string
+                        quantity:
+                          type: integer
+                        package:
+                          type: string
+                        esim_type:
+                          type: string
+                        validity:
+                          type: string
+                        price:
+                          type: string
+                        data:
+                          type: string
+                        currency:
+                          type: string
+                        manual_installation:
+                          type: string
+                        qrcode_installation:
+                          type: string
+                        installation_guides:
+                          type: object
+                          properties:
+                            en:
+                              type: string
+                          required:
+                          - en
+                          x-apidog-orders:
+                          - en
+                        sims:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              created_at:
+                                type: string
+                              iccid:
+                                type: string
+                              lpa:
+                                type: string
+                              imsis:
+                                type: 'null'
+                              matching_id:
+                                type: string
+                              qrcode:
+                                type: string
+                              qrcode_url:
+                                type: string
+                              airalo_code:
+                                type: 'null'
+                              apn_type:
+                                type: string
+                              apn_value:
+                                type:
+                                - string
+                                - 'null'
+                              is_roaming:
+                                type: boolean
+                              confirmation_code:
+                                type: 'null'
+                            required:
+                            - id
+                            - created_at
+                            - iccid
+                            - lpa
+                            - imsis
+                            - matching_id
+                            - qrcode
+                            - qrcode_url
+                            - airalo_code
+                            - apn_type
+                            - apn_value
+                            - is_roaming
+                            - confirmation_code
+                            x-apidog-orders:
+                            - id
+                            - created_at
+                            - iccid
+                            - lpa
+                            - imsis
+                            - matching_id
+                            - qrcode
+                            - qrcode_url
+                            - airalo_code
+                            - apn_type
+                            - apn_value
+                            - is_roaming
+                            - confirmation_code
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            name:
+                              type: string
+                            email:
+                              type: string
+                            mobile:
+                              type: 'null'
+                            address:
+                              type: 'null'
+                            state:
+                              type: 'null'
+                            city:
+                              type: 'null'
+                            postal_code:
+                              type: 'null'
+                            country_id:
+                              type: 'null'
+                            company:
+                              type: string
+                          required:
+                          - id
+                          - created_at
+                          - name
+                          - email
+                          - mobile
+                          - address
+                          - state
+                          - city
+                          - postal_code
+                          - country_id
+                          - company
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - name
+                          - email
+                          - mobile
+                          - address
+                          - state
+                          - city
+                          - postal_code
+                          - country_id
+                          - company
+                        status:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            slug:
+                              type: string
+                          required:
+                          - name
+                          - slug
+                          x-apidog-orders:
+                          - name
+                          - slug
+                      required:
+                      - id
+                      - created_at
+                      - code
+                      - description
+                      - type
+                      - package_id
+                      - quantity
+                      - package
+                      - esim_type
+                      - validity
+                      - price
+                      - data
+                      - currency
+                      - manual_installation
+                      - qrcode_installation
+                      - installation_guides
+                      - sims
+                      - user
+                      - status
+                      x-apidog-orders:
+                      - id
+                      - created_at
+                      - code
+                      - description
+                      - type
+                      - package_id
+                      - quantity
+                      - package
+                      - esim_type
+                      - validity
+                      - price
+                      - data
+                      - currency
+                      - manual_installation
+                      - qrcode_installation
+                      - installation_guides
+                      - sims
+                      - user
+                      - status
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      current_page:
+                        type: integer
+                      from:
+                        type: integer
+                      last_page:
+                        type: integer
+                      path:
+                        type: string
+                      per_page:
+                        type: string
+                      to:
+                        type: integer
+                      total:
+                        type: integer
+                    required:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                    x-apidog-orders:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        type: 'null'
+                      next:
+                        type: string
+                    required:
+                    - first
+                    - last
+                    - prev
+                    - next
+                    x-apidog-orders:
+                    - first
+                    - last
+                    - prev
+                    - next
+                required:
+                - data
+                - meta
+                - links
+                x-apidog-orders:
+                - data
+                - meta
+                - links
+          headers: {}
+          x-apidog-name: Order List (200)
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      limit:
+                        type: string
+                      page:
+                        type: string
+                    required:
+                    - limit
+                    - page
+                    x-apidog-orders:
+                    - limit
+                    - page
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Order List (422)
+                  value:
+                    data:
+                      limit: The limit must be an integer.
+                      page: The page must be an integer.
+                    meta:
+                      message: the parameter is invalid
+                '2':
+                  summary: Order List (200)
+                  value:
+                    data:
+                    - id: 9666
+                      created_at: '2023-02-27 14:09:55'
+                      code: 20230227-009666
+                      description: Example description to identify the order
+                      type: sim
+                      package_id: kallur-digital-7days-1gb
+                      quantity: 1
+                      package: Kallur Digital-1 GB - 7 Days
+                      esim_type: Prepaid
+                      validity: '7'
+                      price: '9.50'
+                      data: 1 GB
+                      currency: USD
+                      manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                      qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      sims:
+                      - id: 11047
+                        created_at: '2023-02-27 14:09:55'
+                        iccid: '891000000000009125'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763820595&id=13301&signature=1f0d45226a3857bd0645bf77225b7aee7e250f926763ee1d1a6e4be7fefde71e
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                      user:
+                        id: 120
+                        created_at: '2023-02-20 08:41:57'
+                        name: User Name
+                        email: User.Name+sandbox2@airalo.com
+                        mobile: null
+                        address: null
+                        state: null
+                        city: null
+                        postal_code: null
+                        country_id: null
+                        company: User Name Airalo 2
+                      status:
+                        name: Completed
+                        slug: completed
+                    - id: 9647
+                      created_at: '2023-02-27 08:30:14'
+                      code: 20230227-009647
+                      description: null
+                      type: sim
+                      package_id: kallur-digital-7days-1gb
+                      quantity: 1
+                      package: Kallur Digital-1 GB - 7 Days
+                      esim_type: Prepaid
+                      validity: '7'
+                      price: '9.50'
+                      data: 1 GB
+                      currency: USD
+                      manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                      qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      sims:
+                      - id: 11028
+                        created_at: '2023-02-27 08:30:14'
+                        iccid: '891000000000009106'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763800214&id=13282&signature=93bc1599eaaea3175eb32a9f23b3961273e97f04c50ba1b57b68ac99bc6677df
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                      user:
+                        id: 120
+                        created_at: '2023-02-20 08:41:57'
+                        name: User Name
+                        email: User.Name+sandbox2@airalo.com
+                        mobile: null
+                        address: null
+                        state: null
+                        city: null
+                        postal_code: null
+                        country_id: null
+                        company: User Name Airalo 2
+                      status:
+                        name: Completed
+                        slug: completed
+                    - id: 9583
+                      created_at: '2023-02-24 05:34:28'
+                      code: 20230224-009583
+                      description: null
+                      type: sim
+                      package_id: mariocom-30days-3gb
+                      quantity: 1
+                      package: Mariocom-3 GB - 30 Days
+                      esim_type: Prepaid
+                      validity: '30'
+                      price: '27.00'
+                      data: 3 GB
+                      currency: USD
+                      manual_installation: <p><b>eSIM name:</b> Mariocom</p><p><b>Coverage: </b>Liberia</p><p><b>To manually activate the eSIM on your eSIM capable device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.<br></li></ol>
+                      qrcode_installation: <p><b>eSIM name:</b> Mariocom</p><p><b>Coverage: </b>Liberia</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.<br></li></ol>
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      sims:
+                      - id: 10970
+                        created_at: '2023-02-24 05:34:28'
+                        iccid: '891000000000009048'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763530468&id=13224&signature=f8e3e726e95a588f1043979615ca456b316e59eecbe17e7e9cb0eabfc0050359
+                        airalo_code: null
+                        apn_type: automatic
+                        apn_value: null
+                        is_roaming: true
+                        confirmation_code: null
+                      user:
+                        id: 120
+                        created_at: '2023-02-20 08:41:57'
+                        name: User Name
+                        email: User.Name+sandbox2@airalo.com
+                        mobile: null
+                        address: null
+                        state: null
+                        city: null
+                        postal_code: null
+                        country_id: null
+                        company: User Name Airalo 2
+                      status:
+                        name: Completed
+                        slug: completed
+                    - id: 9566
+                      created_at: '2023-02-22 14:24:03'
+                      code: 20230222-009566
+                      description: Description c i._ +++# m#+&_#n_W
+                      type: topup
+                      package_id: bonbon-mobile-30days-3gb-topup
+                      quantity: 1
+                      package: Bonbon Mobile-3 GB - 30 Days
+                      esim_type: Prepaid
+                      validity: '30'
+                      price: '10.00'
+                      data: 3 GB
+                      currency: USD
+                      manual_installation: ''
+                      qrcode_installation: ''
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      sims: []
+                      user:
+                        id: 120
+                        created_at: '2023-02-20 08:41:57'
+                        name: User Name
+                        email: User.Name+sandbox2@airalo.com
+                        mobile: null
+                        address: null
+                        state: null
+                        city: null
+                        postal_code: null
+                        country_id: null
+                        company: User Name Airalo 2
+                      status:
+                        name: Completed
+                        slug: completed
+                    - id: 9565
+                      created_at: '2023-02-22 14:24:01'
+                      code: 20230222-009565
+                      description: null
+                      type: sim
+                      package_id: bonbon-mobile-30days-10gb
+                      quantity: 1
+                      package: Bonbon Mobile-10 GB - 30 Days
+                      esim_type: Prepaid
+                      validity: '30'
+                      price: '22.50'
+                      data: 10 GB
+                      currency: USD
+                      manual_installation: <p><b>eSIM name:</b> Bonbon Mobile</p><p><b>Coverage: </b>France</p><p><b>To manually activate the eSIM on your eSIM capable device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Locate the APN settings in your settings menu.</li><li>Update the APN to "rh".</li><li>Enable data roaming.</li></ol>
+                      qrcode_installation: <p><b>eSIM name:</b> Bonbon Mobile</p><p><b>Coverage: </b>France</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Locate the APN settings in your settings menu.</li><li>Update the APN to "rh".</li><li>Enable data roaming.</li></ol>
+                      installation_guides:
+                        en: https://sandbox.airalo.com/installation-guide
+                      sims:
+                      - id: 10954
+                        created_at: '2023-02-22 14:24:01'
+                        iccid: '891000000000009032'
+                        lpa: lpa.airalo.com
+                        imsis: null
+                        matching_id: TEST
+                        qrcode: LPA:1$lpa.airalo.com$TEST
+                        qrcode_url: https://sandbox.airalo.com/qr?expires=1763389441&id=13208&signature=d2d5d4b5c048dc2df05e8a7230352007a76366b04c07f6faf6ab77ee8b9b1881
+                        airalo_code: null
+                        apn_type: manual
+                        apn_value: rh
+                        is_roaming: true
+                        confirmation_code: null
+                      user:
+                        id: 120
+                        created_at: '2023-02-20 08:41:57'
+                        name: User Name
+                        email: User.Name+sandbox2@airalo.com
+                        mobile: null
+                        address: null
+                        state: null
+                        city: null
+                        postal_code: null
+                        country_id: null
+                        company: User Name Airalo 2
+                      status:
+                        name: Completed
+                        slug: completed
+                    meta:
+                      message: success
+                      current_page: 1
+                      from: 1
+                      last_page: 18
+                      path: https://sandbox-partners-api.airalo.com/v1/orders
+                      per_page: '5'
+                      to: 5
+                      total: 87
+                    links:
+                      first: https://sandbox-partners-api.airalo.com/v1/orders?include=sims%2Cuser%2Cstatus&limit=5&page=1
+                      last: https://sandbox-partners-api.airalo.com/v1/orders?include=sims%2Cuser%2Cstatus&limit=5&page=18
+                      prev: null
+                      next: https://sandbox-partners-api.airalo.com/v1/orders?include=sims%2Cuser%2Cstatus&limit=5&page=2
+          headers: {}
+          x-apidog-name: Order List (422)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage orders
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883022-run
+      x-source-page: https://developers.partners.airalo.com/get-order-list-11883022e0
+      operationId: getV2Orders
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

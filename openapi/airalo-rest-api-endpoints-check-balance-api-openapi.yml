@@ -1,0 +1,138 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Check balance API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Check balance
+paths:
+  /v2/balance:
+    get:
+      summary: Get balance
+      deprecated: false
+      description: 'This feature allow you to know your account balances, so you can have an overview on your financial portfolio. You can monitor my balances and can top-up my Airalo credit to avoid order failing due to Insufficient funds If there is no account, the response should be an empty array for the accounts
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Check balance
+      parameters:
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      balances:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          availableBalance:
+                            type: object
+                            properties:
+                              amount:
+                                type: integer
+                              currency:
+                                type: string
+                            required:
+                            - amount
+                            - currency
+                            x-apidog-orders:
+                            - amount
+                            - currency
+                        required:
+                        - name
+                        - availableBalance
+                        x-apidog-orders:
+                        - name
+                        - availableBalance
+                    required:
+                    - balances
+                    x-apidog-orders:
+                    - balances
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Get balance
+      security: []
+      x-apidog-folder: REST API/Endpoints/Check balance
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883045-run
+      x-source-page: https://developers.partners.airalo.com/get-balance-11883045e0
+      operationId: getV2Balance
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

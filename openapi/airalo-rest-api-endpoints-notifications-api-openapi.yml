@@ -1,0 +1,321 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Notifications API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Notifications
+paths:
+  /v2/simulator/webhook:
+    post:
+      summary: Webhook simulator
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        This endpoint comes with a Rate Limit: **5 requests per minute** per unique IP address.
+
+        :::
+
+
+        The Webhook Simulator lets you trigger mock webhook events directly to your configured endpoint **without placing real orders or consuming credit**. Use it during integration to verify your webhook handler, signature verification, and payload parsing for each event type before going live.
+
+
+        The following events are supported:
+
+
+        - `low_data_notification` — simulates a data-usage or expiry alert on an eSIM
+
+        - `credit_limit_notification` — simulates a credit balance threshold alert
+
+        - `async_order_notification` — simulates the webhook sent after an asynchronous order completes
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Notifications
+      parameters:
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: string
+                  description: 'Required. The webhook event type to simulate. Available options: **low_data_notification**, **credit_limit_notification**, **async_order_notification**.'
+                type:
+                  type: string
+                  description: 'Required when event is **low_data_notification**. The sub-type of the low data event to simulate. Available options: data_75, data_90, expire_1, expire_3.'
+                iccid:
+                  type: string
+                  description: Optional. The ICCID to include in the simulated payload. If left empty, a test ICCID will be generated automatically.
+                webhook_url:
+                  type: string
+                  description: Optional. A URL to deliver the simulated webhook to. If provided, the notification will be sent to this URL instead of your configured endpoint. This also bypasses the opt-in check, which is useful for testing a new endpoint before opting in.
+                level:
+                  type: string
+                  description: 'Required when event is **credit_limit_notification**. Specifies the credit limit threshold to simulate.  Available options: 50, 70, 80, 90.'
+              required:
+              - event
+              x-apidog-orders:
+              - event
+              - type
+              - level
+              - iccid
+              - webhook_url
+            examples:
+              '1':
+                value:
+                  event: low_data_notification
+                  type: expire_1
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Low Data Notification [Example 1]
+              '2':
+                value:
+                  event: low_data_notification
+                  type: expire_3
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Low Data Notification [Example 2]
+              '3':
+                value:
+                  event: low_data_notification
+                  type: data_75
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Low Data Notification [Example 3]
+              '4':
+                value:
+                  event: low_data_notification
+                  type: data_90
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Low Data Notification [Example 4]
+              '5':
+                value:
+                  event: credit_limit_notification
+                  level: 50
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Credit Limit Notification [Example 1]
+              '6':
+                value:
+                  event: credit_limit_notification
+                  level: 70
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Credit Limit Notification [Example 2]
+              '7':
+                value:
+                  event: credit_limit_notification
+                  level: 80
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Credit Limit Notification [Example 3]
+              '8':
+                value:
+                  event: credit_limit_notification
+                  level: 90
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Credit Limit Notification [Example 4]
+              '9':
+                value:
+                  event: async_order_notification
+                  iccid: '8997212330099025334'
+                  webhook_url: https://example.com
+                summary: Async Order Notification [Example 1]
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                required:
+                - success
+                x-apidog-orders:
+                - success
+              example: "{\n    \"success\": \"Notification sent\"\n}"
+          headers: {}
+          x-apidog-name: Webhook Simulator
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+                x-apidog-orders:
+                - error
+              example:
+                error: Could not push data to https://example.com
+          headers: {}
+          x-apidog-name: Invalid Webhook URL
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      event:
+                        type: string
+                    required:
+                    - event
+                    x-apidog-orders:
+                    - event
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              example:
+                data:
+                  event: 'Event must be one of: low_data_notification, credit_limit_notification, async_order_notification'
+                meta:
+                  message: the parameter is invalid
+          headers: {}
+          x-apidog-name: Unsupported Event
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+                x-apidog-orders:
+                - error
+              example:
+                error: An unexpected error occurred
+          headers: {}
+          x-apidog-name: Unexpected error
+        x-400:User not opt-in:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+                x-apidog-orders:
+                - error
+              example:
+                error: User is not opted in
+          headers: {}
+          x-apidog-name: User not opt-in
+        x-400:Invalid configuration:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+                x-apidog-orders:
+                - error
+              example:
+                error: User is not configured for webhook push
+          headers: {}
+          x-apidog-name: Invalid configuration
+      security: []
+      x-apidog-folder: REST API/Endpoints/Notifications
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883044-run
+      x-source-page: https://developers.partners.airalo.com/webhook-simulator-11883044e0
+      operationId: postV2SimulatorWebhook
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Request refund API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Request refund
+paths:
+  /v2/refund:
+    post:
+      summary: Request refund
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        This endpoint comes with a Rate Limit: **5 requests per 1 minute** per unique IP address.
+
+        :::
+
+
+        # Overview
+
+
+        The Airalo Refund API makes it simple to request refunds for eSIMs. This guide walks you through everything you need to know, including the API endpoint, request and response formats, error handling, and sample requests.
+
+
+        ## ⚠️ Important Disclaimer
+
+
+        **Available to all partners, but approval is not automatic.**
+
+        > The refund endpoint is enabled by default for all API partners; no activation or request is required to start using it.
+
+        >
+
+        > **Submitting a request does *not* guarantee a refund.** Every request is **manually reviewed** by Airalo''s Customer Support team against Airalo''s Refund Policy to confirm it meets all terms and conditions.
+
+        >
+
+        > Approval and fulfilment remain subject to Airalo''s internal policies and decisions. If your request meets the contract terms, the refund is credited to your account as Airalo credits for future transactions.'
+      tags:
+      - REST API/Endpoints/Request refund
+      parameters:
+      - name: Accept
+        in: header
+        description: Indicates the expected response format.
+        required: false
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer token for authenticating the request
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                iccids:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 5
+                  description: 'Array of type string taking a maximum 5 ICCIDs at a go. '
+                  example:
+                  - '["894000000000001",  "894000000000002"]'
+                reason:
+                  description: '**String value from any of the below list of values:**
+
+                    INSTALLATION_FAILURE
+
+                    NO_COVERAGE
+
+                    APN_FAILURE
+
+                    TRIP_CANCELLATION
+
+                    INTERMITTENT_CONNECTION
+
+                    BLOCKED_NETWORK
+
+                    CHANGE_OF_PLAN
+
+                    DELETED_ESIM
+
+                    EARLY_EXPIRY
+
+                    HOTSPOT_NOT_WORKING
+
+                    IMSI_CHANGE
+
+                    INCOMPATIBLE_DEVICE
+
+                    LOCKED_DEVICE
+
+                    NO_VOICE_TEXT_SERVICES
+
+                    OVERCHARGED
+
+                    SLOW_SPEED
+
+                    TOP_UP_PACKAGE_FAILURE
+
+                    UNKNOWN_CHARGES
+
+                    WRONG_PURCHASE
+
+                    UNABLE_TO_ACCESS_APPS
+
+                    SERVICE_DEGRADATION
+
+                    QR_ISSUE_PARTNERS
+
+                    OTHERS'
+                  example: '"INSTALLATION_FAILURE"'
+                  type: string
+                notes:
+                  type: string
+                  maxLength: 255
+                  description: Optional field. Required when the `reason` pram is set to `OTHERS`
+                  example: ''
+                email:
+                  description: Must be a valid email address if provided.
+                  example: email@example.com
+                  type: string
+              required:
+              - iccids
+              - reason
+            examples: {}
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      refund_id:
+                        type: string
+                      created_at:
+                        type: string
+                    required:
+                    - refund_id
+                    - created_at
+                    x-apidog-orders:
+                    - refund_id
+                    - created_at
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: Success
+                  value:
+                    data:
+                      refund_id: '12345'
+                      created_at: 2024-10-12 09:30
+                    meta:
+                      message: success
+                '2':
+                  summary: Invalid ICCIDs
+                  value:
+                    data: []
+                    meta:
+                      message: 'The following ICCIDs do not belong to your company: 894000000000001, 894000000000002'
+                '3':
+                  summary: Missing Required Fields
+                  value:
+                    data: []
+                    meta:
+                      message: The iccids field is required.
+                '4':
+                  summary: Invalid Reason
+                  value:
+                    data:
+                      reason: 'The selected reason is invalid. It must be one of the following: INSTALLATION_FAILURE, NO_COVERAGE, APN_FAILURE, TRIP_CANCELLATION, INTERMITTENT_CONNECTION, BLOCKED_NETWORK, CHANGE_OF_PLAN, DELETED_ESIM, EARLY_EXPIRY, HOTSPOT_NOT_WORKING, IMSI_CHANGE, INCOMPATIBLE_DEVICE, LOCKED_DEVICE, NO_VOICE_TEXT_SERVICES, OVERCHARGED, SLOW_SPEED, TOP_UP_PACKAGE_FAILURE, UNKNOWN_CHARGES, WRONG_PURCHASE, UNABLE_TO_ACCESS_APPS, SERVICE_DEGRADATION, QR_ISSUE_PARTNERS, OTHERS'
+                    meta:
+                      message: the parameter is invalid
+          headers: {}
+          x-apidog-name: Accepted
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Parameter Error
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                x-apidog-orders:
+                - message
+              example:
+                message: Too Many Attempts.
+          headers: {}
+          x-apidog-name: Too Many Attempts
+        x-422:Parameter Error:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Parameter Error
+      security: []
+      x-apidog-folder: REST API/Endpoints/Request refund
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-14583565-run
+      x-source-page: https://developers.partners.airalo.com/request-refund-14583565e0
+      operationId: postV2Refund
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

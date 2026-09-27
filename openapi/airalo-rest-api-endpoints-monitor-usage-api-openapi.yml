@@ -1,0 +1,362 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Monitor usage API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Monitor usage
+paths:
+  /v2/sims/{sim_iccid}/usage:
+    get:
+      summary: Get usage (data, text & voice)
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        This endpoint comes with a rate limit:
+
+        - 10 requests per minute (per unique iccid)
+
+        - 5 requests per second (per unique company)
+
+
+        A built-in cache of 20 minutes is also set on this endpoint''s response (In Sandbox mode cache is extended to 60 minutes)
+
+        :::
+
+
+        This endpoint enables you to retrieve the total data, voice & text usage for a specific eSIM identified by its ICCID.
+
+
+        The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        **Note for unlimited packages**
+
+        - For unlimited packages the `remaining`, `total` and `amount` fields will default to `0` should be ignored, and not displayed to the end users.
+
+        - When in Sandbox mode, the `is_unlimited` field can be `false` for an unlimited package ordered, due to not having real eSIMs available, thus don''t reflect real usage.
+
+
+        **Response atttributes units explained:**
+
+        - `total` : Response value is total megabytes on package
+
+        - `remaining` : Response value is in total megabytes **remaining**
+
+
+        - `total_text` : Response value is the initial total text messages on package
+
+        - `remaining_text` : Response value is in total number of text messages **remaining**
+
+
+        - `total_voice` : Response value is the initial total voice minutes on package
+
+        - `remaining_voice` : Response value is in total minutes **remaining**'
+      tags:
+      - REST API/Endpoints/Monitor usage
+      parameters:
+      - name: sim_iccid
+        in: path
+        description: The ICCID of the eSIM for which you want to retrieve the data usage details.
+        required: true
+        example: ''
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remaining:
+                        type: integer
+                      total:
+                        type: integer
+                      expired_at:
+                        type: string
+                      is_unlimited:
+                        type: boolean
+                      status:
+                        description: 'All Cases: [ NOT_ACTIVE, ACTIVE, FINISHED, UNKNOWN, EXPIRED ]'
+                        type: string
+                      remaining_voice:
+                        type: integer
+                      remaining_text:
+                        type: integer
+                      total_voice:
+                        type: integer
+                      total_text:
+                        type: integer
+                    required:
+                    - remaining
+                    - total
+                    - expired_at
+                    - is_unlimited
+                    - status
+                    - remaining_voice
+                    - remaining_text
+                    - total_voice
+                    - total_text
+                    x-apidog-orders:
+                    - remaining
+                    - total
+                    - expired_at
+                    - is_unlimited
+                    - status
+                    - remaining_voice
+                    - remaining_text
+                    - total_voice
+                    - total_text
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              examples:
+                '1':
+                  summary: 'Get Usage: 200'
+                  value: "{\n    \"data\": {\n        \"remaining\": 767,\n        \"total\": 2048,\n        \"expired_at\": \"2022-01-01 00:00:00\",\n        \"is_unlimited\": true,\n        \"status\": \"ACTIVE\", // All Cases: [ NOT_ACTIVE, ACTIVE, FINISHED, UNKNOWN, EXPIRED ]\n        \"remaining_voice\": 0,\n        \"remaining_text\": 0,\n        \"total_voice\": 0,\n        \"total_text\": 0\n    },\n    \"meta\": {\n        \"message\": \"api.succes\"\n    }\n}"
+                '2':
+                  summary: 'Get Usage: 404 (Invalid ICCID)'
+                  value:
+                    data: []
+                    meta:
+                      message: messages.resource_not_found
+                '3':
+                  summary: 'Get Usage: 429 (Rate Limit)'
+                  value:
+                    message: Too Many Attempts.
+                '4':
+                  summary: Success
+                  value:
+                    data:
+                      remaining: 0
+                      total: 0
+                      expired_at: null
+                      is_unlimited: null
+                      status: RECYCLED
+                      remaining_voice: 0
+                      remaining_text: 0
+                      total_voice: 0
+                      total_text: 0
+                    meta:
+                      message: api.succes
+          headers: {}
+          x-apidog-name: 'Get Usage: 200'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Get Usage: 404 (Invalid ICCID)'
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                x-apidog-orders:
+                - message
+          headers:
+            X-RateLimit-Limit:
+              example: ''
+              required: false
+              description: Maximum number of requests a client can make within a specific time window.
+              schema:
+                type: integer
+            X-RateLimit-Remaining:
+              example: ''
+              required: false
+              description: Indicates how many requests a client can still make within the current time window before hitting a rate limit.
+              schema:
+                type: integer
+            X-RateLimit-Reset:
+              example: ''
+              required: false
+              description: Indicating when an API's rate limit quota will reset and replenish, allowing clients to resume requests.
+              schema:
+                type: string
+            Retry-After:
+              example: ''
+              required: false
+              description: How long to wait before making a follow-up request.
+              schema:
+                type: integer
+          x-apidog-name: 'Get Usage: 429 (Rate Limit)'
+        'x-200:Get Usage (Recycled sim): 200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      remaining:
+                        type: integer
+                      total:
+                        type: integer
+                      expired_at:
+                        type: 'null'
+                      is_unlimited:
+                        type: 'null'
+                      status:
+                        type: string
+                      remaining_voice:
+                        type: integer
+                      remaining_text:
+                        type: integer
+                      total_voice:
+                        type: integer
+                      total_text:
+                        type: integer
+                    required:
+                    - remaining
+                    - total
+                    - expired_at
+                    - is_unlimited
+                    - status
+                    - remaining_voice
+                    - remaining_text
+                    - total_voice
+                    - total_text
+                    x-apidog-orders:
+                    - remaining
+                    - total
+                    - expired_at
+                    - is_unlimited
+                    - status
+                    - remaining_voice
+                    - remaining_text
+                    - total_voice
+                    - total_text
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: 'Get Usage (Recycled sim): 200'
+      security: []
+      x-apidog-folder: REST API/Endpoints/Monitor usage
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883030-run
+      x-source-page: https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+      operationId: getV2SimsBySimIccidUsage
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

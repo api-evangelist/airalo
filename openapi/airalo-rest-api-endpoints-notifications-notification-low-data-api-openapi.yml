@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Notifications/Notification…
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: 'REST API/Endpoints/Notifications/Notification: Low data'
+paths:
+  /v2/notifications/opt-in:
+    get:
+      summary: Get notification details
+      deprecated: false
+      description: 'This endpoint allows you to retrieve the details of `Low data notification` from the Airalo partner API. If the below highlighted response is returned, it means you are successfully opted in for the notification.
+
+
+        The access token, obtained from the Request Access Token endpoint, should be included in the request.'
+      tags:
+      - 'REST API/Endpoints/Notifications/Notification: Low data'
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      notification:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          contact_point:
+                            type: string
+                        required:
+                        - type
+                        - contact_point
+                        x-apidog-orders:
+                        - type
+                        - contact_point
+                    required:
+                    - notification
+                    x-apidog-orders:
+                    - notification
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              example: "{\n    \"data\": {\n        \"notification\": {\n            \"type\": \"webhook_low_data\",\n            \"contact_point\": \"https://example.com\"\n        }\n    },\n    \"meta\": {\n        \"message\": \"success\"\n    }\n}"
+          headers: {}
+          x-apidog-name: Get Low data notification
+      security: []
+      x-apidog-folder: 'REST API/Endpoints/Notifications/Notification: Low data'
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883041-run
+      x-source-page: https://developers.partners.airalo.com/get-notification-details-11883041e0
+      x-variant-pages:
+      - page: https://developers.partners.airalo.com/get-notification-details-20383022e0
+        summary: Get notification details
+        tag: 'REST API/Endpoints/Notifications/Notification: Credit limit'
+      - page: https://developers.partners.airalo.com/get-notification-details-20384820e0
+        summary: Get notification details
+        tag: 'REST API/Endpoints/Notifications/Notification: Async orders'
+      operationId: getV2NotificationsOptIn
+      x-operation-id-source: derived
+  /v2/notifications/opt-out:
+    post:
+      summary: Opt out
+      deprecated: false
+      description: This endpoint allows you to opt out of notifications regarding low data usage.
+      tags:
+      - 'REST API/Endpoints/Notifications/Notification: Low data'
+      parameters:
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+              required:
+              - type
+              x-apidog-orders:
+              - type
+            examples:
+              'Notification: Low data':
+                value: "{ \n    \"type\": \"webhook_low_data\" //email_low_data, email_credit_limit, webhook_low_data, webhook_credit_limit\n}"
+              'Notification: Credit limit':
+                value:
+                  type: webhook_credit_limit
+              'Notification: Async orders':
+                value:
+                  type: async_orders
+      responses:
+        '204':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties: {}
+                x-apidog-orders: []
+          headers: {}
+          x-apidog-name: Opt out notification on low data
+      security: []
+      x-apidog-folder: 'REST API/Endpoints/Notifications/Notification: Low data'
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883040-run
+      x-source-page: https://developers.partners.airalo.com/opt-out-11883040e0
+      x-variant-pages:
+      - page: https://developers.partners.airalo.com/opt-out-20383023e0
+        summary: Opt out
+        tag: 'REST API/Endpoints/Notifications/Notification: Credit limit'
+      - page: https://developers.partners.airalo.com/opt-out-20384821e0
+        summary: Opt out
+        tag: 'REST API/Endpoints/Notifications/Notification: Async orders'
+      operationId: postV2NotificationsOptOut
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

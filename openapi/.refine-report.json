@@ -1,0 +1,52 @@
+{
+  "provider": "airalo",
+  "sources": [
+    "_original/airalo-partner-api-openapi.yml"
+  ],
+  "outputs": [
+    "airalo-rest-api-endpoints-authenticate-api-openapi.yml",
+    "airalo-rest-api-endpoints-browse-packages-api-openapi.yml",
+    "airalo-rest-api-endpoints-check-balance-api-openapi.yml",
+    "airalo-rest-api-endpoints-compatible-devices-api-openapi.yml",
+    "airalo-rest-api-endpoints-install-esim-api-openapi.yml",
+    "airalo-rest-api-endpoints-manage-esims-api-openapi.yml",
+    "airalo-rest-api-endpoints-manage-orders-api-openapi.yml",
+    "airalo-rest-api-endpoints-monitor-usage-api-openapi.yml",
+    "airalo-rest-api-endpoints-notifications-api-openapi.yml",
+    "airalo-rest-api-endpoints-notifications-notification-async-orders-api-openapi.yml",
+    "airalo-rest-api-endpoints-notifications-notification-low-data-api-openapi.yml",
+    "airalo-rest-api-endpoints-place-order-api-openapi.yml",
+    "airalo-rest-api-endpoints-product-information-api-openapi.yml",
+    "airalo-rest-api-endpoints-request-refund-api-openapi.yml",
+    "airalo-rest-api-endpoints-top-up-esim-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "airalo-partner-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Authenticate",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Browse packages",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Check balance",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Compatible devices",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Install eSIM",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Manage eSIMs",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Manage orders",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Monitor usage",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Notifications",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Notifications/Notification: Async orders",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Notifications/Notification: Low data",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Place order",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Product Information",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Request refund",
+    "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Top up eSIM",
+    "superseded outputs removed: airalo-partner-api-openapi.yml",
+    "apis.yml register: written (+15 apis, 15 total)"
+  ],
+  "skipped": [
+    "airalo-partner-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

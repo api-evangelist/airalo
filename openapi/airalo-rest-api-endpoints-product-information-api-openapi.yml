@@ -1,0 +1,452 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Product Information API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Product Information
+paths:
+  /v2/packages/{package_slug}/product-information:
+    get:
+      summary: Get Product Information (PIB)
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        This endpoint comes with a Rate Limit: **60 requests per minute** per company and per unique package.
+
+        :::
+
+
+        **Overview**
+
+        Retrieve the standardized **Product Information** for a single eSIM package on the Airalo Partners API. Pass the package''s `package_slug` in the path and the endpoint returns a structured, regulator-ready summary of that package — services included, data allowance, validity, speeds, pricing, throttling/fair-usage rules, and the partner & legal entity details — along with a versioned, downloadable Product Information Brochure (PIB) PDF.
+
+
+        This endpoint is designed to help you surface a clear, consistent product summary to your end customers (and to meet pre-sale transparency requirements) without assembling those details yourself from the packages catalogue.
+
+
+        ## Features
+
+        - **Single package lookup**: Returns the full product information for one package, identified by its `package_slug`.
+
+        - **Versioning**: Every response carries a `pib_version`, `pib_version_date`, and a `version_hash`. When a package''s underlying details change, a new version is generated automatically; if nothing has changed, the same version and hash are returned (idempotent).
+
+        - **Downloadable brochure**: `pib_version_pdf_link` provides a link to the generated Product Information Brochure (PDF) for the current version.
+
+        - **Throttling & fair-usage transparency**: `is_fair_usage_policy`, `fair_usage_policy`, throttle speeds, and `throttle_threshold_mb` describe any usage restrictions on unlimited packages.
+
+
+        ## How to use this endpoint
+
+        - Make a `GET` request to this endpoint and provide the `package_slug` of the package you want product information for (e.g. `change-7days-1gb`).
+
+        - Include the required authentication header: `Authorization: Bearer ` (Refer to Request access token).
+
+        - The API responds with a single JSON object containing the package''s product attributes, versioning metadata, partner/legal details, and a link to the generated PDF brochure.
+
+
+        ## Response highlights
+
+        - **Service flags**: `service_internet`, `service_telephony`, `service_sms` indicate which services the package includes.
+
+        - **Allowance & validity**: `data_allowance_mb`, `data_allowance_display`, `validity_days`, `voice_minutes`, `sms_included`, and `is_unlimited`.
+
+        - **Network**: `network_providers` and `network_technologies` (e.g. 4G/5G) describe coverage and supported technology.
+
+        - **Speeds**: `max_download_speed_mbit`, `max_upload_speed_mbit`, and the throttled equivalents after the fair-usage threshold is reached.
+
+        - **Pricing**: `retail_price_eur` and `out_of_bundle_rate_eur_per_mb`.
+
+        - **Legal & partner info**: `partner_brand_name`, `partner_logo_url`, `legal_entity_name`, `legal_address`, `terms_url`, and `auto_renewal`.
+
+
+        **Note**
+
+        - An invalid or unknown `package_slug` returns a `404 Not Found`.
+
+        - For unlimited packages, allowance fields may default to `Unbegrenzt ` and should be interpreted alongside `is_unlimited` and the fair-usage fields rather than shown as a literal limit.'
+      tags:
+      - REST API/Endpoints/Product Information
+      parameters:
+      - name: package_slug
+        in: path
+        description: The package slug/identifier
+        required: true
+        example: change-in-3days-unlimited
+        schema:
+          type: string
+          maxLength: 100
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      package_id:
+                        type: string
+                        description: Package slug the information belongs to.
+                      product_name:
+                        type: string
+                        description: Package title.
+                      product_description:
+                        type: string
+                        description: Package description
+                      date_marketed:
+                        type: 'null'
+                        description: Date the package was first marketed
+                      service_internet:
+                        type: boolean
+                        description: Whether the plan includes data/internet.
+                      service_telephony:
+                        type: boolean
+                        description: Whether the plan includes voice.
+                      service_sms:
+                        type: boolean
+                        description: Whether the plan includes SMS/text.
+                      network_providers:
+                        type: array
+                        items:
+                          type: string
+                        description: Distinct network operator names across coverage (e.g. ["T-Mobile", "Verizon"]).
+                      network_technologies:
+                        type: array
+                        items:
+                          type: string
+                        description: Distinct network technologies (e.g. ["5G"], ["4G"]).
+                      data_allowance_mb:
+                        type: string
+                        description: Data allowance in MB as a string. For unlimited packages returns "Unbegrenzt".
+                      data_allowance_display:
+                        type: string
+                        description: Human-readable data allowance (e.g. "1 GB"). "Unbegrenzt" for unlimited.
+                      validity_days:
+                        type: integer
+                        description: Package validity in days.
+                      voice_minutes:
+                        type: integer
+                        description: Included voice minutes (0 when none).
+                      sms_included:
+                        type: integer
+                        description: Included SMS count (0 when none).
+                      retail_price_eur:
+                        type: string
+                        description: Recommended retail price in EUR (e.g. "11.50").
+                      max_download_speed_mbit:
+                        type: string
+                      max_upload_speed_mbit:
+                        type: string
+                      throttled_download_speed_mbit:
+                        type: string
+                        description: Throttled download speed when a fair-usage policy applies (e.g. "1 Mbps"). null otherwise.
+                      throttled_upload_speed_mbit:
+                        type: string
+                        description: Throttled upload speed when a fair-usage policy applies. null otherwise.
+                      throttle_threshold_mb:
+                        type: integer
+                        description: Data threshold (MB) after which throttling kicks in. null when no fair-usage policy.
+                      is_unlimited:
+                        type: boolean
+                        description: Whether the package is unlimited.
+                      is_fair_usage_policy:
+                        type: boolean
+                        description: Whether a fair-usage policy applies.
+                      fair_usage_policy:
+                        type: string
+                        description: Fair-usage policy text. null when not applicable.
+                      out_of_bundle_rate_eur_per_mb:
+                        type: string
+                      activation_policy:
+                        type: string
+                        description: Activation policy of the package ("fist-usage" or "instalation")
+                      is_roaming:
+                        type: boolean
+                      auto_renewal:
+                        type: string
+                      terms_url:
+                        type: string
+                        description: Terms & conditions URL.
+                      partner_brand_name:
+                        type: string
+                        description: Brand name
+                      partner_logo_url:
+                        type: string
+                        description: Brand logo URL.
+                      legal_entity_name:
+                        type: string
+                        description: 'Legal entity '
+                      legal_address:
+                        type: string
+                        description: Legal entity registered address.
+                      pib_version:
+                        type: integer
+                        description: Package version
+                      pib_version_date:
+                        type: string
+                        description: Timestamp when this version was created.
+                      version_hash:
+                        type: string
+                      pib_version_pdf_link:
+                        type: string
+                        description: Link to the generated PIB PDF stored in object storage.
+                    required:
+                    - package_id
+                    - product_name
+                    - product_description
+                    - date_marketed
+                    - service_internet
+                    - service_telephony
+                    - service_sms
+                    - network_providers
+                    - network_technologies
+                    - data_allowance_mb
+                    - data_allowance_display
+                    - validity_days
+                    - voice_minutes
+                    - sms_included
+                    - retail_price_eur
+                    - max_download_speed_mbit
+                    - max_upload_speed_mbit
+                    - throttled_download_speed_mbit
+                    - throttled_upload_speed_mbit
+                    - throttle_threshold_mb
+                    - is_unlimited
+                    - is_fair_usage_policy
+                    - fair_usage_policy
+                    - out_of_bundle_rate_eur_per_mb
+                    - activation_policy
+                    - is_roaming
+                    - auto_renewal
+                    - terms_url
+                    - partner_brand_name
+                    - partner_logo_url
+                    - legal_entity_name
+                    - legal_address
+                    - pib_version
+                    - pib_version_date
+                    - version_hash
+                    - pib_version_pdf_link
+                    x-apidog-orders:
+                    - package_id
+                    - product_name
+                    - product_description
+                    - date_marketed
+                    - service_internet
+                    - service_telephony
+                    - service_sms
+                    - network_providers
+                    - network_technologies
+                    - data_allowance_mb
+                    - data_allowance_display
+                    - validity_days
+                    - voice_minutes
+                    - sms_included
+                    - retail_price_eur
+                    - max_download_speed_mbit
+                    - max_upload_speed_mbit
+                    - throttled_download_speed_mbit
+                    - throttled_upload_speed_mbit
+                    - throttle_threshold_mb
+                    - is_unlimited
+                    - is_fair_usage_policy
+                    - fair_usage_policy
+                    - out_of_bundle_rate_eur_per_mb
+                    - activation_policy
+                    - is_roaming
+                    - auto_renewal
+                    - terms_url
+                    - partner_brand_name
+                    - partner_logo_url
+                    - legal_entity_name
+                    - legal_address
+                    - pib_version
+                    - pib_version_date
+                    - version_hash
+                    - pib_version_pdf_link
+                required:
+                - data
+                x-apidog-orders:
+                - data
+              example:
+                data:
+                  package_id: change-in-3days-unlimited
+                  product_name: Unbegrenzt - 3 Tage
+                  product_description: Unbegrenzt - 3 Tage
+                  date_marketed: null
+                  service_internet: true
+                  service_telephony: false
+                  service_sms: false
+                  network_providers:
+                  - T-Mobile
+                  - Verizon
+                  network_technologies:
+                  - 5G
+                  data_allowance_mb: Unbegrenzt
+                  data_allowance_display: Unbegrenzt
+                  validity_days: 3
+                  voice_minutes: 0
+                  sms_included: 0
+                  retail_price_eur: '10.12'
+                  max_download_speed_mbit: '20000'
+                  max_upload_speed_mbit: '10000'
+                  throttled_download_speed_mbit: 1 Mbps
+                  throttled_upload_speed_mbit: 1 Mbps
+                  throttle_threshold_mb: 3072
+                  is_unlimited: true
+                  is_fair_usage_policy: true
+                  fair_usage_policy: Geringere Geschwindigkeit von 1 Mbps nach 3 GB Verbrauch pro Tag.
+                  out_of_bundle_rate_eur_per_mb: Out of bundle rate is not applicable
+                  activation_policy: first-usage
+                  is_roaming: true
+                  auto_renewal: Das Paket verlängert sich nicht automatisch
+                  terms_url: https://airalo.com/de/more-info/terms-conditions
+                  partner_brand_name: Airalo
+                  partner_logo_url: https://cdn-revamp.airalo.com/img/logo-homepage-header.png
+                  legal_entity_name: AirGSM PTE. LTD.
+                  legal_address: '6 Raffles Boulevard, Justco @ Marina Square, #03-308, Singapore, 039594'
+                  pib_version: 1
+                  pib_version_date: '2026-06-29T11:34:59+00:00'
+                  version_hash: 59b0dfc6ebecf7eb913ee382a10eb4c648b49260824a51baffe27ea04f203453
+                  pib_version_pdf_link: https://assets.partners.airalo.com/package_versions/change-in-3days-unlimited/1.pdf
+          headers: {}
+          x-apidog-name: Success
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                x-apidog-orders:
+                - message
+              example:
+                message: Unauthenticated.
+          headers: {}
+          x-apidog-name: Forbidden
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              example:
+                data: []
+                meta:
+                  message: 'Package not found for slug: change-in-3days-unlimited'
+          headers: {}
+          x-apidog-name: Not found
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                x-apidog-orders:
+                - message
+              example:
+                message: Too Many Attempts.
+          headers: {}
+          x-apidog-name: Too Many Requests
+      security: []
+      x-apidog-folder: REST API/Endpoints/Product Information
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-38810259-run
+      x-source-page: https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+      operationId: getV2PackagesByPackageSlugProductInformation
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0

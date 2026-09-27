@@ -1,0 +1,1286 @@
+openapi: 3.2.0
+info:
+  title: Airalo Partner REST API/Endpoints/Manage eSIMs API
+  description: Airalo Partner API (v2) — assembled verbatim from the per-endpoint OpenAPI 3.0.1 fragments Airalo publishes on its Apidog-hosted developer portal (each endpoint page carries an 'OpenAPI Specification' block). Fragments were merged path-by-path; nothing was authored.
+  version: 1.0.0
+servers:
+- url: https://partners-api.airalo.com
+  description: Prod Env
+security: []
+tags:
+- name: REST API/Endpoints/Manage eSIMs
+paths:
+  /v2/sims/{iccid}/packages:
+    get:
+      summary: Get eSIM package history
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        **This endpoint comes with a Rate Limit:** 10 requests per minute per unique ICCID.
+
+        :::
+
+
+        **Note for unlimited packages**
+
+        - For unlimited packages the `remaining`, `total` and `amount` fields will default to `0` should be ignored, and not displayed to the end users.
+
+        - When in Sandbox mode, the `is_unlimited` field can be `false` for an unlimited package ordered, due to not having real eSIMs available, thus don''t reflect real usage.
+
+
+        **GDPR and Data Storage**
+
+        For compliance with GDPR and global privacy regulations, Airalo does not store any of your end-users'' personally identifiable information (PII). You are solely responsible for handling and storing all customer data on your end.
+
+
+        **Associating eSIMs with Customers**
+
+        To retrieve or manage all eSIMs associated with a specific customer, you must store and map the customer''s data to the ICCID within your own system. The ICCID is the primary identifier for managing an eSIM post-purchase.
+
+
+        **Please, use a caching mechanism on the client side to deal with frequent customer requests.**
+
+
+        **To get and display this eSIM’s data package history, including top-ups:**
+
+
+        - Make a request to GET eSIM package history, providing the `iccid` of the eSIM for which you want to retrieve top-up package for.
+
+        - The API will respond with a JSON object containing an array of purchased top-up packages for the eSIM, each of which includes an ID, remaining data amount, activation and expiration dates, and other relevant information.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Manage eSIMs
+      parameters:
+      - name: iccid
+        in: path
+        description: 'eSIM ICCID, used to query a list of purchased packages, including top-ups. Required. Can be obtained by execuring GET to the "eSIMs List" endpoint
+
+          '
+        required: true
+        example: '8910300000005271146'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pricing:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                    required:
+                    - model
+                    - discount_percentage
+                    x-apidog-orders:
+                    - model
+                    - discount_percentage
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        status:
+                          type: string
+                        remaining:
+                          type: integer
+                        activated_at:
+                          type: string
+                        expired_at:
+                          type: string
+                        finished_at:
+                          type: 'null'
+                        package:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            price:
+                              type: integer
+                            net_price:
+                              type: integer
+                            amount:
+                              type: integer
+                            day:
+                              type: integer
+                            is_unlimited:
+                              type: boolean
+                            title:
+                              type: string
+                            data:
+                              type: string
+                            short_info:
+                              type: 'null'
+                          required:
+                          - id
+                          - type
+                          - price
+                          - net_price
+                          - amount
+                          - day
+                          - is_unlimited
+                          - title
+                          - data
+                          - short_info
+                          x-apidog-orders:
+                          - id
+                          - type
+                          - price
+                          - net_price
+                          - amount
+                          - day
+                          - is_unlimited
+                          - title
+                          - data
+                          - short_info
+                      required:
+                      - id
+                      - status
+                      - remaining
+                      - activated_at
+                      - expired_at
+                      - finished_at
+                      - package
+                      x-apidog-orders:
+                      - id
+                      - status
+                      - remaining
+                      - activated_at
+                      - expired_at
+                      - finished_at
+                      - package
+                required:
+                - pricing
+                - data
+                x-apidog-orders:
+                - pricing
+                - data
+              examples:
+                '1':
+                  summary: 'eSIM: List purchased top-up packages (history): 200 OK'
+                  value:
+                    pricing:
+                      model: net_pricing
+                      discount_percentage: 0
+                    data:
+                    - id: 728
+                      status: ACTIVE
+                      remaining: 2378
+                      activated_at: '2023-01-09T10:30:45+00:00'
+                      expired_at: '2023-02-09T10:30:45+00:00'
+                      finished_at: null
+                      package:
+                        id: bonbon-mobile-30days-3gb-topup
+                        type: topup
+                        price: 10
+                        net_price: 6
+                        amount: 3072
+                        day: 30
+                        is_unlimited: false
+                        title: 3 GB - 30 Days
+                        data: 3 GB
+                        short_info: null
+                    - id: 725
+                      status: ACTIVE
+                      remaining: 2496
+                      activated_at: '2023-01-09T10:30:45+00:00'
+                      expired_at: '2023-02-09T10:30:45+00:00'
+                      finished_at: null
+                      package:
+                        id: bonbon-mobile-30days-3gb-topup
+                        type: topup
+                        price: 10
+                        net_price: 6
+                        amount: 3072
+                        day: 30
+                        is_unlimited: false
+                        title: 3 GB - 30 Days
+                        data: 3 GB
+                        short_info: null
+                '2':
+                  summary: 'eSIM: List purchased top-up packages (history): 404 (Invalid ICCID)'
+                  value:
+                    data: []
+                    meta:
+                      message: messages.resource_not_found
+                '3':
+                  summary: 'eSIM: List purchased top-up packages (history): 429 (Rate Limit)'
+                  value:
+                    message: Too Many Attempts.
+          headers: {}
+          x-apidog-name: 'eSIM: List purchased top-up packages (history): 200 OK'
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                x-apidog-orders:
+                - message
+          headers: {}
+          x-apidog-name: 'eSIM: List purchased top-up packages (history): 429 (Rate Limit)'
+        'x-200:(Discount pricing) eSIM: List purchased top-up packages (history): 200 OK':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pricing:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                      discount_percentage:
+                        type: integer
+                    required:
+                    - model
+                    - discount_percentage
+                    x-apidog-orders:
+                    - model
+                    - discount_percentage
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        status:
+                          type: string
+                        remaining:
+                          type: integer
+                        activated_at:
+                          type: string
+                        expired_at:
+                          type: string
+                        finished_at:
+                          type: 'null'
+                        package:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            type:
+                              type: string
+                            price:
+                              type: integer
+                            net_price:
+                              type: 'null'
+                            amount:
+                              type: integer
+                            day:
+                              type: integer
+                            is_unlimited:
+                              type: boolean
+                            title:
+                              type: string
+                            data:
+                              type: string
+                            short_info:
+                              type: 'null'
+                          required:
+                          - id
+                          - type
+                          - price
+                          - net_price
+                          - amount
+                          - day
+                          - is_unlimited
+                          - title
+                          - data
+                          - short_info
+                          x-apidog-orders:
+                          - id
+                          - type
+                          - price
+                          - net_price
+                          - amount
+                          - day
+                          - is_unlimited
+                          - title
+                          - data
+                          - short_info
+                      required:
+                      - id
+                      - status
+                      - remaining
+                      - activated_at
+                      - expired_at
+                      - finished_at
+                      - package
+                      x-apidog-orders:
+                      - id
+                      - status
+                      - remaining
+                      - activated_at
+                      - expired_at
+                      - finished_at
+                      - package
+                required:
+                - pricing
+                - data
+                x-apidog-orders:
+                - pricing
+                - data
+              example:
+                pricing:
+                  model: discount_pricing
+                  discount_percentage: 10
+                data:
+                - id: 728
+                  status: ACTIVE
+                  remaining: 2378
+                  activated_at: '2023-01-09T10:30:45+00:00'
+                  expired_at: '2023-02-09T10:30:45+00:00'
+                  finished_at: null
+                  package:
+                    id: bonbon-mobile-30days-3gb-topup
+                    type: topup
+                    price: 10
+                    net_price: null
+                    amount: 3072
+                    day: 30
+                    is_unlimited: false
+                    title: 3 GB - 30 Days
+                    data: 3 GB
+                    short_info: null
+                - id: 725
+                  status: ACTIVE
+                  remaining: 2496
+                  activated_at: '2023-01-09T10:30:45+00:00'
+                  expired_at: '2023-02-09T10:30:45+00:00'
+                  finished_at: null
+                  package:
+                    id: bonbon-mobile-30days-3gb-topup
+                    type: topup
+                    price: 10
+                    net_price: null
+                    amount: 3072
+                    day: 30
+                    is_unlimited: false
+                    title: 3 GB - 30 Days
+                    data: 3 GB
+                    short_info: null
+          headers: {}
+          x-apidog-name: '(Discount pricing) eSIM: List purchased top-up packages (history): 200 OK'
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage eSIMs
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883032-run
+      x-source-page: https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+      operationId: getV2SimsByIccidPackages
+      x-operation-id-source: derived
+  /v2/sims:
+    get:
+      summary: Get eSIMs list
+      deprecated: false
+      description: ':::highlight blue 💡
+
+        **GDPR and Data Storage**
+
+        For compliance with GDPR and global privacy regulations, Airalo does not store any of your end-users'' personally identifiable information (PII). You are solely responsible for handling and storing all customer data on your end.
+
+
+        **Associating eSIMs with Customers**
+
+        To retrieve or manage all eSIMs associated with a specific customer, you must store and map the customer''s data to the ICCID within your own system. The ICCID is the primary identifier for managing an eSIM post-purchase.
+
+        :::
+
+
+        This endpoint allows you to retrieve a list of your eSIMs from the Airalo Partners API. You can customize the results using various filters and include related data in the response by specifying optional parameters.
+
+
+        The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        `direct_apple_installation_url`: Partner API now supports direct installation on iOS devices. With the introduction of Universal Links by Apple, users with iOS 17.4 or higher can directly install eSIMs using a special URL, which can be provided to your end clients if they are using iOS version 17.4 or above.'
+      tags:
+      - REST API/Endpoints/Manage eSIMs
+      parameters:
+      - name: include
+        in: query
+        description: Optional. A comma-separated string to include related data in the response. Possible values are "order", "order.status", "order.user" and "share".
+        required: false
+        example: order,order.status,order.user,share
+        schema:
+          type: string
+      - name: filter[created_at]
+        in: query
+        description: Optional. A string to filter eSIMs by their creation date. Specify the date range using a dash (-) as a delimiter for correct parsing.
+        required: false
+        example: Y-m-d - Y-m-d
+        schema:
+          type: string
+      - name: filter[iccid]
+        in: query
+        description: Optional. A string to filter eSIMs by their ICCID. This performs a like search using the format '%SIM_ICCID%'.
+        required: false
+        example: '8944465400000217735'
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Optional. An integer specifying how many sims will be returned on each page.
+        required: false
+        example: '100'
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Optional. An integer specifying the pagination's current page.
+        required: false
+        example: '1'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        created_at:
+                          type: string
+                        iccid:
+                          type: string
+                        lpa:
+                          type: string
+                        imsis:
+                          type: 'null'
+                        matching_id:
+                          type: string
+                        qrcode:
+                          type: string
+                        qrcode_url:
+                          type: string
+                        direct_apple_installation_url:
+                          type: string
+                        voucher_code:
+                          type: 'null'
+                        airalo_code:
+                          type: 'null'
+                        apn_type:
+                          type: string
+                        apn_value:
+                          type:
+                          - string
+                          - 'null'
+                        is_roaming:
+                          type: boolean
+                        confirmation_code:
+                          type: 'null'
+                        order:
+                          type: 'null'
+                        brand_settings_name:
+                          type:
+                          - string
+                          - 'null'
+                        simable:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            created_at:
+                              type: string
+                            code:
+                              type: string
+                            description:
+                              type:
+                              - string
+                              - 'null'
+                            type:
+                              type: string
+                            package_id:
+                              type: string
+                            quantity:
+                              type: integer
+                            package:
+                              type: string
+                            esim_type:
+                              type: string
+                            validity:
+                              type: string
+                            price:
+                              type: string
+                            data:
+                              type: string
+                            currency:
+                              type: string
+                            manual_installation:
+                              type: string
+                            qrcode_installation:
+                              type: string
+                            installation_guides:
+                              type: object
+                              properties:
+                                en:
+                                  type: string
+                              required:
+                              - en
+                              x-apidog-orders:
+                              - en
+                            status:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                slug:
+                                  type: string
+                              required:
+                              - name
+                              - slug
+                              x-apidog-orders:
+                              - name
+                              - slug
+                            user:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                created_at:
+                                  type: string
+                                name:
+                                  type: string
+                                email:
+                                  type: string
+                                mobile:
+                                  type: 'null'
+                                address:
+                                  type: 'null'
+                                state:
+                                  type: 'null'
+                                city:
+                                  type: 'null'
+                                postal_code:
+                                  type: 'null'
+                                country_id:
+                                  type: 'null'
+                                company:
+                                  type: string
+                              required:
+                              - id
+                              - created_at
+                              - name
+                              - email
+                              - mobile
+                              - address
+                              - state
+                              - city
+                              - postal_code
+                              - country_id
+                              - company
+                              x-apidog-orders:
+                              - id
+                              - created_at
+                              - name
+                              - email
+                              - mobile
+                              - address
+                              - state
+                              - city
+                              - postal_code
+                              - country_id
+                              - company
+                            sharing:
+                              type: object
+                              properties:
+                                link:
+                                  type: string
+                                access_code:
+                                  type: string
+                              required:
+                              - link
+                              - access_code
+                              x-apidog-orders:
+                              - link
+                              - access_code
+                          required:
+                          - id
+                          - created_at
+                          - code
+                          - description
+                          - type
+                          - package_id
+                          - quantity
+                          - package
+                          - esim_type
+                          - validity
+                          - price
+                          - data
+                          - currency
+                          - manual_installation
+                          - qrcode_installation
+                          - installation_guides
+                          - status
+                          - user
+                          - sharing
+                          x-apidog-orders:
+                          - id
+                          - created_at
+                          - code
+                          - description
+                          - type
+                          - package_id
+                          - quantity
+                          - package
+                          - esim_type
+                          - validity
+                          - price
+                          - data
+                          - currency
+                          - manual_installation
+                          - qrcode_installation
+                          - installation_guides
+                          - status
+                          - user
+                          - sharing
+                        recycled:
+                          type: boolean
+                          description: true - if sim is recycled. - false - otherwise
+                        recycled_at:
+                          type:
+                          - string
+                          - 'null'
+                          format: date-time
+                          description: Timestamp of when the sim was recycled in format Y-m-d H:i:s
+                      required:
+                      - id
+                      - created_at
+                      - iccid
+                      - lpa
+                      - imsis
+                      - matching_id
+                      - qrcode
+                      - qrcode_url
+                      - direct_apple_installation_url
+                      - voucher_code
+                      - airalo_code
+                      - apn_type
+                      - apn_value
+                      - is_roaming
+                      - confirmation_code
+                      - order
+                      - brand_settings_name
+                      - simable
+                      - recycled
+                      - recycled_at
+                      x-apidog-orders:
+                      - id
+                      - created_at
+                      - iccid
+                      - lpa
+                      - imsis
+                      - matching_id
+                      - qrcode
+                      - qrcode_url
+                      - direct_apple_installation_url
+                      - voucher_code
+                      - airalo_code
+                      - apn_type
+                      - apn_value
+                      - is_roaming
+                      - confirmation_code
+                      - order
+                      - brand_settings_name
+                      - recycled
+                      - recycled_at
+                      - simable
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        type: 'null'
+                      next:
+                        type: string
+                    required:
+                    - first
+                    - last
+                    - prev
+                    - next
+                    x-apidog-orders:
+                    - first
+                    - last
+                    - prev
+                    - next
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      current_page:
+                        type: integer
+                      from:
+                        type: integer
+                      last_page:
+                        type: integer
+                      path:
+                        type: string
+                      per_page:
+                        type: string
+                      to:
+                        type: integer
+                      total:
+                        type: integer
+                    required:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                    x-apidog-orders:
+                    - message
+                    - current_page
+                    - from
+                    - last_page
+                    - path
+                    - per_page
+                    - to
+                    - total
+                required:
+                - data
+                - links
+                - meta
+                x-apidog-orders:
+                - data
+                - links
+                - meta
+              example:
+                data:
+                - id: 11047
+                  created_at: '2023-02-27 14:09:55'
+                  iccid: '891000000000009125'
+                  lpa: lpa.airalo.com
+                  imsis: null
+                  matching_id: TEST
+                  qrcode: LPA:1$lpa.airalo.com$TEST
+                  qrcode_url: https://sandbox.airalo.com/qr?expires=1763820595&id=13301&signature=1f0d45226a3857bd0645bf77225b7aee7e250f926763ee1d1a6e4be7fefde71e
+                  direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                  voucher_code: null
+                  airalo_code: null
+                  apn_type: automatic
+                  apn_value: null
+                  is_roaming: true
+                  confirmation_code: null
+                  order: null
+                  brand_settings_name: our perfect brand
+                  recycled: true
+                  recycled_at: '2025-05-05 10:52:39'
+                  simable:
+                    id: 9666
+                    created_at: '2023-02-27 14:09:55'
+                    code: 20230227-009666
+                    description: Example description to identify the order
+                    type: sim
+                    package_id: kallur-digital-7days-1gb
+                    quantity: 1
+                    package: Kallur Digital-1 GB - 7 Days
+                    esim_type: Prepaid
+                    validity: '7'
+                    price: '9.50'
+                    data: 1 GB
+                    currency: USD
+                    manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                    qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                    installation_guides:
+                      en: https://sandbox.airalo.com/installation-guide
+                    status:
+                      name: Completed
+                      slug: completed
+                    user:
+                      id: 120
+                      created_at: '2023-02-20 08:41:57'
+                      name: User Name
+                      email: User.Name+sandbox2@airalo.com
+                      mobile: null
+                      address: null
+                      state: null
+                      city: null
+                      postal_code: null
+                      country_id: null
+                      company: User Name Airalo 2
+                    sharing:
+                      link: https://esims.cloud/our-perfect-brand/sdf15-51li
+                      access_code: '8264'
+                - id: 11028
+                  created_at: '2023-02-27 08:30:14'
+                  iccid: '891000000000009106'
+                  lpa: lpa.airalo.com
+                  imsis: null
+                  matching_id: TEST
+                  qrcode: LPA:1$lpa.airalo.com$TEST
+                  qrcode_url: https://sandbox.airalo.com/qr?expires=1763800214&id=13282&signature=93bc1599eaaea3175eb32a9f23b3961273e97f04c50ba1b57b68ac99bc6677df
+                  direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                  voucher_code: null
+                  airalo_code: null
+                  apn_type: automatic
+                  apn_value: null
+                  is_roaming: true
+                  confirmation_code: null
+                  order: null
+                  brand_settings_name: our perfect brand
+                  simable:
+                    id: 9647
+                    created_at: '2023-02-27 08:30:14'
+                    code: 20230227-009647
+                    description: null
+                    type: sim
+                    package_id: kallur-digital-7days-1gb
+                    quantity: 1
+                    package: Kallur Digital-1 GB - 7 Days
+                    esim_type: Prepaid
+                    validity: '7'
+                    price: '9.50'
+                    data: 1 GB
+                    currency: USD
+                    manual_installation: '<p><b>eSIM name: </b>Kallur Digital</p><p><b>Coverage:</b> Faroe Islands</p><p><b>To manually activate the eSIM on your eSIM capable device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Manually enter the SM-DP+ Address and activation code.</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM.</p><p><b>To access Data:</b></p><p>1. Enable data roaming.</p><p><b>To top-up:</b></p><p></p><p>Visit airalo.com/my-esims or "My eSIMs" tab in your Airaloo app.</p><p><br></p>'
+                    qrcode_installation: '<p><b>eSIM name:</b> Kallur Digital</p><p><b>Coverage: </b>Faroe Islands</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><p>1. Settings> Cellular/Mobile> Add Cellular/Mobile Plan.</p><p>2. Scan QR code</p><p>3. Confirm the eSIM plan details</p><p>4. Label the eSIM</p><p><b>To access Data:</b></p><p>1. Enable data roaming</p>'
+                    installation_guides:
+                      en: https://sandbox.airalo.com/installation-guide
+                    status:
+                      name: Completed
+                      slug: completed
+                    user:
+                      id: 120
+                      created_at: '2023-02-20 08:41:57'
+                      name: User Name
+                      email: User.Name+sandbox2@airalo.com
+                      mobile: null
+                      address: null
+                      state: null
+                      city: null
+                      postal_code: null
+                      country_id: null
+                      company: User Name Airalo 2
+                    sharing:
+                      link: https://esims.cloud/our-perfect-brand/fds5-48jtd
+                      access_code: '3482'
+                - id: 10970
+                  created_at: '2023-02-24 05:34:28'
+                  iccid: '891000000000009048'
+                  lpa: lpa.airalo.com
+                  imsis: null
+                  matching_id: TEST
+                  qrcode: LPA:1$lpa.airalo.com$TEST
+                  qrcode_url: https://sandbox.airalo.com/qr?expires=1763530468&id=13224&signature=f8e3e726e95a588f1043979615ca456b316e59eecbe17e7e9cb0eabfc0050359
+                  direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                  voucher_code: null
+                  airalo_code: null
+                  apn_type: automatic
+                  apn_value: null
+                  is_roaming: true
+                  confirmation_code: null
+                  order: null
+                  brand_settings_name: null
+                  simable:
+                    id: 9583
+                    created_at: '2023-02-24 05:34:28'
+                    code: 20230224-009583
+                    description: null
+                    type: sim
+                    package_id: mariocom-30days-3gb
+                    quantity: 1
+                    package: Mariocom-3 GB - 30 Days
+                    esim_type: Prepaid
+                    validity: '30'
+                    price: '27.00'
+                    data: 3 GB
+                    currency: USD
+                    manual_installation: <p><b>eSIM name:</b> Mariocom</p><p><b>Coverage: </b>Liberia</p><p><b>To manually activate the eSIM on your eSIM capable device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.<br></li></ol>
+                    qrcode_installation: <p><b>eSIM name:</b> Mariocom</p><p><b>Coverage: </b>Liberia</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.<br></li></ol>
+                    installation_guides:
+                      en: https://sandbox.airalo.com/installation-guide
+                    status:
+                      name: Completed
+                      slug: completed
+                    user:
+                      id: 120
+                      created_at: '2023-02-20 08:41:57'
+                      name: User Name
+                      email: User.Name+sandbox2@airalo.com
+                      mobile: null
+                      address: null
+                      state: null
+                      city: null
+                      postal_code: null
+                      country_id: null
+                      company: User Name Airalo 2
+                    sharing:
+                      link: https://esims.cloud/our-perfect-brand/a4g5ht-58sdf1a
+                      access_code: '4812'
+                - id: 10954
+                  created_at: '2023-02-22 14:24:01'
+                  iccid: '891000000000009032'
+                  lpa: lpa.airalo.com
+                  imsis: null
+                  matching_id: TEST
+                  qrcode: LPA:1$lpa.airalo.com$TEST
+                  qrcode_url: https://sandbox.airalo.com/qr?expires=1763389441&id=13208&signature=d2d5d4b5c048dc2df05e8a7230352007a76366b04c07f6faf6ab77ee8b9b1881
+                  direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                  voucher_code: null
+                  airalo_code: null
+                  apn_type: manual
+                  apn_value: rh
+                  is_roaming: true
+                  confirmation_code: null
+                  order: null
+                  brand_settings_name: null
+                  simable:
+                    id: 9565
+                    created_at: '2023-02-22 14:24:01'
+                    code: 20230222-009565
+                    description: null
+                    type: sim
+                    package_id: bonbon-mobile-30days-10gb
+                    quantity: 1
+                    package: Bonbon Mobile-10 GB - 30 Days
+                    esim_type: Prepaid
+                    validity: '30'
+                    price: '22.50'
+                    data: 10 GB
+                    currency: USD
+                    manual_installation: <p><b>eSIM name:</b> Bonbon Mobile</p><p><b>Coverage: </b>France</p><p><b>To manually activate the eSIM on your eSIM capable device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Locate the APN settings in your settings menu.</li><li>Update the APN to "rh".</li><li>Enable data roaming.</li></ol>
+                    qrcode_installation: <p><b>eSIM name:</b> Bonbon Mobile</p><p><b>Coverage: </b>France</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Locate the APN settings in your settings menu.</li><li>Update the APN to "rh".</li><li>Enable data roaming.</li></ol>
+                    installation_guides:
+                      en: https://sandbox.airalo.com/installation-guide
+                    status:
+                      name: Completed
+                      slug: completed
+                    user:
+                      id: 120
+                      created_at: '2023-02-20 08:41:57'
+                      name: User Name
+                      email: User.Name+sandbox2@airalo.com
+                      mobile: null
+                      address: null
+                      state: null
+                      city: null
+                      postal_code: null
+                      country_id: null
+                      company: User Name Airalo 2
+                    sharing:
+                      link: https://esims.cloud/our-perfect-brand/nf21gs-gfds94f
+                      access_code: '6465'
+                - id: 10938
+                  created_at: '2023-02-22 09:49:21'
+                  iccid: '891000000000009016'
+                  lpa: lpa.airalo.com
+                  imsis: null
+                  matching_id: TEST
+                  qrcode: LPA:1$lpa.airalo.com$TEST
+                  qrcode_url: https://sandbox.airalo.com/qr?expires=1763372961&id=13192&signature=00df38513e8e7fb9af0e04b970e79894cb71e2a0f29346a77d8ca60de367766f
+                  direct_apple_installation_url: https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=LPA:1$wbg.prod.ondemandconnectivity.com$Y7MRQ886FCDJD4RH
+                  voucher_code: null
+                  airalo_code: null
+                  apn_type: automatic
+                  apn_value: null
+                  is_roaming: true
+                  confirmation_code: null
+                  order: null
+                  brand_settings_name: our perfect brand
+                  simable:
+                    id: 9546
+                    created_at: '2023-02-22 09:49:21'
+                    code: 20230222-009546
+                    description: null
+                    type: sim
+                    package_id: nigercell-30days-3gb
+                    quantity: 1
+                    package: Nigercell-3 GB - 30 Days
+                    esim_type: Prepaid
+                    validity: '30'
+                    price: '19.00'
+                    data: 3 GB
+                    currency: USD
+                    manual_installation: <p><b>eSIM name:</b> Nigercell</p><p><b>Coverage: </b>Nigeria</p><p><b>To manually activate the eSIM on your eSIM capable device:</b><br></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Manually enter the SM-DP+ Address and activation code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                    qrcode_installation: <p><b>eSIM name:</b> Nigercell</p><p><b>Coverage: </b>Nigeria</p><p><b>To activate the eSIM by scanning the QR code on your eSIM capable device you need to print or display this QR code on other device:</b></p><ol><li>Settings > Cellular/Mobile > Add Cellular/Mobile Plan.</li><li>Scan QR code.</li><li>Confirm eSIM plan details.</li><li>Label the eSIM.</li></ol><p><b>To access Data:</b></p><ol><li>Enable data roaming.</li></ol>
+                    installation_guides:
+                      en: https://sandbox.airalo.com/installation-guide
+                    status:
+                      name: Completed
+                      slug: completed
+                    user:
+                      id: 120
+                      created_at: '2023-02-20 08:41:57'
+                      name: User Name
+                      email: User.Name+sandbox2@airalo.com
+                      mobile: null
+                      address: null
+                      state: null
+                      city: null
+                      postal_code: null
+                      country_id: null
+                      company: User Name Airalo 2
+                    sharing:
+                      link: https://esims.cloud/our-perfect-brand/n82zaa-jnd5s9
+                      access_code: '1537'
+                links:
+                  first: https://sandbox-partners-api.airalo.com/v1/sims?include=order%2Corder.status%2Corder.user&limit=5&page=1
+                  last: https://sandbox-partners-api.airalo.com/v1/sims?include=order%2Corder.status%2Corder.user&limit=5&page=16
+                  prev: null
+                  next: https://sandbox-partners-api.airalo.com/v1/sims?include=order%2Corder.status%2Corder.user&limit=5&page=2
+                meta:
+                  message: success
+                  current_page: 1
+                  from: 1
+                  last_page: 16
+                  path: https://sandbox-partners-api.airalo.com/v1/sims
+                  per_page: '5'
+                  to: 5
+                  total: 77
+          headers: {}
+          x-apidog-name: eSIMs List (200)
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      limit:
+                        type: string
+                    required:
+                    - limit
+                    x-apidog-orders:
+                    - limit
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+              example:
+                data:
+                  limit: The limit must be an integer.
+                meta:
+                  message: the parameter is invalid
+          headers: {}
+          x-apidog-name: eSIMs List (422)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage eSIMs
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883027-run
+      x-source-page: https://developers.partners.airalo.com/get-esims-list-11883027e0
+      operationId: getV2Sims
+      x-operation-id-source: derived
+  /v2/sims/{sim_iccid}/brand:
+    put:
+      summary: Update eSIM brand
+      deprecated: false
+      description: 'This endpoint allows you to update assigned brand settings name of a specific eSIM from the Airalo Partners API using the eSIM''s ICCID. This brand is used to apply branding on sharing link or share e-mails.If brand is set as null value, eSIM will be shared with unbranded visual.
+
+
+        The access token, obtained from the "Request Access Token" endpoint, should be included in the request.
+
+
+        For more information and best practices visit our FAQ page'
+      tags:
+      - REST API/Endpoints/Manage eSIMs
+      parameters:
+      - name: sim_iccid
+        in: path
+        description: The ICCID of the eSIM for which you want to update the brand.
+        required: true
+        example: ''
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: ''
+        required: true
+        example: application/json
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: ''
+        required: true
+        example: Bearer {{token}}
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: ''
+        example: https://partners-api.airalo.com
+        schema:
+          type: string
+          default: https://partners-api.airalo.com
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                brand_settings_name:
+                  description: Nullable. The definition under what brand the eSIM should be shared. Null for unbranded.
+                  example: our perfect brand
+                  type: string
+              required:
+              - brand_settings_name
+            examples: {}
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      brand_settings_name:
+                        type: string
+                    required:
+                    - brand_settings_name
+                    x-apidog-orders:
+                    - brand_settings_name
+                  meta:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    required:
+                    - message
+                    x-apidog-orders:
+                    - message
+                required:
+                - data
+                - meta
+                x-apidog-orders:
+                - data
+                - meta
+          headers: {}
+          x-apidog-name: Update eSIM Brand (200)
+      security: []
+      x-apidog-folder: REST API/Endpoints/Manage eSIMs
+      x-apidog-status: released
+      x-run-in-apidog: https://app.apidog.com/web/project/742850/apis/api-11883033-run
+      x-source-page: https://developers.partners.airalo.com/update-esim-brand-11883033e0
+      operationId: putV2SimsBySimIccidBrand
+      x-operation-id-source: derived
+x-assembled-from:
+- https://developers.partners.airalo.com/cancel-future-orders-14459873e0
+- https://developers.partners.airalo.com/deprecated-get-compatible-device-list-11883037e0
+- https://developers.partners.airalo.com/esim-voucher-11883065e0
+- https://developers.partners.airalo.com/future-orders-14455445e0
+- https://developers.partners.airalo.com/future-orders-21307288e0
+- https://developers.partners.airalo.com/get-balance-11883045e0
+- https://developers.partners.airalo.com/get-compatible-device-lite-list-19504054e0
+- https://developers.partners.airalo.com/get-esim-11883028e0
+- https://developers.partners.airalo.com/get-esim-package-history-11883032e0
+- https://developers.partners.airalo.com/get-esims-list-11883027e0
+- https://developers.partners.airalo.com/get-installation-instructions-11883029e0
+- https://developers.partners.airalo.com/get-notification-details-11883041e0
+- https://developers.partners.airalo.com/get-notification-details-20383022e0
+- https://developers.partners.airalo.com/get-notification-details-20384820e0
+- https://developers.partners.airalo.com/get-order-11883023e0
+- https://developers.partners.airalo.com/get-order-list-11883022e0
+- https://developers.partners.airalo.com/get-packages-11883036e0
+- https://developers.partners.airalo.com/get-product-information-pib-38810259e0
+- https://developers.partners.airalo.com/get-top-up-package-list-11883031e0
+- https://developers.partners.airalo.com/get-usage-data-text-voice-11883030e0
+- https://developers.partners.airalo.com/opt-in-11883038e0
+- https://developers.partners.airalo.com/opt-in-11883039e0
+- https://developers.partners.airalo.com/opt-in-11883042e0
+- https://developers.partners.airalo.com/opt-out-11883040e0
+- https://developers.partners.airalo.com/opt-out-20383023e0
+- https://developers.partners.airalo.com/opt-out-20384821e0
+- https://developers.partners.airalo.com/request-access-token-11883021e0
+- https://developers.partners.airalo.com/request-refund-14583565e0
+- https://developers.partners.airalo.com/submit-order-11883024e0
+- https://developers.partners.airalo.com/submit-order-async-11883025e0
+- https://developers.partners.airalo.com/submit-top-up-order-11883026e0
+- https://developers.partners.airalo.com/update-esim-brand-11883033e0
+- https://developers.partners.airalo.com/webhook-simulator-11883044e0
+- https://developers.partners.airalo.com/step-1-request-access-token-11883017e0
+- https://developers.partners.airalo.com/step-2-get-packages-11883018e0
+- https://developers.partners.airalo.com/step-3-submit-order-11883019e0
+- https://developers.partners.airalo.com/step-4-get-installation-instructions-11883020e0
