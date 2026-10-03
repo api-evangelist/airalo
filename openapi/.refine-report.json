@@ -20,9 +20,7 @@
     "airalo-rest-api-endpoints-request-refund-api-openapi.yml",
     "airalo-rest-api-endpoints-top-up-esim-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -43,10 +41,23 @@
     "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Product Information",
     "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Request refund",
     "airalo-partner-api-openapi.yml: declared missing tag: REST API/Endpoints/Top up eSIM",
-    "superseded outputs removed: airalo-partner-api-openapi.yml",
-    "apis.yml register: written (+15 apis, 15 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
-    "airalo-partner-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "airalo-rest-api-endpoints-authenticate-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-browse-packages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-check-balance-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-compatible-devices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-install-esim-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-manage-esims-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-manage-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-monitor-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-notifications-notification-async-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-notifications-notification-low-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-place-order-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-product-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-request-refund-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airalo-rest-api-endpoints-top-up-esim-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
