@@ -64,5 +64,144 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Airalo is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.hiive.com/securities/airalo-stock
+Airalo is the world's first and largest eSIM marketplace, founded in 2019 and headquartered in Singapore, selling prepaid travel data plans (local, regional and global eSIMs) for 200+ countries and regions to consumers through its website and iOS/Android apps, and to businesses through Airalo Partners. The Airalo Partner API (v2, partners-api.airalo.com) lets 6,500+ partner companies — airlines, travel businesses, financial institutions, MNOs/MVNOs, resellers and enterprises — browse the eSIM package catalog, place synchronous, asynchronous and future-dated orders, top up and manage eSIMs, retrieve installation instructions and QR codes, monitor data/voice/text usage, request refunds, check balances and subscribe to HMAC-signed webhooks for async orders, low-data and credit-limit events. Airalo also ships official PHP, Node.js and Python SDKs, a WooCommerce plugin, and a white-label eSIM platform, and publishes a real llms.txt and per-endpoint OpenAPI 3.0.1 fragments on its Apidog-hosted developer portal.
+
+**Areas:** Company · eSIM · Telecommunications · Travel · Connectivity · Mobile Data · Roaming · Partner API · Webhook · Singapore
+
+## Airalo on APIs.io
+
+Everything profiled for Airalo is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/airalo/](https://apis.io/providers/airalo/)** — or go straight to one of the APIs or properties below.
+
+### APIs (15)
+
+- [Airalo REST API/Endpoints/Authenticate API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-authenticate-api/) — The REST API/Endpoints/Authenticate API from Airalo — 1 operation(s) for rest api/endpoints/authenticate.
+- [Airalo REST API/Endpoints/Browse packages API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-browse-packages-api/) — The REST API/Endpoints/Browse packages API from Airalo — 1 operation(s) for rest api/endpoints/browse packages.
+- [Airalo REST API/Endpoints/Check balance API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-check-balance-api/) — The REST API/Endpoints/Check balance API from Airalo — 1 operation(s) for rest api/endpoints/check balance.
+- [Airalo REST API/Endpoints/Compatible devices API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-compatible-devices-api/) — The REST API/Endpoints/Compatible devices API from Airalo — 2 operation(s) for rest api/endpoints/compatible devices.
+- [Airalo REST API/Endpoints/Install eSIM API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-install-esim-api/) — The REST API/Endpoints/Install eSIM API from Airalo — 2 operation(s) for rest api/endpoints/install esim.
+- [Airalo REST API/Endpoints/Manage eSIMs API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-manage-esims-api/) — The REST API/Endpoints/Manage eSIMs API from Airalo — 3 operation(s) for rest api/endpoints/manage esims.
+- [Airalo REST API/Endpoints/Manage orders API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-manage-orders-api/) — The REST API/Endpoints/Manage orders API from Airalo — 4 operation(s) for rest api/endpoints/manage orders.
+- [Airalo REST API/Endpoints/Monitor usage API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-monitor-usage-api/) — The REST API/Endpoints/Monitor usage API from Airalo — 1 operation(s) for rest api/endpoints/monitor usage.
+- [Airalo REST API/Endpoints/Notifications API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-notifications-api/) — The REST API/Endpoints/Notifications API from Airalo — 1 operation(s) for rest api/endpoints/notifications.
+- [Airalo REST API/Endpoints/Notifications/Notification: Async orders API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-notifications-notification-async-orders-api/) — The REST API/Endpoints/Notifications/Notification: Async orders API from Airalo — 1 operation(s) for rest api/endpoints/notifications/notification: async…
+- [Airalo REST API/Endpoints/Notifications/Notification: Low data API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-notifications-notification-low-data-api/) — The REST API/Endpoints/Notifications/Notification: Low data API from Airalo — 2 operation(s) for rest api/endpoints/notifications/notification: low data.
+- [Airalo REST API/Endpoints/Place order API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-place-order-api/) — The REST API/Endpoints/Place order API from Airalo — 4 operation(s) for rest api/endpoints/place order.
+- [Airalo REST API/Endpoints/Product Information API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-product-information-api/) — The REST API/Endpoints/Product Information API from Airalo — 1 operation(s) for rest api/endpoints/product information.
+- [Airalo REST API/Endpoints/Request refund API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-request-refund-api/) — The REST API/Endpoints/Request refund API from Airalo — 1 operation(s) for rest api/endpoints/request refund.
+- [Airalo REST API/Endpoints/Top up eSIM API](https://apis.io/apis/airalo/airalo-rest-api-endpoints-top-up-esim-api/) — The REST API/Endpoints/Top up eSIM API from Airalo — 2 operation(s) for rest api/endpoints/top up esim.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Airalo Webhooks](https://apis.io/asyncapis/airalo/airalo-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [airalo](https://apis.io/servers/airalo/airalo/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Airalo Partner Api Overlay](https://apis.io/overlays/airalo/airalo-partner-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Airalo Authentication](https://apis.io/security/airalo/airalo-authentication/)
+- [Airalo Domain Security](https://apis.io/security/airalo/airalo-domain-security/)
+- [Airalo Trust Center](https://apis.io/security/airalo/airalo-trust-center/)
+- [Airalo Vulnerability Disclosure](https://apis.io/security/airalo/airalo-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Airalo Plans Pricing](https://apis.io/plans/airalo/airalo-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Airalo Rate Limits](https://apis.io/rate-limits/airalo/airalo-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.airalo.com)
+- [Documentation](https://developers.partners.airalo.com/introduction-752219m0)
+- [Getting started](https://developers.partners.airalo.com/quick-start-2508979f0)
+- [API reference](https://developers.partners.airalo.com/endpoints-2663076f0)
+- [Pricing](https://www.airalo.com/all-esim)
+- [Sign up](https://app.partners.airalo.com/sign-up)
+- [Support](https://www.airalo.com/help)
+- [Blog](https://blog.partners.airalo.com/blog)
+- [Trust centre](https://trust.airalo.com)
+- [Terms of service](https://www.airalo.com/more-info/terms-conditions)
+- [Privacy policy](https://www.airalo.com/more-info/privacy-policy)
+- [GitHub](https://github.com/Airalo)
+- [Status](https://status.airalo.com)
+
+## API Evangelist rating
+
+**Kin Score 58.4** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 74.1 |
+| Contract quality | 52.6 |
+| Contract governance | 18.2 |
+| Operational transparency | 81.6 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 46.1 |
+
+**Agent readiness 43.0** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 33.3** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/airalo/](https://apis.io/providers/airalo/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Airalo: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/airalo/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
