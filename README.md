@@ -106,11 +106,23 @@ Model Context Protocol servers that expose the API to agents.
 
 - [airalo](https://apis.io/servers/airalo/airalo/)
 
-#### Overlays (1)
+#### Overlays (7)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
 - [Airalo Partner Api Overlay](https://apis.io/overlays/airalo/airalo-partner-api-overlay/)
+- [Airalo Rest Api Endpoints Browse Packages Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-browse-packages-api-certification-overlay/)
+- [Airalo Rest Api Endpoints Check Balance Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-check-balance-api-certification-overlay/)
+- [Airalo Rest Api Endpoints Compatible Devices Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-compatible-devices-api-certification-overlay/)
+- [Airalo Rest Api Endpoints Manage Esims Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-manage-esims-api-certification-overlay/)
+- [Airalo Rest Api Endpoints Manage Orders Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-manage-orders-api-certification-overlay/)
+- [Airalo Rest Api Endpoints Notifications Notification Low Data Api Certification Overlay](https://apis.io/overlays/airalo/airalo-rest-api-endpoints-notifications-notification-low-data-api-certification-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Airalo API Rules](https://apis.io/rules/airalo/airalo-rules/)
 
 #### Security (4)
 
@@ -133,6 +145,12 @@ Published request limits.
 
 - [Airalo Rate Limits](https://apis.io/rate-limits/airalo/airalo-rate-limits/)
 
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Airalo Finops](https://apis.io/finops/airalo/airalo-finops/)
+
 ## Where to find this API
 
 Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
@@ -153,18 +171,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 58.4** — strong · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 58.4** — strong · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
-| Discoverability | 74.1 |
+| Discoverability | 75.0 |
 | Contract quality | 52.6 |
-| Contract governance | 18.2 |
-| Operational transparency | 81.6 |
+| Contract governance | 31.8 |
+| Operational transparency | 76.2 |
 | Developer ergonomics | 73.2 |
-| Access clarity | 46.1 |
+| Access clarity | 44.7 |
 
-**Agent readiness 43.0** — agent-ready (gated down from agent-native)
+**Agent readiness 42.5** — agent-ready (gated down from agent-native)
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -189,8 +207,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | partial |
 | Operation Distinctiveness | distinct |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | yes |
 
-**Regulatory alignment 33.3** — Telecommunications
+**Regulatory alignment 28.3** — Telecommunications
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/airalo/](https://apis.io/providers/airalo/).
 
